@@ -1,12 +1,12 @@
 package nl.akker.springboot.backend.application.controller;
 
 import nl.akker.springboot.backend.application.model.Customer;
-import nl.akker.springboot.backend.application.service.security.CustomerService;
+import nl.akker.springboot.backend.application.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "api/customer")
@@ -19,8 +19,24 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping(path = "")
-    public List<Customer> getCustomers() {
+    @GetMapping
+    public Collection<Customer> getCustomers() {
         return customerService.getCustomers();
+    }
+
+    @PostMapping
+    public void registerNewCustomer(@RequestBody Customer customer) {
+        customerService.createCustomer(customer);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void deleteCustomer(@PathVariable("id") Long id) {
+        customerService.deleteCustomer(id);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody Customer customer) throws Exception {
+        customerService.updateCustomer(id, customer);
+        return ResponseEntity.noContent().build();
     }
 }
