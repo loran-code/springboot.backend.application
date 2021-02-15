@@ -1,25 +1,26 @@
 package nl.akker.springboot.backend.application.model;
 
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Table;
-//import javax.persistence.Id;
-import lombok.*;
+import lombok.Data;
 
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
-//@Entity
-//@Table(name = "customer")
+@Entity
+@Table
 public class Customer {
-    //
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
+    @Id
+    @SequenceGenerator(
+            name = "customer_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1)
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_sequence")
+
+    private Long id;
     private String firstName;
     private String lastName;
     private String phone;
