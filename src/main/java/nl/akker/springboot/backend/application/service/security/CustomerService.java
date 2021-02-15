@@ -1,19 +1,26 @@
 package nl.akker.springboot.backend.application.service.security;
 
 import nl.akker.springboot.backend.application.model.Customer;
+import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+
 
 public interface CustomerService {
 
-    List<Customer> listAll();
+    long createCustomer(Customer customer);
 
-    Customer getById(long id);
+    void updateCustomer(long id, Customer customer);
 
-    Customer saveOrUpdate(Customer customer);
+    void deleteCustomer(long id);
 
-    void delete(Long id);
+    List<Customer> getCustomers();
 
-    Customer saveOrUpdateCustomerForm(Customer customer);
+    List<Customer> getCustomersByLastName(String name);
 
+    Optional<Customer> getCustomerById(long id);
+
+    boolean customerExistsById(long id);
 }

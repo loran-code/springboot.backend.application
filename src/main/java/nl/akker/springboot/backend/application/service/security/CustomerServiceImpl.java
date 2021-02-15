@@ -4,32 +4,55 @@ import nl.akker.springboot.backend.application.model.Customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
+
+    public List<Customer> getCustomers() {
+        return List.of(
+                new Customer(
+                        1L,
+                        "Loran",
+                        "Akker",
+                        "06-12345678",
+                        "loran@email.com",
+                        "Sesamstraat",
+                        "Den Haag",
+                        "2574AV",
+                        java.time.LocalDateTime.now(),
+                        java.time.LocalDateTime.now())
+        );
+    }
+
 
     @Override
-    public List<Customer> listAll() {
+    public long createCustomer(Customer customer) {
+        return 0;
+    }
+
+    @Override
+    public void updateCustomer(long id, Customer customer) {
+
+    }
+
+    @Override
+    public void deleteCustomer(long id) {
+
+    }
+
+    @Override
+    public List<Customer> getCustomersByLastName(String name) {
         return null;
     }
 
     @Override
-    public Customer getById(long id) {
-        return null;
+    public Optional<Customer> getCustomerById(long id) {
+        return Optional.empty();
     }
 
     @Override
-    public Customer saveOrUpdate(Customer customer) {
-        return null;
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
-    public Customer saveOrUpdateCustomerForm(Customer customer) {
-        return null;
+    public boolean customerExistsById(long id) {
+        return false;
     }
 }
