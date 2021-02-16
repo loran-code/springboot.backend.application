@@ -12,7 +12,6 @@ import java.util.Collection;
 @RestController
 @RequestMapping(path = "api/employee")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
 
     @Autowired
