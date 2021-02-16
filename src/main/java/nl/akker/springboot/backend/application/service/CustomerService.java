@@ -20,6 +20,4 @@ public interface CustomerService {
     Optional<Customer> getCustomerById(long id) throws Exception;
 
     boolean customerExistsById(long id);
-
-
 }
