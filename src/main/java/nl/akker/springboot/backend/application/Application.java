@@ -16,21 +16,34 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(CustomerRepository customerRepository) {
-        return args -> {
-            Customer loran = new Customer(
-                    "Loran",
-                    "Akker",
-                    "12345678",
-                    "loran@mail.com",
-                    "sesamstraat",
-                    "Den Haag",
-                    "2574AV",
-                    LocalDateTime.now(),
-                    LocalDateTime.now()
-            );
-            customerRepository.save(loran);
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner(CustomerRepository customerRepository) {
+//        return args -> {
+//            Customer loran = new Customer(
+//                    "Loran",
+//                    "Akker",
+//                    "12345678",
+//                    "loran@mail.com",
+//                    "sesamstraat",
+//                    "Den Haag",
+//                    "2574AV",
+//                    LocalDateTime.now(),
+//                    LocalDateTime.now()
+//            );
+//            customerRepository.save(loran);
+//
+//            Customer maria = new Customer(
+//                    "Maria",
+//                    "James",
+//                    "12345278",
+//                    "maria@mail.com",
+//                    "sesamstraat",
+//                    "Den Haag",
+//                    "2534AV",
+//                    LocalDateTime.now(),
+//                    LocalDateTime.now()
+//            );
+//            customerRepository.save(maria);
+//        };
+
 }

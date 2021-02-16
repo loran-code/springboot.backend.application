@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -14,7 +15,7 @@ public class Customer {
 
     @Id
     @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = SEQUENCE, generator = "customer_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "customer_sequence")
 //    @Column(name = "id", updatable = false)
     private Long id;
 
@@ -40,14 +41,14 @@ public class Customer {
     private String zip;
 
 //    @Column(name = "created",columnDefinition = "DATETIME")
-    private LocalDateTime created;
+    private LocalDate created;
 
 //    @Column(name = "modified",columnDefinition = "DATETIME")
     private LocalDateTime modified;
 
     public Customer() {}
 
-    public Customer(Long id, String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDateTime created, LocalDateTime modified) {
+    public Customer(Long id, String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDate created, LocalDateTime modified) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,7 +61,7 @@ public class Customer {
         this.modified = modified;
     }
 
-    public Customer(String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDateTime created, LocalDateTime modified) {
+    public Customer(String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDate created, LocalDateTime modified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
