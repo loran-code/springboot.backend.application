@@ -11,9 +11,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@Entity(name = "Activity")
-@Table(name = "activity")
-public class Activity {
+@Entity(name = "Component")
+@Table(name = "component")
+public class Component {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -26,8 +26,8 @@ public class Activity {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "time_in_minutes", nullable = false)
-    private int timeInMinutes;
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
@@ -35,13 +35,19 @@ public class Activity {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    public Activity() {
+    public Component() {
     }
 
-    public Activity(String description, double price, int timeInMinutes, LocalDateTime created, LocalDateTime modified) {
+    public Component(String description, double price, int quantity) {
         this.description = description;
         this.price = price;
-        this.timeInMinutes = timeInMinutes;
+        this.quantity = quantity;
+    }
+
+    public Component(String description, double price, int quantity, LocalDateTime created, LocalDateTime modified) {
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
         this.created = created;
         this.modified = modified;
     }

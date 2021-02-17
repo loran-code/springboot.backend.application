@@ -15,9 +15,9 @@ INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, cr
 
 
 -- Role data input
-INSERT INTO role(role_name, employee_id) VALUES (1, 1);
-INSERT INTO role(role_name, employee_id) VALUES (2, 1);
-INSERT INTO role(role_name, employee_id) VALUES (3, 1);
+INSERT INTO role(role_name) VALUES (1);
+INSERT INTO role(role_name) VALUES (2);
+INSERT INTO role(role_name) VALUES (3);
 
 
 -- Car data input
@@ -29,7 +29,7 @@ INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('SK-147-S
 
 -- Car Components data input
 
--- Activity data input
+-- Activity (labor) data input
 
 -- Inventory data input
 

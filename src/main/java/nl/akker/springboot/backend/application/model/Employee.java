@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -41,12 +42,25 @@ public class Employee {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @OneToMany(mappedBy = "employee", orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    @JoinColumns(name = "role_id", referencedColumnName = "id")
-    private Set<Role> roles;
+    @ManyToMany
+    @JoinTable(name = "employee_role",
+            foreignKey = @ForeignKey(name = "employee_id_FK"),
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseForeignKey = @ForeignKey(name = "role_id_FK"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
+//    @OneToMany(mappedBy = "employee", orphanRemoval = true,
+//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+////    @JoinColumns(name = "role_id", referencedColumnName = "id")
+//    private Set<Role> roles;
 
     public Employee() {
+    }
+
+    public Employee(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
 
     public Employee(String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
@@ -60,7 +74,7 @@ public class Employee {
     }
 
     public Employee(Role role, String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
-        this.roles = (Set<Role>) role;
+        this.roles = (List<Role>) role;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -70,19 +84,19 @@ public class Employee {
         this.modified = modified;
     }
 
-    public void addRole(Role role) {
-        if (!this.roles.contains(role)) {
-            this.roles.add(role);
-            role.setEmployee(this);
-        }
-    }
-
-    public void removeRole(Role role) {
-        if (this.roles.contains(role)) {
-            this.roles.remove(role);
-            role.setEmployee(null);
-        }
-    }
+//    public void addRole(Role role) {
+//        if (!this.roles.contains(role)) {
+//            this.roles.add(role);
+//            role.setEmployee((List<Employee>) this);
+//        }
+//    }
+//
+//    public void removeRole(Role role) {
+//        if (this.roles.contains(role)) {
+//            this.roles.remove(role);
+//            role.setEmployee(null);
+//        }
+//    }
 }
 
 
