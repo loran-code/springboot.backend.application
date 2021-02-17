@@ -20,7 +20,7 @@ public class Car {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "license_plate", nullable = false, columnDefinition = "TEXT", length = 9)
+    @Column(name = "license_plate", nullable = false, columnDefinition = "TEXT", length = 11)
     private String licensePlate;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

@@ -1,6 +1,3 @@
--- DROP TABLE IF EXISTS customer;
--- CREATE TABLE customer(id serial PRIMARY KEY, first_name VARCHAR(50), last_name VARCHAR(50), phone VARCHAR(15), email VARCHAR(50), street VARCHAR(50), city VARCHAR(50), zip VARCHAR(50), created date, modified timestamp);
-
 -- Customer data input
 INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('John', 'Deere', '06-12345678', 'j.deere@mail.com', 'Akkerstraat', 'Pijnacker', '1234AB', NOW()::timestamp::timestamp, NOW()::timestamp::timestamp);
 INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Bruce', 'Wayne', '06-15335679', 'b.wayne@mail.com', 'Vleermuisstraat', 'Steenbergen', '2312BC', NOW()::timestamp::timestamp, NOW()::timestamp::timestamp);
@@ -16,14 +13,29 @@ INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, cr
 INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Harold', 'Wagemakers', 'harold', 'password','offline', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Carolien', 'Muis', 'carolien', 'password','offline', NOW()::timestamp, NOW()::timestamp);
 
+
 -- Role data input
 INSERT INTO role(role_name, employee_id) VALUES (1, 1);
 INSERT INTO role(role_name, employee_id) VALUES (2, 1);
 INSERT INTO role(role_name, employee_id) VALUES (3, 1);
--- INSERT INTO role(id, role_name, employee_id) VALUES ()
--- Vehicle data input
+
+
+-- Car data input
+INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('ZH-343-P', NOW()::timestamp, NOW()::timestamp, 1);
+INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('TL-784-L', NOW()::timestamp, NOW()::timestamp, 1);
+INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('NX-920-R', NOW()::timestamp, NOW()::timestamp, 1);
+INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('ZL-547-J', NOW()::timestamp, NOW()::timestamp, 1);
+INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('SK-147-S', NOW()::timestamp, NOW()::timestamp, 1);
+
+-- Car Components data input
+
+-- Activity data input
 
 -- Inventory data input
+
+-- Invoice data input
+
+
 
 
 
@@ -31,7 +43,7 @@ INSERT INTO role(role_name, employee_id) VALUES (3, 1);
 -- INSERT INTO users (username, password, enabled) VALUES ('admin', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica', TRUE);
 -- INSERT INTO users (username, password, enabled) VALUES ('backoffice', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica', TRUE);
 -- INSERT INTO users (username, password, enabled) VALUES ('frontoffice', '$2a$10$wPHxwfsfTnOJAdgYcerBt.utdAvC24B/DWfuXfzKBSDHO0etB1ica', TRUE);
---
+
 -- INSERT INTO authorities (username, authority) VALUES ('user', 'ROLE_USER');
 -- INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_USER');
 -- INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
