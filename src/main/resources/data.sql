@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS customer;
-CREATE TABLE customer(id serial PRIMARY KEY, first_name VARCHAR(50), last_name VARCHAR(50), phone VARCHAR(15), email VARCHAR(50), street VARCHAR(50), city VARCHAR(50), zip VARCHAR(50), created date, modified timestamp);
+-- DROP TABLE IF EXISTS customer;
+-- CREATE TABLE customer(id serial PRIMARY KEY, first_name VARCHAR(50), last_name VARCHAR(50), phone VARCHAR(15), email VARCHAR(50), street VARCHAR(50), city VARCHAR(50), zip VARCHAR(50), created date, modified timestamp);
 
 -- Customer data input
 INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('John', 'Deere', '06-12345678', 'j.deere@mail.com', 'Akkerstraat', 'Pijnacker', '1234AB', NOW(), clock_timestamp()::timestamp(0));
@@ -8,6 +8,20 @@ INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, cre
 INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Bruce', 'Banner', '06-75231675', 'b.banner@mail.com', 'Groenstraat', 'Groenendaal', '2231CQ', NOW(), clock_timestamp()::timestamp(0));
 INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Tony', 'Stark', '06-23335634', 't.stark@mail.com', 'Ijzerstraat', 'Ijzeren', '3532LR', NOW(), clock_timestamp()::timestamp(0));
 
+
+-- Employee data input
+INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Jan', 'Peters', 'jan', 'password','offline', NOW(), clock_timestamp()::timestamp(0));
+INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Frederik', 'de Vries', 'frederik', 'password','offline', NOW(), clock_timestamp()::timestamp(0));
+INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Guus', 'Janssen', 'guus', 'password','offline', NOW(), clock_timestamp()::timestamp(0));
+INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Harold', 'Wagemakers', 'harold', 'password','offline', NOW(), clock_timestamp()::timestamp(0));
+INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, created, modified) VALUES ('Carolien', 'Muis', 'carolien', 'password','offline', NOW(), clock_timestamp()::timestamp(0));
+
+-- Role data input
+-- INSERT INTO role(name, employee_id) VALUES ('USER', 1);
+
+-- Vehicle data input
+
+-- Inventory data input
 
 
 

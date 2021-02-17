@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Getter
 @Setter
 @Entity(name = "Customer")
@@ -14,8 +16,8 @@ import java.time.LocalDateTime;
 public class Customer {
 
     @Id
-    @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "customer_sequence")
+//    @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 

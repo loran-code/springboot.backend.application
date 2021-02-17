@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Getter
 @Setter
 @Entity(name = "Employee")
@@ -15,13 +18,13 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "employee_sequence")
+//    @SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "employee")
+//    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private List<Role> role;
 
     @Column(name = "first_name", nullable = false)
