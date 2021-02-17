@@ -1,15 +1,13 @@
 package nl.akker.springboot.backend.application.model;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
 @Setter
@@ -18,41 +16,40 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class Employee {
 
     @Id
-//    @SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", allocationSize = 1)
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @OneToMany(mappedBy = "employee")
-//    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private List<Role> role;
-
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
     private String userName;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @Column(name = "login_tatus", nullable = false)
+    @Column(name = "login_tatus", nullable = false, columnDefinition = "TEXT")
     private String loginStatus;
 
-    @Column(name = "created")
-    private LocalDate created;
+    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private LocalDateTime created;
 
-    @Column(name = "modified")
+    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
+
+    @OneToMany(mappedBy = "employee", orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//    @JoinColumns(name = "role_id", referencedColumnName = "id")
+    private Set<Role> roles;
 
     public Employee() {
     }
 
-    public Employee(Role role, String firstName, String lastName, String userName, String password, String loginStatus, LocalDate created, LocalDateTime modified) {
-        this.role = (List<Role>) role;
+    public Employee(String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -62,9 +59,8 @@ public class Employee {
         this.modified = modified;
     }
 
-    public Employee(Long id, Role role, String firstName, String lastName, String userName, String password, String loginStatus, LocalDate created, LocalDateTime modified) {
-        this.id = id;
-        this.role = (List<Role>) role;
+    public Employee(Role role, String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
+        this.roles = (Set<Role>) role;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -72,6 +68,20 @@ public class Employee {
         this.loginStatus = loginStatus;
         this.created = created;
         this.modified = modified;
+    }
+
+    public void addRole(Role role) {
+        if (!this.roles.contains(role)) {
+            this.roles.add(role);
+            role.setEmployee(this);
+        }
+    }
+
+    public void removeRole(Role role) {
+        if (this.roles.contains(role)) {
+            this.roles.remove(role);
+            role.setEmployee(null);
+        }
     }
 }
 

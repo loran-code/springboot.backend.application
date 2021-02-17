@@ -4,8 +4,9 @@ import lombok.Setter;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -16,55 +17,44 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Customer {
 
     @Id
-//    @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", allocationSize = 1)
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT", length = 25)
     String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT", length = 30)
     private String lastName;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone", nullable = false, columnDefinition = "TEXT", length = 20)
     private String phone;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT", length = 75)
     private String email;
 
-    @Column(name = "street")
+    @Column(name = "street", columnDefinition = "TEXT", length = 50)
     private String street;
 
-    @Column(name = "city")
+    @Column(name = "city", columnDefinition = "TEXT", length = 50)
     private String city;
 
-    @Column(name = "zip")
+    @Column(name = "zip", columnDefinition = "TEXT", length = 7)
     private String zip;
 
-    @Column(name = "created")
-    private LocalDate created;
+    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private LocalDateTime created;
 
-    @Column(name = "modified")
+    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
+
+    @OneToMany
+    private List<Car> car = new ArrayList<>();
 
     public Customer() {
     }
 
-    public Customer(Long id, String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDate created, LocalDateTime modified) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-        this.created = created;
-        this.modified = modified;
-    }
-
-    public Customer(String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDate created, LocalDateTime modified) {
+    public Customer(String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDateTime created, LocalDateTime modified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
