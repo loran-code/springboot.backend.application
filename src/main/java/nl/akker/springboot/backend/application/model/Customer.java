@@ -4,6 +4,8 @@ import lombok.Setter;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +24,20 @@ public class Customer {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @NotBlank(message = "firstname must not be empty")
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT", length = 25)
     String firstName;
 
+    @NotBlank(message = "lastname must not be empty")
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT", length = 30)
     private String lastName;
 
+//    @NotBlank(message = "phone number must not be empty")
     @Column(name = "phone", nullable = false, columnDefinition = "TEXT", length = 20)
     private String phone;
 
+    @NotBlank(message = "email must not be empty")
+    @Email(message = "invalid email format")
     @Column(name = "email", nullable = false, columnDefinition = "TEXT", length = 75)
     private String email;
 

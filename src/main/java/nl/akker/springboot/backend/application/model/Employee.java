@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -29,9 +31,15 @@ public class Employee {
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
+    @Email
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    private String email;
+
+    @NotBlank
     @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
     private String userName;
 
+    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;

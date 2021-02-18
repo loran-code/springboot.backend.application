@@ -1,10 +1,10 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.exceptions.RecordNotFoundException;
-import nl.akker.springboot.backend.application.exceptions.UserNotFoundException;
+import nl.akker.springboot.backend.application.exceptions.*;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -27,13 +27,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(Long id) {
-//        if (!customerRepository.existsById(id)) { throw new RecordNotFoundException(); }
         return getCustomers()
                 .stream()
                 .filter(customer -> customer.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("customer not found"));
-//                customerRepository.findById(id).orElse(null);
+                .orElseThrow(() -> new NotFoundException("customer with id " + id + " not found"));
     }
 
     @Override
@@ -48,10 +46,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException("Customer with " + id + " has not been found thus can not be updated");
         }
-//        TODO add message in body. PUT request has been executed successfully.
-//        TODO less code to be used to add all the parameters
+        // TODO add exception errors when the firstname, lastname, phone, or email have not been specified.
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         updateCustomer.setFirstName(customer.getFirstName());
         updateCustomer.setLastName(customer.getLastName());
@@ -61,25 +58,20 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setZip(customer.getZip());
         updateCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(updateCustomer);
+        //        TODO add message in body. PUT request has been executed successfully.
     }
 
     @Override
     public void partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
-            throw new UserNotFoundException();
+            throw new ApiRequestException("Wrong details have been given", HttpStatus.BAD_REQUEST);
         }
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         for (String field : fields.keySet()) {
             switch (field) {
-                case "firstName":
-                    updateCustomer.setFirstName(fields.get(field));
-                    break;
-                case "lastName":
-                    updateCustomer.setLastName(fields.get(field));
-                    break;
-                case "phone":
-                    updateCustomer.setPhone(fields.get(field));
-                    break;
+                case "firstName" -> updateCustomer.setFirstName(fields.get(field));
+                case "lastName" -> updateCustomer.setLastName(fields.get(field));
+                case "phone" -> updateCustomer.setPhone(fields.get(field));
             }
         }
         customerRepository.save(updateCustomer);
@@ -88,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new UserNotFoundException();
+            throw new ApiRequestException("The specified id " + id + " has not been found", HttpStatus.BAD_REQUEST);
         }
         customerRepository.deleteById(id);
     }

@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.controller;
 
+import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
