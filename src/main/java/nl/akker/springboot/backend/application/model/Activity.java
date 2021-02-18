@@ -26,8 +26,8 @@ public class Activity {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "time_in_minutes", nullable = false)
-    private int timeInMinutes;
+//    @Column(name = "time_in_minutes", nullable = false)
+//    private int timeInMinutes;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
@@ -38,10 +38,9 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(String description, double price, int timeInMinutes, LocalDateTime created, LocalDateTime modified) {
+    public Activity(String description, double price, LocalDateTime created, LocalDateTime modified) {
         this.description = description;
         this.price = price;
-        this.timeInMinutes = timeInMinutes;
         this.created = created;
         this.modified = modified;
     }

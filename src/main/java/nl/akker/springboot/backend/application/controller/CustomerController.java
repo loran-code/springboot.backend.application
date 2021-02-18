@@ -21,7 +21,6 @@ public class CustomerController {
 
     @GetMapping(path = "all")
     public Collection<Customer> getCustomers() {
-        System.out.println("GET REQUEST...");
         return customerService.getCustomers();
     }
 
@@ -38,21 +37,16 @@ public class CustomerController {
     @PostMapping
     public void registerNewCustomer(@RequestBody Customer customer) {
         customerService.createCustomer(customer);
-        System.out.println("POST REQUEST...");
-        System.out.println(customer);
     }
 
     @PutMapping(path = "{id}")
     public ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody Customer customer){
         customerService.updateCustomer(id, customer);
-        System.out.println("PUT REQUEST...");
-        System.out.println(customer);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(path = "{id}")
     public void deleteCustomer(@PathVariable("id") Long id) {
-        System.out.println("DELETE REQUEST FOR CUSTOMER WITH ID " + id);
         customerService.deleteCustomer(id);
     }
 }

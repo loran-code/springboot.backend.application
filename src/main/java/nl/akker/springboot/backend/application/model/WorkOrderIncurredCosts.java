@@ -21,17 +21,20 @@ public class WorkOrderIncurredCosts {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "row_number", nullable = false)
+    private int rowNumber;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "workorder_id", referencedColumnName = "id")
     private WorkOrder workorder;
 
     @ManyToMany

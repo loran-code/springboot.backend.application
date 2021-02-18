@@ -22,7 +22,7 @@ public class WorkOrder {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "work_order_number", updatable = false)
+    @Column(name = "work_order_number", nullable = false, updatable = false)
     private Long workOrderNumber;
 
     @Column(name = "invoice_number", updatable = false)

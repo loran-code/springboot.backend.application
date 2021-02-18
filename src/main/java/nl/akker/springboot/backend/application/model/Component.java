@@ -20,6 +20,9 @@ public class Component {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "component_number", nullable = false)
+    String componentNumber;
+
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
 
@@ -35,15 +38,9 @@ public class Component {
     public Component() {
     }
 
-    public Component(String description, double price) {
+    public Component(String componentNumber, String description, double price) {
+        this.componentNumber = componentNumber;
         this.description = description;
         this.price = price;
-    }
-
-    public Component(String description, double price, LocalDateTime created, LocalDateTime modified) {
-        this.description = description;
-        this.price = price;
-        this.created = created;
-        this.modified = modified;
     }
 }
