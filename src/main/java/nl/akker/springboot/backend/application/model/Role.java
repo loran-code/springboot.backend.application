@@ -32,6 +32,10 @@ public class Role {
     public Role() {
     }
 
+    public Role(ERole eRole) {
+        this.eRole = eRole;
+    }
+
     public Role(ERole eRole, List<Employee> employee) {
         this.eRole = eRole;
         this.employee = employee;

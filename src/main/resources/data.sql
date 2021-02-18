@@ -18,6 +18,7 @@ INSERT INTO employee(first_name, last_name, user_name, password, login_tatus, cr
 INSERT INTO role(role_name) VALUES (1);
 INSERT INTO role(role_name) VALUES (2);
 INSERT INTO role(role_name) VALUES (3);
+INSERT INTO role(role_name) VALUES (4);
 
 
 -- Car data input
@@ -27,11 +28,15 @@ INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('NX-920-R
 INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('ZL-547-J', NOW()::timestamp, NOW()::timestamp, 1);
 INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('SK-147-S', NOW()::timestamp, NOW()::timestamp, 1);
 
+
 -- Car Components data input
+
 
 -- Activity (labor) data input
 
+
 -- Inventory data input
+
 
 -- Invoice data input
 

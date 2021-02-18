@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -48,4 +49,7 @@ public class WorkOrder {
     @ManyToOne
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
+
+    @OneToMany
+    private List<WorkOrderIncurredCosts> workOrderIncurredCosts;
 }

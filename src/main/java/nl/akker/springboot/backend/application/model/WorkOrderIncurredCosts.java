@@ -27,6 +27,9 @@ public class WorkOrderIncurredCosts {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
     @OneToOne
     @JoinColumn
     private WorkOrder workorder;

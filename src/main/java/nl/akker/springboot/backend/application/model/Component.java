@@ -26,9 +26,6 @@ public class Component {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
 
@@ -38,16 +35,14 @@ public class Component {
     public Component() {
     }
 
-    public Component(String description, double price, int quantity) {
+    public Component(String description, double price) {
         this.description = description;
         this.price = price;
-        this.quantity = quantity;
     }
 
-    public Component(String description, double price, int quantity, LocalDateTime created, LocalDateTime modified) {
+    public Component(String description, double price, LocalDateTime created, LocalDateTime modified) {
         this.description = description;
         this.price = price;
-        this.quantity = quantity;
         this.created = created;
         this.modified = modified;
     }

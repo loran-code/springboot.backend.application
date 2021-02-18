@@ -1,5 +1,7 @@
 package nl.akker.springboot.backend.application.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,7 @@ public class Employee {
     @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
     private String userName;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
@@ -49,6 +52,8 @@ public class Employee {
             inverseForeignKey = @ForeignKey(name = "role_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
+
 
 //    @OneToMany(mappedBy = "employee", orphanRemoval = true,
 //            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -84,7 +89,12 @@ public class Employee {
         this.modified = modified;
     }
 
-//    public void addRole(Role role) {
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    //    public void addRole(Role role) {
 //        if (!this.roles.contains(role)) {
 //            this.roles.add(role);
 //            role.setEmployee((List<Employee>) this);

@@ -1,11 +1,11 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.Customer;
-import nl.akker.springboot.backend.application.model.Employee;
-import nl.akker.springboot.backend.application.model.Role;
+import nl.akker.springboot.backend.application.model.*;
+import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import nl.akker.springboot.backend.application.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.EntityManagerBeanDefinitionRegistrarPostProcessor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,8 +14,10 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    @Autowired
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
+
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
@@ -58,17 +60,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return false;
     }
 
-//    public void addRole(Role role) {
-//        if (!this.roles.contains(role)) {
-//            this.roles.add(role);
-//            role.setEmployee(this);
-//        }
-//    }
-//
-//    public void removeRole(Role role) {
-//        if (this.roles.contains(role)) {
-//            this.roles.remove(role);
-//            role.setEmployee(null);
-//        }
-//    }
+    public void test(){
+        Employee empl = GetEmployee();
+
+    }
+
+    public Employee GetEmployee(){
+        Employee guyon = new Employee();
+        employeeRepository.save(guyon);
+        return guyon;
+    }
 }
+

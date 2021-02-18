@@ -3,21 +3,15 @@ package nl.akker.springboot.backend.application.service;
 import nl.akker.springboot.backend.application.model.Customer;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Map;
 
 public interface CustomerService {
 
-    long createCustomer(Customer customer);
-
-    void updateCustomer(long id, Customer customer) throws Exception;
-
-    void deleteCustomer(long id);
-
     Collection<Customer> getCustomers();
-
-    Collection<Customer> getCustomersByLastName(String name);
-
-    Optional<Customer> getCustomerById(long id) throws Exception;
-
-    boolean customerExistsById(long id);
+    Customer getCustomerById(Long id);
+    long createCustomer(Customer customer);
+    void updateCustomer(Long id, Customer customer);
+    void partialUpdateCustomer(Long id, Map<String, String> fields);
+    void deleteCustomer(Long id);
+    Collection<Customer> getCustomersByLastName(String lastName);
 }
