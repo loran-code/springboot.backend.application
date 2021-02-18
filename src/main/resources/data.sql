@@ -30,10 +30,26 @@ INSERT INTO car(license_plate, created, modified, customer_id) VALUES ('SK-147-S
 
 
 -- Car Components data input
+INSERT INTO component(component_number, description, price, created, modified) VALUES (1, 'Tiers', 50, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO component(component_number, description, price, created, modified) VALUES (2, 'Battery', 100, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO component(component_number, description, price, created, modified) VALUES (3, 'Oil Filter', 25, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO component(component_number, description, price, created, modified) VALUES (4, 'Fuel Pump', 75, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO component(component_number, description, price, created, modified) VALUES (5, 'Break Pads', 40, NOW()::timestamp, NOW()::timestamp);
 
 
--- Activity (labor) data input
+-- Activity data input
+INSERT INTO activity(description, price, created, modified) VALUES ('Car Inspection', 50, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO activity(description, price, created, modified) VALUES ('Tier change', 40, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO activity(description, price, created, modified) VALUES ('Battery change', 20, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO activity(description, price, created, modified) VALUES ('Oil Filter change', 25, NOW()::timestamp, NOW()::timestamp);
+INSERT INTO activity(description, price, created, modified) VALUES ('Fuel Pump change', 50, NOW()::timestamp, NOW()::timestamp);
 
+
+-- Work order data input
+-- INSERT INTO workorder(customer_has_agreed, created, inspection_date, invoice_number, modified, repair_date, status, work_order_number, car_id) VALUES ()
+
+-- work order incurred costs data input
+-- INSERT into work_order_incurred_costs(created, modified, quantity, row_number, workorder_id) VALUES ()
 
 -- Inventory data input
 
