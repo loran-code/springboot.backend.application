@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.controller;
 
+import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.model.Employee;
 import nl.akker.springboot.backend.application.service.EmployeeService;
@@ -10,14 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(path = "api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
-
-    @Autowired
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
 
     @GetMapping
     public Collection<Employee> getEmployees() {
