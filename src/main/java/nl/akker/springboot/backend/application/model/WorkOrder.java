@@ -1,9 +1,9 @@
 package nl.akker.springboot.backend.application.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,6 +13,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "WorkOrder")
 @Table(name = "workorder")
 public class WorkOrder {
@@ -22,12 +25,15 @@ public class WorkOrder {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @NotBlank(message = "work order number must not be empty")
     @Column(name = "work_order_number", nullable = false, updatable = false)
     private Long workOrderNumber;
 
+    @NotBlank(message = "invoice number must not be empty")
     @Column(name = "invoice_number", updatable = false)
     private Long invoiceNumber;
 
+    @NotBlank(message = "inspection date must not be empty")
     @Column(name = "inspection_date", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Date inspectionDate;
 

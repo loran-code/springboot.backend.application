@@ -2,20 +2,21 @@ package nl.akker.springboot.backend.application.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Employee")
 @Table(name = "employee")
 public class Employee {
@@ -25,21 +26,24 @@ public class Employee {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @NotBlank(message = "firstname must not be empty")
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     String firstName;
 
+    @NotBlank(message = "lastname must not be empty")
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
     @Email
+    @NotBlank(message = "email must not be empty")
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "email must not be empty")
     @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
     private String userName;
 
-    @NotBlank
+    @NotBlank(message = "password must not be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
@@ -61,60 +65,18 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
-
-
-//    @OneToMany(mappedBy = "employee", orphanRemoval = true,
-//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-////    @JoinColumns(name = "role_id", referencedColumnName = "id")
-//    private Set<Role> roles;
-
-    public Employee() {
-    }
-
-    public Employee(String userName, String password) {
+//    TODO is this constructor needed?
+    public Employee(String email, String userName, String password) {
+        this.email = email;
         this.userName = userName;
         this.password = password;
     }
 
-    public Employee(String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.loginStatus = loginStatus;
-        this.created = created;
-        this.modified = modified;
-    }
-
-    public Employee(Role role, String firstName, String lastName, String userName, String password, String loginStatus, LocalDateTime created, LocalDateTime modified) {
-        this.roles = (List<Role>) role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.loginStatus = loginStatus;
-        this.created = created;
-        this.modified = modified;
-    }
-
+//    TODO test with postman if the password does not get returned in a GET request.
     @JsonIgnore
     public String getPassword() {
         return password;
     }
-
-    //    public void addRole(Role role) {
-//        if (!this.roles.contains(role)) {
-//            this.roles.add(role);
-//            role.setEmployee((List<Employee>) this);
-//        }
-//    }
-//
-//    public void removeRole(Role role) {
-//        if (this.roles.contains(role)) {
-//            this.roles.remove(role);
-//            role.setEmployee(null);
-//        }
-//    }
 }
 
 

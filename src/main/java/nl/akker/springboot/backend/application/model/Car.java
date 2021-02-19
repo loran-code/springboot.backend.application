@@ -1,9 +1,9 @@
 package nl.akker.springboot.backend.application.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Car")
 @Table(name = "car")
 public class Car {
@@ -20,6 +23,7 @@ public class Car {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @NotBlank(message = "license plate must not be empty")
     @Column(name = "license_plate", nullable = false, columnDefinition = "TEXT", length = 11)
     private String licensePlate;
 
@@ -37,13 +41,6 @@ public class Car {
             foreignKey = @ForeignKey(name = "customer_id_car_id_FK"))
     private Customer customer;
 
-    public Car() {
-    }
 
-    public Car(String licensePlate, LocalDateTime created, LocalDateTime modified, Customer customer) {
-        this.licensePlate = licensePlate;
-        this.created = created;
-        this.modified = modified;
-        this.customer = customer;
-    }
+
 }

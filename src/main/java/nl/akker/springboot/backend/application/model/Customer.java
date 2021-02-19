@@ -1,7 +1,9 @@
 package nl.akker.springboot.backend.application.model;
 
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -9,12 +11,13 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
 @Entity(name = "Customer")
 @Table(name = "customer")
 public class Customer {
@@ -32,7 +35,7 @@ public class Customer {
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT", length = 30)
     private String lastName;
 
-//    @NotBlank(message = "phone number must not be empty")
+    @NotBlank(message = "phone number must not be empty")
     @Column(name = "phone", nullable = false, columnDefinition = "TEXT", length = 20)
     private String phone;
 
@@ -60,10 +63,9 @@ public class Customer {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();
 
-    public Customer() {
-    }
 
-    public Customer(String firstName, String lastName, String phone, String email, String street, String city, String zip, LocalDateTime created, LocalDateTime modified) {
+    public Customer(Long id, String firstName, String lastName, String phone, String email, String street, String city, String zip) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -71,8 +73,6 @@ public class Customer {
         this.street = street;
         this.city = city;
         this.zip = zip;
-        this.created = created;
-        this.modified = modified;
     }
 }
 

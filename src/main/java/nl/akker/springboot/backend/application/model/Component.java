@@ -1,9 +1,9 @@
 package nl.akker.springboot.backend.application.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Component")
 @Table(name = "component")
 public class Component {
@@ -20,12 +23,15 @@ public class Component {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "component_number", nullable = false)
+    @NotBlank(message = "component number must not be empty")
+    @Column(name = "component_number", nullable = false, columnDefinition = "INT")
     String componentNumber;
 
+    @NotBlank(message = "description must not be empty")
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
 
+    @NotBlank(message = "price must not be empty")
     @Column(name = "price", nullable = false)
     private double price;
 
@@ -34,9 +40,6 @@ public class Component {
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
-
-    public Component() {
-    }
 
     public Component(String componentNumber, String description, double price) {
         this.componentNumber = componentNumber;

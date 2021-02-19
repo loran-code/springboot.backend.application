@@ -1,29 +1,20 @@
 package nl.akker.springboot.backend.application.service;
 
+import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.*;
-import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import nl.akker.springboot.backend.application.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.EntityManagerBeanDefinitionRegistrarPostProcessor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
-
-
-    @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
-        this.employeeRepository = employeeRepository;
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public long createEmployee(Customer customer) {
@@ -60,15 +51,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         return false;
     }
 
-    public void test(){
-        Employee empl = GetEmployee();
-
-    }
-
-    public Employee GetEmployee(){
-        Employee guyon = new Employee();
-        employeeRepository.save(guyon);
-        return guyon;
-    }
 }
 

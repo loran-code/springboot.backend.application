@@ -1,11 +1,21 @@
 package nl.akker.springboot.backend.application.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Role")
 @Table(name = "role")
 public class Role {
@@ -19,55 +29,12 @@ public class Role {
     @Column(name = "role_name", nullable = false)
     private ERole eRole;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "employee_id",
-//            nullable = false,
-//            referencedColumnName = "id",
-//            foreignKey = @ForeignKey(name = "employee_id_role_id_FK"))
-//    private Employee employee;
-
     @ManyToMany(mappedBy = "roles")
     private List<Employee> employee;
 
-    public Role() {
-    }
-
-    public Role(ERole eRole) {
-        this.eRole = eRole;
-    }
-
-    public Role(ERole eRole, List<Employee> employee) {
-        this.eRole = eRole;
-        this.employee = employee;
-    }
-
-    public Role(Long id, ERole eRole, List<Employee> employee) {
-        this.id = id;
-        this.eRole = eRole;
-        this.employee = employee;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    //    TODO test with postman if the role does not get returned in a GET request.
+    @JsonIgnore
     public ERole geteRole() {
         return eRole;
-    }
-
-    public void seteRole(ERole eRole) {
-        this.eRole = eRole;
-    }
-
-    public List<Employee> getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(List<Employee> employee) {
-        this.employee = employee;
     }
 }

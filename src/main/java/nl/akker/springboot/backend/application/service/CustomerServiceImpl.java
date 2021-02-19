@@ -1,9 +1,9 @@
 package nl.akker.springboot.backend.application.service;
 
+import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.*;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,10 @@ import java.util.Collection;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
 
     @Override
     public Collection<Customer> getCustomers() {
@@ -27,10 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(Long id) {
-        return getCustomers()
-                .stream()
-                .filter(customer -> customer.getId().equals(id))
-                .findFirst()
+        return customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("customer with id " + id + " not found"));
     }
 
