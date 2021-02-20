@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +34,7 @@ public class Car {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-
+    @JsonBackReference(value = "customer-car")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id",
             nullable = false,

@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +31,36 @@ public class Customer {
     private Long id;
 
     @NotBlank(message = "firstname must not be empty")
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT", length = 25)
+    @Size(min = 1, max = 60, message = "Size must between 1 and 60 characters long")
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     String firstName;
 
     @NotBlank(message = "lastname must not be empty")
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT", length = 30)
+    @Size(min = 1, max = 60, message = "Size must between 1 and 60 characters long")
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
     @NotBlank(message = "phone number must not be empty")
-    @Column(name = "phone", nullable = false, columnDefinition = "TEXT", length = 20)
+    @Size(min = 10, max = 20, message = "Size must between 10 and 20 characters long")
+    @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
     private String phone;
 
+    @Size(min = 6, max = 60, message = "Size must between 6 and 60 characters long")
     @NotBlank(message = "email must not be empty")
     @Email(message = "invalid email format")
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT", length = 75)
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @Column(name = "street", columnDefinition = "TEXT", length = 50)
+    @Size(max = 60)
+    @Column(name = "street", columnDefinition = "TEXT")
     private String street;
 
-    @Column(name = "city", columnDefinition = "TEXT", length = 50)
+    @Size(max = 60)
+    @Column(name = "city", columnDefinition = "TEXT")
     private String city;
 
-    @Column(name = "zip", columnDefinition = "TEXT", length = 7)
+    @Size(max = 7)
+    @Column(name = "zip", columnDefinition = "TEXT")
     private String zip;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -59,6 +69,7 @@ public class Customer {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
+    @JsonBackReference(value = "customer-car")
     @OneToMany(mappedBy = "customer", orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();

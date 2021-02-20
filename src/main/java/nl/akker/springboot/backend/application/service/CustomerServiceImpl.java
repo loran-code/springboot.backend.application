@@ -1,10 +1,10 @@
 package nl.akker.springboot.backend.application.service;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.exceptions.*;
+import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
+import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -28,6 +28,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Collection<Customer> getCustomersByLastName(String lastName) {
+        if (!customerRepository.existsByLastName(lastName)) {
+            throw new NotFoundException("The specified last name " + lastName + " has not been found");
+        }
+        return customerRepository.findAllByLastName(lastName);
+    }
+
+
+    @Override
     public long createCustomer(Customer customer) {
         Customer createCustomer = customerRepository.save(customer);
         createCustomer.setCreated(java.time.LocalDateTime.now());
@@ -39,9 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
-            throw new NotFoundException("Customer with " + id + " has not been found thus can not be updated");
+            throw new ApiRequestException("Customer with " + id + " has not been found thus can not be updated");
         }
-        // TODO add exception errors when the firstname, lastname, phone, or email have not been specified.
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         updateCustomer.setFirstName(customer.getFirstName());
         updateCustomer.setLastName(customer.getLastName());
@@ -51,13 +59,12 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setZip(customer.getZip());
         updateCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(updateCustomer);
-        //        TODO add message in body. PUT request has been executed successfully.
     }
 
     @Override
     public void partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
-            throw new ApiRequestException("Wrong details have been given", HttpStatus.BAD_REQUEST);
+            throw new ApiRequestException("Customer with id " + id + " has not been found");
         }
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         for (String field : fields.keySet()) {
@@ -65,6 +72,10 @@ public class CustomerServiceImpl implements CustomerService {
                 case "firstName" -> updateCustomer.setFirstName(fields.get(field));
                 case "lastName" -> updateCustomer.setLastName(fields.get(field));
                 case "phone" -> updateCustomer.setPhone(fields.get(field));
+                case "email" -> updateCustomer.setEmail(fields.get(field));
+                case "street" -> updateCustomer.setStreet(fields.get(field));
+                case "city" -> updateCustomer.setCity(fields.get(field));
+                case "zip" -> updateCustomer.setZip(fields.get(field));
             }
         }
         customerRepository.save(updateCustomer);
@@ -73,13 +84,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new ApiRequestException("The specified id " + id + " has not been found", HttpStatus.BAD_REQUEST);
+            throw new ApiRequestException("The specified id " + id + " has not been found");
         }
         customerRepository.deleteById(id);
     }
 
-    @Override
-    public Collection<Customer> getCustomersByLastName(String lastName) {
-        return customerRepository.findAllByLastName(lastName);
-    }
 }

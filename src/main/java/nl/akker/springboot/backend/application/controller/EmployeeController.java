@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.model.Employee;
 import nl.akker.springboot.backend.application.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

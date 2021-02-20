@@ -10,4 +10,5 @@ import java.util.Collection;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Collection<Customer> findAllByLastName(String lastName);
+    boolean existsByLastName(String lastName);
 }
