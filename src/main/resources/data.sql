@@ -15,10 +15,21 @@ INSERT INTO employee(first_name, last_name, email, user_name, password, login_ta
 
 
 -- Role data input
-INSERT INTO role(role_name) VALUES (1);
-INSERT INTO role(role_name) VALUES (2);
-INSERT INTO role(role_name) VALUES (3);
-INSERT INTO role(role_name) VALUES (4);
+INSERT INTO role(role_description) VALUES ('ROLE_USER');
+INSERT INTO role(role_description) VALUES ('ROLE_ADMIN');
+INSERT INTO role(role_description) VALUES ('ROLE_MECHANIC');
+INSERT INTO role(role_description) VALUES ('ROLE_FRONTOFFICE');
+INSERT INTO role(role_description) VALUES ('ROLE_BACKOFFICE');
+
+
+-- Workorder status input
+CREATE TABLE status (status_description VARCHAR(50));
+INSERT INTO status (status_description) VALUES ('APPOINTMENT_FOR_INSPECTION');
+INSERT INTO status (status_description) VALUES ('INSPECTION');
+INSERT INTO status (status_description) VALUES ('CUSTOMER_DECLINED');
+INSERT INTO status (status_description) VALUES ('IN_REPAIR');
+INSERT INTO status (status_description) VALUES ('INVOICED');
+INSERT INTO status (status_description) VALUES ('PAID');
 
 
 -- Car data input

@@ -6,6 +6,7 @@ import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,7 +48,13 @@ public class CustomerController {
     @PutMapping(path = "{id}")
     public ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Customer customer) {
         customerService.updateCustomer(id, customer);
-        return ResponseEntity.ok().body("The customer details have been updated " + customer);
+        return ResponseEntity.ok().body("The customer details have been updated: " + customer);
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Object> partiallyUpdateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
+        customerService.partialUpdateCustomer(id, fields);
+        return ResponseEntity.ok().body("The specified customer details have been updated " + fields);
     }
 
     @DeleteMapping(path = "{id}")
@@ -56,6 +64,7 @@ public class CustomerController {
     }
 
 //    TODO set this a global variable project wide?
+//    https://www.baeldung.com/exception-handling-for-rest-with-spring
     //  code snippet taken from https://dimitr.im/validating-the-input-of-your-rest-api-with-spring
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

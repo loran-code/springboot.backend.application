@@ -26,15 +26,12 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_name", nullable = false)
-    private ERole eRole;
-
-    @ManyToMany(mappedBy = "roles")
-    private List<Employee> employee;
+    @Column(name = "role_description", nullable = false)
+    private ERole roleDescription;
 
     //    TODO test with postman if the role does not get returned in a GET request.
     @JsonIgnore
     public ERole geteRole() {
-        return eRole;
+        return roleDescription;
     }
 }
