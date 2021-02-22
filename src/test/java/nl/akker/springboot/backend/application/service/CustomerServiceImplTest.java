@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.service;
 
+import nl.akker.springboot.backend.application.model.Car;
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -8,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +22,7 @@ class CustomerServiceImplTest {
     @Autowired
     private CustomerRepository customerRepository;
     private CustomerServiceImpl underTest;
+    private java.util.List<Car> List;
 
     @BeforeEach
     void setUp() {
@@ -36,10 +40,10 @@ class CustomerServiceImplTest {
         // Given
         Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ");
-        Customer customer2 = new Customer(2L,"Karien", "Staal", "06-23586720",
+                "Dokkum", "3029CJ", LocalDateTime.now(), LocalDateTime.now(), List);
+        Customer customer2 = new Customer(2L, "Karien", "Staal", "06-23586720",
                 "staal@mail.com", "staalstraat",
-                "Duiven", "9853KR");
+                "Duiven", "9853KR", LocalDateTime.now(), LocalDateTime.now(), List);
 
         customerRepository.saveAll(Arrays.asList(customer1, customer2));
 
@@ -54,8 +58,8 @@ class CustomerServiceImplTest {
     void getCustomerById() {
         //given
         Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
-                "goossens@mail.com", "Loopstraat",
-                "Dokkum", "3029CJ");
+                "goossens@mail.com", "loopstraat",
+                "Dokkum", "3029CJ", LocalDateTime.now(), LocalDateTime.now(), List);
 
         customerRepository.save(customer1);
 

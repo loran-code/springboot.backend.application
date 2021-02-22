@@ -35,7 +35,7 @@ public class Car {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @JsonBackReference(value = "customer-car")
+    @JsonBackReference(value = "customer-car") // To avoid Infinite recursion (StackOverflowError) when the API GET method is being requested
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "car_customer",
             foreignKey = @ForeignKey(name = "car_id_FK"),

@@ -34,6 +34,7 @@ INSERT INTO role(role_description) VALUES ('ROLE_BACKOFFICE');
 
 -- Car data input
 INSERT INTO car(license_plate, created, modified) VALUES ('ZH-343-P', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO car(license_plate, created, modified) VALUES ('FB-354-R', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO car(license_plate, created, modified) VALUES ('TL-784-L', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO car(license_plate, created, modified) VALUES ('NX-920-R', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO car(license_plate, created, modified) VALUES ('ZL-547-J', NOW()::timestamp, NOW()::timestamp);
@@ -58,10 +59,11 @@ INSERT INTO component(component_number, description, price, created, modified) V
 
 -- Joined table car customer
 INSERT INTO car_customer(customer_id,car_id) VALUES (1,1);
-INSERT INTO car_customer(customer_id,car_id) VALUES (2,2);
-INSERT INTO car_customer(customer_id,car_id) VALUES (3,3);
-INSERT INTO car_customer(customer_id,car_id) VALUES (4,4);
-INSERT INTO car_customer(customer_id,car_id) VALUES (5,5);
+INSERT INTO car_customer(customer_id,car_id) VALUES (1,2);
+INSERT INTO car_customer(customer_id,car_id) VALUES (2,3);
+INSERT INTO car_customer(customer_id,car_id) VALUES (3,4);
+INSERT INTO car_customer(customer_id,car_id) VALUES (4,5);
+INSERT INTO car_customer(customer_id,car_id) VALUES (5,6);
 
 
 -- Work order data input

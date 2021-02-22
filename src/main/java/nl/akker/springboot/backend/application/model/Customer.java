@@ -1,15 +1,10 @@
 package nl.akker.springboot.backend.application.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Customer")
 @Table(name = "customer")
 public class Customer {
@@ -31,12 +27,12 @@ public class Customer {
     private Long id;
 
     @NotBlank(message = "firstname must not be empty")
-    @Size(min = 1, max = 60, message = "Size must between 1 and 60 characters long")
+    @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     String firstName;
 
     @NotBlank(message = "lastname must not be empty")
-    @Size(min = 1, max = 60, message = "Size must between 1 and 60 characters long")
+    @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
@@ -69,21 +65,12 @@ public class Customer {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @JsonBackReference(value = "customer-car")
     @OneToMany(mappedBy = "customer",  orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();
 
-
-    public Customer(Long id, String firstName, String lastName, String phone, String email, String street, String city, String zip) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
+    public Customer(List<Car> car) {
+        this.car = car;
     }
 }
 
