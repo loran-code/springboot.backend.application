@@ -2,11 +2,12 @@ package nl.akker.springboot.backend.application.service;
 
 import nl.akker.springboot.backend.application.model.Customer;
 import nl.akker.springboot.backend.application.model.Employee;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public interface EmployeeService {
+public interface EmployeeService extends UserDetails {
 
     long createEmployee(Customer customer);
 

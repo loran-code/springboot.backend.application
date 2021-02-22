@@ -7,11 +7,11 @@ INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, cre
 
 
 -- Employee data input
-INSERT INTO employee(first_name, last_name, email, user_name, password, login_tatus, created, modified) VALUES ('Jan', 'Peters', 'j.p@garage.com','jan', 'password','offline', NOW()::timestamp, NOW()::timestamp);
-INSERT INTO employee(first_name, last_name, email, user_name, password, login_tatus, created, modified) VALUES ('Frederik', 'de Vries', 'f.v@garage.com','frederik', 'password','offline', NOW()::timestamp, NOW()::timestamp);
-INSERT INTO employee(first_name, last_name, email, user_name, password, login_tatus, created, modified) VALUES ('Guus', 'Janssen', 'g.j.@garage.com','guus', 'password','offline', NOW()::timestamp, NOW()::timestamp);
-INSERT INTO employee(first_name, last_name, email, user_name, password, login_tatus, created, modified) VALUES ('Harold', 'Wagemakers', 'h.w@garage.com','harold', 'password','offline', NOW()::timestamp, NOW()::timestamp);
-INSERT INTO employee(first_name, last_name, email, user_name, password, login_tatus, created, modified) VALUES ('Carolien', 'Muis', 'c.m@garage.com','carolien', 'password','offline', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'j.p@garage.com','jan', 'password', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'f.v@garage.com','frederik', 'password', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'g.j.@garage.com','guus', 'password', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'h.w@garage.com','harold', 'password', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO employee(email, user_name, password, created, modified) VALUES ('c.m@garage.com','carolien', 'password', NOW()::timestamp, NOW()::timestamp);
 
 
 -- Role data input

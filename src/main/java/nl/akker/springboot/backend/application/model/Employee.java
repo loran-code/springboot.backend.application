@@ -25,20 +25,12 @@ public class Employee {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NotBlank(message = "firstname must not be empty")
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
-    String firstName;
-
-    @NotBlank(message = "lastname must not be empty")
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
-    private String lastName;
-
     @Email
     @NotBlank(message = "email must not be empty")
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @NotBlank(message = "email must not be empty")
+    @NotBlank(message = "username must not be empty")
     @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
     private String userName;
 
@@ -46,9 +38,6 @@ public class Employee {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-
-    @Column(name = "login_tatus", nullable = false, columnDefinition = "TEXT")
-    private String loginStatus;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
@@ -62,7 +51,13 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseForeignKey = @ForeignKey(name = "role_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "roles", nullable = false, columnDefinition = "TEXT")
     private Set<Role> roles;
 
+    public Employee(String userName, String email, String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
 }
 

@@ -7,29 +7,28 @@ import java.util.Set;
 
 public class SignupRequest {
 
-    @NotBlank
+    @NotBlank(message = "username must not be empty")
     @Size(min = 3, max = 20)
-    private String username;
+    private String userName;
 
-    @NotBlank
+    @NotBlank(message = "email must not be empty")
     @Size(min = 6, max = 50)
     @Email
     private String email;
 
-    private Set<String> role;
-
-    @NotBlank
+    @NotBlank(message = "password must not be empty")
     @Size(min = 6, max = 40)
     private String password;
 
-    public String getUsername() {
-        return username;
+    private Set<String> role;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String username) {
+        this.userName = userName;
     }
-
     public String getEmail() {
         return email;
     }
