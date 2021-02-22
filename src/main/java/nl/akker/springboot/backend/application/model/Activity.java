@@ -23,6 +23,10 @@ public class Activity {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @NotBlank(message = "activity number must not be empty")
+    @Column(name = "activity_number", nullable = false, columnDefinition = "INT")
+    String activityNumber;
+
     @NotBlank(message = "description must not be empty")
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
@@ -30,9 +34,6 @@ public class Activity {
     @NotBlank(message = "price must not be empty")
     @Column(name = "price", nullable = false)
     private double price;
-
-//    @Column(name = "time_in_minutes", nullable = false)
-//    private int timeInMinutes;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;

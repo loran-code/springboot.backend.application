@@ -1,5 +1,6 @@
 package nl.akker.springboot.backend.application.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,22 +30,22 @@ public class WorkOrder {
     @Column(name = "work_order_number", nullable = false, updatable = false)
     private Long workOrderNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "car_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "car_id_FK"))
+    private Car car;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EWorkOrderStatus status;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy hh:mm")
+    @NotBlank(message = "inspection date must not be empty")
+    @Column(name = "appointment_date", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private LocalDateTime appointment;
+
     @NotBlank(message = "invoice number must not be empty")
     @Column(name = "invoice_number", updatable = false)
     private Long invoiceNumber;
-
-    @NotBlank(message = "inspection date must not be empty")
-    @Column(name = "inspection_date", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Date inspectionDate;
-
-    @Column(name = "customer_has_agreed", columnDefinition = "BOOLEAN")
-    private boolean AgreementByCustomer;
-
-    @Column(name = "repair_date", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Date repairDate;
-
-    @Enumerated(EnumType.STRING)
-    private EWorkOrderStatus status;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
@@ -52,10 +53,4 @@ public class WorkOrder {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @ManyToOne
-    @JoinColumn(name = "car_id", referencedColumnName = "id")
-    private Car car;
-
-    @OneToMany
-    private List<WorkOrderIncurredCosts> workOrderIncurredCosts;
 }

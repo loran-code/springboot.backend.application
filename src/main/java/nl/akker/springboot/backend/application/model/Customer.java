@@ -70,7 +70,7 @@ public class Customer {
     private LocalDateTime modified;
 
     @JsonBackReference(value = "customer-car")
-    @OneToMany(mappedBy = "customer", orphanRemoval = true,
+    @OneToMany(mappedBy = "customer",  orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();
 

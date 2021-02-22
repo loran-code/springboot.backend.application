@@ -41,9 +41,4 @@ public class Component {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    public Component(String componentNumber, String description, double price) {
-        this.componentNumber = componentNumber;
-        this.description = description;
-        this.price = price;
-    }
 }

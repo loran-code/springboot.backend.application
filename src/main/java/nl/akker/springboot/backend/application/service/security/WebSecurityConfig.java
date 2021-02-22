@@ -1,7 +1,5 @@
 //package nl.akker.springboot.backend.application.service.security;
 //
-//import nl.novi.stuivenberg.springboot.example.security.service.security.jwt.AuthEntryPointJwt;
-//import nl.novi.stuivenberg.springboot.example.security.service.security.jwt.AuthTokenFilter;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.context.annotation.Bean;
@@ -55,7 +53,7 @@
 //
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
+//        return new BCryptPasswordEncoder(10);
 //    }
 //
 //    @Override

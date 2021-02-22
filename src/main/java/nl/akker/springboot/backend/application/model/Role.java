@@ -29,9 +29,4 @@ public class Role {
     @Column(name = "role_description", nullable = false)
     private ERole roleDescription;
 
-    //    TODO test with postman if the role does not get returned in a GET request.
-    @JsonIgnore
-    public ERole geteRole() {
-        return roleDescription;
-    }
 }

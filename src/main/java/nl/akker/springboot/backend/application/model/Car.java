@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -36,12 +37,11 @@ public class Car {
 
     @JsonBackReference(value = "customer-car")
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id",
-            nullable = false,
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "customer_id_car_id_FK"))
+    @JoinTable(name = "car_customer",
+            foreignKey = @ForeignKey(name = "car_id_FK"),
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseForeignKey = @ForeignKey(name = "customer_id_FK"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id"))
     private Customer customer;
-
-
 
 }

@@ -24,9 +24,21 @@ public class WorkOrderIncurredCosts {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NotBlank(message = "row number must not be empty")
-    @Column(name = "row_number", nullable = false)
-    private int rowNumber;
+    @OneToOne
+    @JoinColumn(name = "workorder_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "workorder_id_FK"))
+    private WorkOrder workorder;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private EWorkOrderIncurredCosts type;
+
+    @OneToOne
+    @JoinColumn(name = "activity_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "activity_id_FK"))
+    private Activity activity;
+
+    @OneToOne
+    @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
+    private Component component;
 
     @NotBlank(message = "quantity must not be empty")
     @Column(name = "quantity", nullable = false)
@@ -37,14 +49,4 @@ public class WorkOrderIncurredCosts {
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
-
-    @OneToOne
-    @JoinColumn(name = "workorder_id", referencedColumnName = "id")
-    private WorkOrder workorder;
-
-    @ManyToMany
-    private List<Component> component;
-
-    @ManyToMany
-    private List<Activity> activity;
 }
