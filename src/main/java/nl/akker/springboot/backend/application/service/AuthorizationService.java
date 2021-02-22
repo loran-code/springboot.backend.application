@@ -11,6 +11,7 @@ import nl.akker.springboot.backend.application.payload.response.MessageResponse;
 
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import nl.akker.springboot.backend.application.repository.RoleRepository;
+import nl.akker.springboot.backend.application.service.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,14 +66,7 @@ public class AuthorizationService {
         this.jwtUtils = jwtUtils;
     }
 
-    /**
-     *
-     * Deze methode verwerkt de gebruiker die wil registreren. De username en e-mail worden gecheckt. Eventuele rollen
-     * worden toegevoegd en de gebruiker wordt opgeslagen in de database.
-     *
-     * @param signUpRequest de payload signup-request met gebruikersnaam en wachtwoord.
-     * @return een HTTP response met daarin een succesbericht.
-     */
+
     public ResponseEntity<MessageResponse> registerEmployee(@Valid SignupRequest signUpRequest) {
         if (Boolean.TRUE.equals(employeeRepository.existsByUsername(signUpRequest.getUserName()))) {
             return ResponseEntity
@@ -98,7 +92,7 @@ public class AuthorizationService {
             Role userRole = roleRepository.findByRoleDescription(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND_ERROR));
             roles.add(userRole);
-        } else {
+        } else { // Check for roles and assign the matching roles to the user account.
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin" -> {
@@ -138,18 +132,7 @@ public class AuthorizationService {
         return ResponseEntity.ok(new MessageResponse("New employee registered successfully!"));
     }
 
-    /**
-     * Deze methode controleert de ontvangen username en wachtwoord. Het gebruikt hiervoor de
-     * AuthenticationManager. I.a.w. Spring security doet die allemaal voor ons.
-     *
-     * Wanneer de gebruikersnaam/wachtwoord combinatie niet klopt, wordt er een Runtime exception gegooid:
-     * 401 Unauthorized. Deze wordt gegooid door
-     * {@link nl.novi.stuivenberg.springboot.example.security.service.security.jwt.AuthEntryPointJwt}
-     *
-     *
-     * @param loginRequest De payload met username en password.
-     * @return een HTTP-response met daarin de JWT-token.
-     */
+
     public ResponseEntity<JwtResponse> authenticateEmployee(@Valid LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -166,9 +149,8 @@ public class AuthorizationService {
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getUserName(),
+                userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
     }
-
 }

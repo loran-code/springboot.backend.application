@@ -30,12 +30,12 @@ public class Customer {
     @NotBlank(message = "firstname must not be empty")
     @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
-    String firstName;
+    String firstname;
 
     @NotBlank(message = "lastname must not be empty")
     @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
-    private String lastName;
+    private String lastname;
 
     @NotBlank(message = "phone number must not be empty")
     @Size(min = 10, max = 20, message = "Size must between 10 and 20 characters long")

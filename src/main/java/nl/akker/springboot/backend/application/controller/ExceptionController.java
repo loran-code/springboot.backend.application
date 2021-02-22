@@ -4,7 +4,6 @@ import nl.akker.springboot.backend.application.exceptions.BadRequestException;
 import nl.akker.springboot.backend.application.exceptions.ForbiddenException;
 import nl.akker.springboot.backend.application.exceptions.RecordNotFoundException;
 import nl.akker.springboot.backend.application.exceptions.UserNotFoundException;
-import nl.akker.springboot.backend.application.exceptions.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,5 +33,4 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(ForbiddenException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-
 }

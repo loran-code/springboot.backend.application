@@ -32,7 +32,7 @@ public class Employee {
 
     @NotBlank(message = "username must not be empty")
     @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
-    private String userName;
+    private String username;
 
     @NotBlank(message = "password must not be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -54,8 +54,8 @@ public class Employee {
     @Column(name = "roles", nullable = false, columnDefinition = "TEXT")
     private Set<Role> roles;
 
-    public Employee(String userName, String email, String password) {
-        this.userName = userName;
+    public Employee(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
