@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -69,9 +70,6 @@ public class Customer {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();
 
-    public Customer(List<Car> car) {
-        this.car = car;
-    }
 }
 
 

@@ -1,6 +1,5 @@
 package nl.akker.springboot.backend.application.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -8,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -63,20 +62,7 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseForeignKey = @ForeignKey(name = "role_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
-//    TODO is this constructor needed?
-    public Employee(String email, String userName, String password) {
-        this.email = email;
-        this.userName = userName;
-        this.password = password;
-    }
-
-//    TODO test with postman if the password does not get returned in a GET request.
-    @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
 }
-
 

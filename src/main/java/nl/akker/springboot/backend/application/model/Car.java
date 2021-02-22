@@ -38,10 +38,10 @@ public class Car {
     @JsonBackReference(value = "customer-car") // To avoid Infinite recursion (StackOverflowError) when the API GET method is being requested
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "car_customer",
-            foreignKey = @ForeignKey(name = "car_id_FK"),
             joinColumns = @JoinColumn(name = "car_id"),
-            inverseForeignKey = @ForeignKey(name = "customer_id_FK"),
-            inverseJoinColumns = @JoinColumn(name = "customer_id"))
+            foreignKey = @ForeignKey(name = "car_id_FK"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id"),
+            inverseForeignKey = @ForeignKey(name = "customer_id_FK"))
     private Customer customer;
 
 }
