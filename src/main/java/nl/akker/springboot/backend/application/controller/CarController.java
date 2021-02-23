@@ -39,13 +39,13 @@ public class CarController {
         return ResponseEntity.ok().body("New car has been created: " + car);
     }
 
-    @PostMapping("/{car_id}/transfer/{customer_id}")
-    public ResponseEntity<Object> transferCarToCustomer(@PathVariable("car_id") long carId,
-                                                        @PathVariable("customer_id") long customerId,
-                                                        @RequestBody String licensePlate, String lastname) {
-        carService.saveCarToCustomer(licensePlate, lastname);
-        return ResponseEntity.ok().body("Car with licensePlate " + licensePlate + " has been added to customer " + lastname);
-    }
+//    @PostMapping("/{car_id}/transfer/{customer_id}")
+//    public ResponseEntity<Object> transferCarToCustomer(@PathVariable("car_id") long carId,
+//                                                        @PathVariable("customer_id") long customerId,
+//                                                        @RequestBody String licensePlate, String lastname) {
+//        carService.saveCarToCustomer(licensePlate, lastname);
+//        return ResponseEntity.ok().body("Car with licensePlate " + licensePlate + " has been added to customer " + lastname);
+//    }
 
 
     @PutMapping(path = "{id}")

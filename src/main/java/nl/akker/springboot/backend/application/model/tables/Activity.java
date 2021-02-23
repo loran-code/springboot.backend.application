@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -23,15 +24,15 @@ public class Activity {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NotBlank(message = "activity number must not be empty")
+    @NotNull(message = "activity number must not be empty")
     @Column(name = "activity_number", nullable = false, columnDefinition = "INT")
-    String activityNumber;
+    int activityNumber;
 
     @NotBlank(message = "description must not be empty")
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
 
-    @NotBlank(message = "price must not be empty")
+    @NotNull(message = "price must not be empty")
     @Column(name = "price", nullable = false)
     private double price;
 

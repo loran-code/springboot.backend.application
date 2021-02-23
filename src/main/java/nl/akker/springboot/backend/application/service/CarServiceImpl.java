@@ -54,16 +54,19 @@ public class CarServiceImpl implements CarService {
         return createCar.getId();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
-    public long saveCarToCustomer(String licensePlate, String lastname) {
 
-        Customer customer = customerRepository.findCustomerByLastname(lastname);
-        Car car = carRepository.findCarByLicensePlate(licensePlate);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
+    public long saveCarToCustomer(String licensePlate, String lastname, Car car, Customer customer) {
+
+        customer = customerRepository.findCustomerByLastname(lastname);
+        car = carRepository.findCarByLicensePlate(licensePlate);
 
         if (customer != null && car != null) {
-            customer.setCar((List<Car>) getCarById(car.getId()));
+//            todo save car to a customer
+//            customer.setCar((List<Car>) getCarById(car.getId()));
             customer.setModified(java.time.LocalDateTime.now());
             customerRepository.save(customer);
+            return car.getId();
         }
         throw new NotFoundException("The combination of lastname" + lastname + " license plate " + licensePlate + " has not been found");
     }

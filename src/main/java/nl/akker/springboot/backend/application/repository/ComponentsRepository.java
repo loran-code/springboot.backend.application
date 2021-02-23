@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ComponentsRepository extends JpaRepository<Component, Long> {
 
     Component findByComponentNumber(int componentNumber);
+    Component findByDescription(String description);
 
 }

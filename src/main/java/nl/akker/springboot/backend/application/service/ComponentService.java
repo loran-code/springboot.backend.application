@@ -6,6 +6,9 @@ import java.util.Collection;
 
 public interface ComponentService {
 
-    Collection<Component> getAllParts();
+    Collection<Component> getAllComponents();
     Component getRowNumber(int componentNumber);
+    Component findByDescription(String description);
+    long addComponentToWorkOrder(Component component);
+
 }
