@@ -1,14 +1,13 @@
-package nl.akker.springboot.backend.application.model;
+package nl.akker.springboot.backend.application.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

@@ -1,4 +1,4 @@
-package nl.akker.springboot.backend.application.model;
+package nl.akker.springboot.backend.application.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -51,7 +51,6 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseForeignKey = @ForeignKey(name = "role_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Column(name = "roles", nullable = false, columnDefinition = "TEXT")
     private Set<Role> roles;
 
     public Employee(String username, String email, String password) {

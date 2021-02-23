@@ -1,4 +1,4 @@
-package nl.akker.springboot.backend.application.model;
+package nl.akker.springboot.backend.application.model.enums;
 
 public enum EWorkOrderStatus {
     APPOINTMENT_FOR_INSPECTION,

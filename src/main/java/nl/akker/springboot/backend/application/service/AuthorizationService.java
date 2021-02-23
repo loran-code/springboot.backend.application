@@ -1,8 +1,8 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.ERole;
-import nl.akker.springboot.backend.application.model.Employee;
-import nl.akker.springboot.backend.application.model.Role;
+import nl.akker.springboot.backend.application.model.enums.ERole;
+import nl.akker.springboot.backend.application.model.tables.Employee;
+import nl.akker.springboot.backend.application.model.tables.Role;
 import nl.akker.springboot.backend.application.payload.request.LoginRequest;
 import nl.akker.springboot.backend.application.payload.request.SignupRequest;
 import nl.akker.springboot.backend.application.payload.response.JwtResponse;
@@ -68,7 +68,7 @@ public class AuthorizationService {
 
 
     public ResponseEntity<MessageResponse> registerEmployee(@Valid SignupRequest signUpRequest) {
-        if (Boolean.TRUE.equals(employeeRepository.existsByUsername(signUpRequest.getUserName()))) {
+        if (Boolean.TRUE.equals(employeeRepository.existsByUsername(signUpRequest.getUsername()))) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
@@ -81,7 +81,7 @@ public class AuthorizationService {
         }
 
         // Create new employee account
-        Employee employee = new Employee(signUpRequest.getUserName(),
+        Employee employee = new Employee(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 

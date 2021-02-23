@@ -9,7 +9,7 @@ public class SignupRequest {
 
     @NotBlank(message = "username must not be empty")
     @Size(min = 3, max = 20)
-    private String userName;
+    private String username;
 
     @NotBlank(message = "email must not be empty")
     @Size(min = 6, max = 50)
@@ -22,12 +22,12 @@ public class SignupRequest {
 
     private Set<String> role;
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String username) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getEmail() {
         return email;

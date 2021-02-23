@@ -1,12 +1,12 @@
-package nl.akker.springboot.backend.application.model;
+package nl.akker.springboot.backend.application.model.tables;
 
 import lombok.*;
+import nl.akker.springboot.backend.application.model.enums.EWorkOrderIncurredCosts;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

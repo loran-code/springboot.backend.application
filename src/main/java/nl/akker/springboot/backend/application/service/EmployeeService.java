@@ -1,25 +1,16 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.Customer;
-import nl.akker.springboot.backend.application.model.Employee;
-import org.springframework.security.core.userdetails.UserDetails;
+import nl.akker.springboot.backend.application.model.tables.Employee;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Map;
 
-public interface EmployeeService extends UserDetails {
-
-    long createEmployee(Customer customer);
-
-    void updateEmployee(long id, Employee employee) throws Exception;
-
-    void deleteEmployee(long id);
+public interface EmployeeService {
 
     Collection<Employee> getEmployees();
-
-    Collection<Employee> getEmployeesByLastName(String name);
-
-    Optional<Employee> getEmployeeById(long id) throws Exception;
-
-    boolean employeeExistsById(long id);
+    Employee getEmployeeById(Long id);
+    long createEmployee(Employee employee);
+    void updateEmployee(Long id, Employee employee);
+    void partialUpdateEmployee(Long id, Map<String, String> fields);
+    void deleteEmployee(Long id);
 }

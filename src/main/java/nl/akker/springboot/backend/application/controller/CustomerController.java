@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.Customer;
+import nl.akker.springboot.backend.application.model.tables.Customer;
 import nl.akker.springboot.backend.application.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +33,8 @@ public class CustomerController {
     }
 
     @GetMapping
-    public Collection<Customer> getCustomersByLastName(@RequestParam(name = "lastname") String lastName) {
-        return customerService.getCustomersByLastName(lastName);
+    public Collection<Customer> getCustomersByLastname(@RequestParam(name = "lastname") String lastname) {
+        return customerService.getCustomersByLastname(lastname);
     }
 
     @PostMapping
@@ -52,7 +52,7 @@ public class CustomerController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Object> partiallyUpdateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
         customerService.partialUpdateCustomer(id, fields);
-        return ResponseEntity.ok().body("The specified customer details have been updated " + fields);
+        return ResponseEntity.ok().body("The specified customer details have been updated: " + fields);
     }
 
     @DeleteMapping(path = "{id}")

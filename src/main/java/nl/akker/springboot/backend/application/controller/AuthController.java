@@ -22,7 +22,7 @@ public class AuthController {
         return authorizationService.authenticateEmployee(loginRequest);
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<MessageResponse> registerEmployee(@RequestBody SignupRequest signUpRequest) {
         return authorizationService.registerEmployee(signUpRequest);
     }

@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.service;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.Employee;
+import nl.akker.springboot.backend.application.model.tables.Employee;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

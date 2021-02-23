@@ -3,7 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
-import nl.akker.springboot.backend.application.model.Customer;
+import nl.akker.springboot.backend.application.model.tables.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -18,29 +18,29 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MECHANIC') or hasRole('FRONTOFFICE')  ")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public Collection<Customer> getCustomers() {
         return customerRepository.findAll();
     }
 
     @Override
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MECHANIC') or hasRole('FRONTOFFICE')  ")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("customer with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Customer with id " + id + " not found"));
     }
 
     @Override
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MECHANIC') or hasRole('FRONTOFFICE')  ")
-    public Collection<Customer> getCustomersByLastName(String lastName) {
-        if (!customerRepository.existsByLastName(lastName)) {
-            throw new NotFoundException("The specified last name " + lastName + " has not been found");
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
+    public Collection<Customer> getCustomersByLastname(String lastname) {
+        if (!customerRepository.existsByLastname(lastname)) {
+            throw new NotFoundException("The specified last name " + lastname + " has not been found");
         }
-        return customerRepository.findAllByLastName(lastName);
+        return customerRepository.findAllByLastname(lastname);
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN') or hasRole('FRONTOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public long createCustomer(Customer customer) {
         Customer createCustomer = customerRepository.save(customer);
         createCustomer.setCreated(java.time.LocalDateTime.now());
@@ -50,14 +50,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN') or hasRole('FRONTOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public void updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with " + id + " has not been found thus can not be updated");
         }
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
-        updateCustomer.setFirstName(customer.getFirstName());
-        updateCustomer.setLastName(customer.getLastName());
+        updateCustomer.setFirstname(customer.getFirstname());
+        updateCustomer.setLastname(customer.getLastname());
         updateCustomer.setPhone(customer.getPhone());
         updateCustomer.setEmail(customer.getEmail());
         updateCustomer.setCity(customer.getCity());
@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN') or hasRole('FRONTOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
 //    todo set appropriate request handler
     public void partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
@@ -76,8 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         for (String field : fields.keySet()) {
             switch (field) {
-                case "firstName" -> updateCustomer.setFirstName(fields.get(field));
-                case "lastName" -> updateCustomer.setLastName(fields.get(field));
+                case "firstname" -> updateCustomer.setFirstname(fields.get(field));
+                case "lastname" -> updateCustomer.setLastname(fields.get(field));
                 case "phone" -> updateCustomer.setPhone(fields.get(field));
                 case "email" -> updateCustomer.setEmail(fields.get(field));
                 case "street" -> updateCustomer.setStreet(fields.get(field));
@@ -90,12 +90,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found");
         }
         customerRepository.deleteById(id);
     }
-
 }

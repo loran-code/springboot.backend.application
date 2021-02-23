@@ -19,7 +19,7 @@ public class JwtUtils {
     @Value("${application.jwt.secretKey}")
     private String jwtSecret;
 
-    @Value("${application.jwt.tokenExpirationAfterDays}")
+    @Value("${application.jwt.jwtExpirationMs}")
     private int jwtExpirationDays;
 
     public String generateJwtToken(Authentication authentication) {
@@ -30,7 +30,8 @@ public class JwtUtils {
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationDays))
-                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+//                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 

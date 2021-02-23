@@ -1,0 +1,55 @@
+{
+  "title": "Novi backend API assignment",
+  "description": "RESTful API that demonstrate different relations within a relational database",
+  "contact": {
+    "name": "Loran van den Akker"
+  },
+  "version": "1.0.0",
+  "endpoints": [
+    {
+      "General": [
+        {
+          "method": "GET",
+          "endpoint": "/",
+          "description": "Returns the home response."
+        },
+        {
+          "method": "GET",
+          "endpoint": "/info",
+          "description": "Returns this description of the API."
+        }
+      ]
+    },
+    {
+      "Authentication": [
+        {
+          "method": "POST",
+          "endpoint": "api/auth/register",
+          "description": "Registers a new user."
+        },
+        {
+          "payload example": [
+            {
+              "email": "user@email.com",
+              "username": "user",
+              "password": "password"
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "endpoint": "api/auth/signin",
+          "description": "Returns the authentication page."
+        },
+        {
+          "payload example": [
+            {
+              "username": "user",
+              "password": "password"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

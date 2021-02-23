@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.Car;
-import nl.akker.springboot.backend.application.model.Customer;
+import nl.akker.springboot.backend.application.model.tables.Car;
+import nl.akker.springboot.backend.application.model.tables.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,12 +67,41 @@ class CustomerServiceImplTest {
 
         // Then
         assertEquals(1L, actual.getId());
-        assertEquals("Eric", actual.getFirstName());
-        assertEquals("Goossens", actual.getLastName());
+        assertEquals("Eric", actual.getFirstname());
+        assertEquals("Goossens", actual.getLastname());
         assertEquals("06-23584829", actual.getPhone());
         assertEquals("gossens@mail.com", actual.getEmail());
         assertEquals("Loopstraat", actual.getStreet());
         assertEquals("Dokkum", actual.getCity());
         assertEquals("3029CJ", actual.getZip());
     }
+
+//    @Test
+//    void deleteCustomer() {
+//        @Test
+//        public void whenOrderRequestIsDeleted_thenDeleteShipmentInfo() {
+//            createOrderRequestWithShipmentInfo();
+//
+//            OrderRequest orderRequest = entityManager.find(OrderRequest.class, 1L);
+//
+//            entityManager.getTransaction().begin();
+//            entityManager.remove(orderRequest);
+//            entityManager.getTransaction().commit();
+//
+//            Assert.assertEquals(0, findAllOrderRequest().size());
+//            Assert.assertEquals(0, findAllShipmentInfo().size());
+//        }
+//
+//        private void createOrderRequestWithShipmentInfo() {
+//            ShipmentInfo shipmentInfo = new ShipmentInfo("name");
+//            OrderRequest orderRequest = new OrderRequest(shipmentInfo);
+//
+//            entityManager.getTransaction().begin();
+//            entityManager.persist(orderRequest);
+//            entityManager.getTransaction().commit();
+//
+//            Assert.assertEquals(1, findAllOrderRequest().size());
+//            Assert.assertEquals(1, findAllShipmentInfo().size());
+//        }
+//    }
 }

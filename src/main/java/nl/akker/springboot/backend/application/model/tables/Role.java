@@ -1,14 +1,14 @@
-package nl.akker.springboot.backend.application.model;
+package nl.akker.springboot.backend.application.model.tables;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.akker.springboot.backend.application.model.enums.ERole;
 
 import javax.persistence.*;
 
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -28,5 +28,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(name = "role_description", nullable = false)
     private ERole roleDescription;
-
 }
