@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(path = "/api/customers/")
+@RequestMapping(path = "/api/customer/")
 public class CustomerController {
 
     private final CustomerService customerService;
