@@ -46,12 +46,13 @@ public class CustomerServiceImpl implements CustomerService {
         createCustomer.setCreated(java.time.LocalDateTime.now());
         createCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(createCustomer);
+
         return createCustomer.getId();
     }
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
-    public void updateCustomer(Long id, Customer customer) {
+    public long updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with " + id + " has not been found thus can not be updated");
         }
@@ -64,12 +65,14 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setZip(customer.getZip());
         updateCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(updateCustomer);
+
+        return updateCustomer.getId();
     }
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
 //    todo set appropriate request handler
-    public void partialUpdateCustomer(Long id, Map<String, String> fields) {
+    public long partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
         }
@@ -87,6 +90,8 @@ public class CustomerServiceImpl implements CustomerService {
         }
         updateCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(updateCustomer);
+
+        return updateCustomer.getId();
     }
 
     @Override

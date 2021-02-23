@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    Collection<Car> findCarByLicensePlate(String licensePlate);
+    Car findCarByLicensePlate(String licensePlate);
     boolean existsByLicensePlate(String licensePlate);
+
+    long saveCarToCustomer(String licensePlate, String lastname);
 }

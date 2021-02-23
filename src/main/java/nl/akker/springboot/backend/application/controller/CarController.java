@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.tables.Car;
 import nl.akker.springboot.backend.application.service.CarService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,20 +29,29 @@ public class CarController {
     }
 
     @GetMapping
-    public Collection<Car> findCarByLicensePlate(@RequestParam(name = "licenseplate") @Valid String licensePlate){
+    public Car findCarByLicensePlate(@RequestParam(name = "licenseplate") @Valid String licensePlate){
         return carService.findCarByLicensePlate(licensePlate);
     }
 
     @PostMapping
-    public ResponseEntity<Object> registerNewCar(@RequestBody @Valid Car Car) {
-        carService.createCar(Car);
-        return ResponseEntity.ok().body("New car has been created: " + Car);
+    public ResponseEntity<Object> registerNewCar(@RequestBody @Valid Car car) {
+        carService.createCar(car);
+        return ResponseEntity.ok().body("New car has been created: " + car);
     }
 
+    @PostMapping("/{car_id}/transfer/{customer_id}")
+    public ResponseEntity<Object> transferCarToCustomer(@PathVariable("car_id") long carId,
+                                                        @PathVariable("customer_id") long customerId,
+                                                        @RequestBody String licensePlate, String lastname) {
+        carService.saveCarToCustomer(licensePlate, lastname);
+        return ResponseEntity.ok().body("Car with licensePlate " + licensePlate + " has been added to customer " + lastname);
+    }
+
+
     @PutMapping(path = "{id}")
-    public ResponseEntity<Object> updateCar(@PathVariable("id") Long id, @RequestBody @Valid Car Car) {
-        carService.updateCar(id, Car);
-        return ResponseEntity.ok().body("The car details have been updated: " + Car);
+    public ResponseEntity<Object> updateCar(@PathVariable("id") Long id, @RequestBody @Valid Car car) {
+        carService.updateCar(id, car);
+        return ResponseEntity.ok().body("The car details have been updated: " + car);
     }
 
     @PatchMapping(value = "/{id}")

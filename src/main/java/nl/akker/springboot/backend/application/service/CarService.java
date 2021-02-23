@@ -10,9 +10,10 @@ public interface CarService {
 
     Collection<Car> getCars();
     Car getCarById(Long id);
-    Collection<Car> findCarByLicensePlate(String licensePlate);
+    Car findCarByLicensePlate(String licensePlate);
     long createCar(Car car);
-    void updateCar(Long id, Car car);
-    void partialUpdateCar(Long id, Map<String, String> fields);
+    long saveCarToCustomer(String licensePlate, String lastname);
+    long updateCar(Long id, Car car);
+    long partialUpdateCar(Long id, Map<String, String> fields);
     void deleteCar(Long id);
 }

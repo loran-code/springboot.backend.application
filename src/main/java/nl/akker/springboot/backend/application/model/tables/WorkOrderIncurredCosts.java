@@ -32,11 +32,11 @@ public class WorkOrderIncurredCosts {
     @Column(name = "type", nullable = false)
     private EWorkOrderIncurredCosts type;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "activity_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "activity_id_FK"))
     private Activity activity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
     private Component component;
 

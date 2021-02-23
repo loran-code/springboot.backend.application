@@ -47,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_BACKOFFICE')")
-    public void updateEmployee(Long id, Employee employee) {
+    public long updateEmployee(Long id, Employee employee) {
         if (!employeeRepository.existsById(id)) {
             throw new ApiRequestException("Employee with " + id + " has not been found thus can not be updated");
         }
@@ -58,11 +58,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 //        updateEmployee.setRoles();
         updateEmployee.setModified(java.time.LocalDateTime.now());
         employeeRepository.save(updateEmployee);
+        return updateEmployee.getId();
     }
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void partialUpdateEmployee(Long id, Map<String, String> fields) {
+    public long partialUpdateEmployee(Long id, Map<String, String> fields) {
         if (!employeeRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
         }
@@ -78,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         updateEmployee.setModified(java.time.LocalDateTime.now());
         employeeRepository.save(updateEmployee);
+        return updateEmployee.getId();
     }
 
     @Override

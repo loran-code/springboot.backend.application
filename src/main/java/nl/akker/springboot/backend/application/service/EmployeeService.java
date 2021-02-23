@@ -10,7 +10,7 @@ public interface EmployeeService {
     Collection<Employee> getEmployees();
     Employee getEmployeeById(Long id);
     long createEmployee(Employee employee);
-    void updateEmployee(Long id, Employee employee);
-    void partialUpdateEmployee(Long id, Map<String, String> fields);
+    long updateEmployee(Long id, Employee employee);
+    long partialUpdateEmployee(Long id, Map<String, String> fields);
     void deleteEmployee(Long id);
 }

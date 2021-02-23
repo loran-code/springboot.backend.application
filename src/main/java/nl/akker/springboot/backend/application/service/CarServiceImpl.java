@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.tables.Car;
+import nl.akker.springboot.backend.application.model.tables.Customer;
 import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,7 +37,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
-    public Collection<Car> findCarByLicensePlate(String licensePlate) {
+    public Car findCarByLicensePlate(String licensePlate) {
         if (!carRepository.existsByLicensePlate(licensePlate)) {
             throw new NotFoundException("The specified license plate " + licensePlate + " has not been found");
         }
@@ -48,14 +50,28 @@ public class CarServiceImpl implements CarService {
         Car createCar = carRepository.save(car);
         createCar.setCreated(java.time.LocalDateTime.now());
         createCar.setModified(java.time.LocalDateTime.now());
-//        createCar.setCustomer(customerRepository.existsByLastname());
         carRepository.save(createCar);
         return createCar.getId();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
+    public long saveCarToCustomer(String licensePlate, String lastname) {
+
+        Customer customer = customerRepository.findCustomerByLastname(lastname);
+        Car car = carRepository.findCarByLicensePlate(licensePlate);
+
+        if (customer != null && car != null) {
+            customer.setCar((List<Car>) getCarById(car.getId()));
+            customer.setModified(java.time.LocalDateTime.now());
+            customerRepository.save(customer);
+        }
+        throw new NotFoundException("The combination of lastname" + lastname + " license plate " + licensePlate + " has not been found");
+    }
+
+
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public void updateCar(Long id, Car car) {
+    public long updateCar(Long id, Car car) {
         if (!carRepository.existsById(id)) {
             throw new ApiRequestException("Car with " + id + " has not been found thus can not be updated");
         }
@@ -63,11 +79,12 @@ public class CarServiceImpl implements CarService {
         updateCar.setLicensePlate(car.getLicensePlate());
         updateCar.setModified(java.time.LocalDateTime.now());
         carRepository.save(updateCar);
+        return updateCar.getId();
     }
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public void partialUpdateCar(Long id, Map<String, String> fields) {
+    public long partialUpdateCar(Long id, Map<String, String> fields) {
         if (!carRepository.existsById(id)) {
             throw new ApiRequestException("Car with id " + id + " has not been found thus can not be updated");
         }
@@ -79,6 +96,7 @@ public class CarServiceImpl implements CarService {
             updateCar.setModified(java.time.LocalDateTime.now());
             carRepository.save(updateCar);
         }
+        return updateCar.getId();
     }
 
     @Override

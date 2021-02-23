@@ -41,4 +41,5 @@ public class Activity {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
+
 }

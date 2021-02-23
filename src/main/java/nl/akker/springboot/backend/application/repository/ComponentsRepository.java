@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ComponentsRepository extends JpaRepository<Component, Long> {
 
+    Component findByComponentNumber(int componentNumber);
+
 }
