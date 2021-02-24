@@ -1,8 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.tables.Activity;
-import nl.akker.springboot.backend.application.model.tables.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.service.ActivityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.service;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.tables.Activity;
+import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.repository.ActivityRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

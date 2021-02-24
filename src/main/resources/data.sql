@@ -68,11 +68,11 @@ INSERT INTO car_customer(customer_id,car_id) VALUES (5,6);
 
 
 -- Work order data input
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (101, 1, 'CUSTOMER_DECLINED','26-2-2021 12:00', 101 ,NOW()::timestamp, NOW()::timestamp);
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (102, 2, 'INSPECTION','10-4-2021 12:00', 102 ,NOW()::timestamp, NOW()::timestamp);
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (103, 3, 'IN_REPAIR','3-2-2021 12:00', 103 ,NOW()::timestamp, NOW()::timestamp);
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (104, 4, 'INVOICED','2-2-2021 15:00', 104 ,NOW()::timestamp, NOW()::timestamp);
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (105, 5, 'PAID','1-2-2021 09:00', 105 ,NOW()::timestamp, NOW()::timestamp);
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (101, 1, 'CUSTOMER_DECLINED','26-2-2021 12:00', 1001 ,NOW()::timestamp, NOW()::timestamp);
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (102, 2, 'INSPECTION','10-4-2021 12:00', 1002 ,NOW()::timestamp, NOW()::timestamp);
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (103, 3, 'IN_REPAIR','3-2-2021 12:00', 1003 ,NOW()::timestamp, NOW()::timestamp);
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (104, 4, 'INVOICED','2-2-2021 15:00', 1004 ,NOW()::timestamp, NOW()::timestamp);
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (105, 5, 'PAID','1-2-2021 09:00', 1005 ,NOW()::timestamp, NOW()::timestamp);
 
 
 -- work order incurred costs data input

@@ -3,7 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
-import nl.akker.springboot.backend.application.model.tables.Employee;
+import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +55,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         updateEmployee.setEmail(employee.getEmail());
         updateEmployee.setUsername(employee.getUsername());
         updateEmployee.setPassword(encoder.encode(updateEmployee.getPassword()));
-//        updateEmployee.setRoles();
         updateEmployee.setModified(java.time.LocalDateTime.now());
         employeeRepository.save(updateEmployee);
         return updateEmployee.getId();

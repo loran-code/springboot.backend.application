@@ -1,8 +1,8 @@
 package nl.akker.springboot.backend.application.service;
 
 import nl.akker.springboot.backend.application.model.enums.ERole;
-import nl.akker.springboot.backend.application.model.tables.Employee;
-import nl.akker.springboot.backend.application.model.tables.Role;
+import nl.akker.springboot.backend.application.model.dbmodels.Employee;
+import nl.akker.springboot.backend.application.model.dbmodels.Role;
 import nl.akker.springboot.backend.application.payload.request.LoginRequest;
 import nl.akker.springboot.backend.application.payload.request.SignupRequest;
 import nl.akker.springboot.backend.application.payload.response.JwtResponse;

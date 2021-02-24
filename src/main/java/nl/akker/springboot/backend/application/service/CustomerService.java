@@ -1,6 +1,6 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.tables.Customer;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 
 import java.util.Collection;
 import java.util.Map;

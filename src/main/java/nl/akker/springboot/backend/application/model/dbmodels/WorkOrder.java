@@ -1,11 +1,11 @@
-package nl.akker.springboot.backend.application.model.tables;
+package nl.akker.springboot.backend.application.model.dbmodels;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -25,24 +25,23 @@ public class WorkOrder {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NotBlank(message = "work order number must not be empty")
+    @NotNull(message = "work order number must not be empty")
     @Column(name = "work_order_number", nullable = false, updatable = false)
     private Long workOrderNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "car_id_FK"))
     private Car car;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EWorkOrderStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy hh:mm")
-    @NotBlank(message = "inspection date must not be empty")
-    @Column(name = "appointment_date", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime appointment;
+    @NotNull(message = "appointment date must not be empty")
+    @Column(name = "appointment_date")
+    private LocalDateTime appointmentDate;
 
-    @NotBlank(message = "invoice number must not be empty")
+    @NotNull(message = "invoice number must not be empty")
     @Column(name = "invoice_number", updatable = false)
     private Long invoiceNumber;
 
@@ -51,5 +50,4 @@ public class WorkOrder {
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
-
 }

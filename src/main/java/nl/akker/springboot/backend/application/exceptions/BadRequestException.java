@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends RuntimeException {
 
+    //    TODO set this a global variable project wide?
+//    https://www.baeldung.com/exception-handling-for-rest-with-spring
     //  code snippet taken from https://dimitr.im/validating-the-input-of-your-rest-api-with-spring
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

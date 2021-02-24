@@ -1,7 +1,6 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.tables.Activity;
-import nl.akker.springboot.backend.application.model.tables.Component;
+import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 
 import java.util.Collection;
 

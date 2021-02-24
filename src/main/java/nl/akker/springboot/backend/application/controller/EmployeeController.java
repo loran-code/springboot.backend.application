@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.tables.Employee;
+import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package nl.akker.springboot.backend.application.model.tables;
+package nl.akker.springboot.backend.application.model.dbmodels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

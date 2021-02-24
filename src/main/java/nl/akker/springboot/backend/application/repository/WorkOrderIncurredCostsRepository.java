@@ -1,6 +1,6 @@
 package nl.akker.springboot.backend.application.repository;
 
-import nl.akker.springboot.backend.application.model.tables.WorkOrderIncurredCosts;
+import nl.akker.springboot.backend.application.model.dbmodels.WorkOrderIncurredCosts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

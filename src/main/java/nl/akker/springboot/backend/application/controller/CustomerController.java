@@ -1,19 +1,14 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.tables.Customer;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.service.CustomerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -59,17 +54,5 @@ public class CustomerController {
     public ResponseEntity<Object> deleteCustomer(@PathVariable("id") Long id) {
         customerService.deleteCustomer(id);
         return ResponseEntity.ok().body("The customer with id " + id + " has been deleted");
-    }
-
-//    TODO set this a global variable project wide?
-//    https://www.baeldung.com/exception-handling-for-rest-with-spring
-    //  code snippet taken from https://dimitr.im/validating-the-input-of-your-rest-api-with-spring
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        return ex.getBindingResult()
-                .getAllErrors().stream()
-                .map(ObjectError::getDefaultMessage)
-                .collect(Collectors.toList());
     }
 }

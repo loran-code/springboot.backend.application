@@ -1,10 +1,9 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import nl.akker.springboot.backend.application.model.tables.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Car;
 import nl.akker.springboot.backend.application.service.CarService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,7 +38,7 @@ public class CarController {
         return ResponseEntity.ok().body("New car has been created: " + car);
     }
 
-//    @PostMapping("/{car_id}/transfer/{customer_id}")
+//    @PostMapping("/{car_id}/belongs_to/{customer_id}")
 //    public ResponseEntity<Object> transferCarToCustomer(@PathVariable("car_id") long carId,
 //                                                        @PathVariable("customer_id") long customerId,
 //                                                        @RequestBody String licensePlate, String lastname) {

@@ -3,15 +3,14 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
-import nl.akker.springboot.backend.application.model.tables.Car;
-import nl.akker.springboot.backend.application.model.tables.Customer;
+import nl.akker.springboot.backend.application.model.dbmodels.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Service

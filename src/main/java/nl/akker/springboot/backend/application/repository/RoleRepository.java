@@ -1,7 +1,7 @@
 package nl.akker.springboot.backend.application.repository;
 
 import nl.akker.springboot.backend.application.model.enums.ERole;
-import nl.akker.springboot.backend.application.model.tables.Role;
+import nl.akker.springboot.backend.application.model.dbmodels.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

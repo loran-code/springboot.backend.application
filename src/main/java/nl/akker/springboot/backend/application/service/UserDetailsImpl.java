@@ -2,7 +2,7 @@ package nl.akker.springboot.backend.application.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
-import nl.akker.springboot.backend.application.model.tables.Employee;
+import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

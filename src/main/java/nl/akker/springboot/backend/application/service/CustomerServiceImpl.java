@@ -3,7 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
-import nl.akker.springboot.backend.application.model.tables.Customer;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -71,12 +71,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
-//    todo set appropriate request handler
     public long partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
         }
+
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
+
         for (String field : fields.keySet()) {
             switch (field) {
                 case "firstname" -> updateCustomer.setFirstname(fields.get(field));

@@ -1,4 +1,4 @@
-package nl.akker.springboot.backend.application.model.tables;
+package nl.akker.springboot.backend.application.model.dbmodels;
 
 import lombok.*;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderIncurredCosts;
@@ -24,7 +24,7 @@ public class WorkOrderIncurredCosts {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "workorder_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "workorder_id_FK"))
     private WorkOrder workorder;
 
