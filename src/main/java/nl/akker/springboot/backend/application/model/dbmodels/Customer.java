@@ -14,7 +14,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Customer")
@@ -68,7 +67,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer",  orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Car> car = new ArrayList<>();
-
 }
 
 

@@ -13,7 +13,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "WorkOrder")
@@ -25,7 +24,6 @@ public class WorkOrder {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @NotNull(message = "work order number must not be empty")
     @Column(name = "work_order_number", nullable = false, updatable = false)
     private Long workOrderNumber;
 
@@ -41,7 +39,6 @@ public class WorkOrder {
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 
-    @NotNull(message = "invoice number must not be empty")
     @Column(name = "invoice_number", updatable = false)
     private Long invoiceNumber;
 

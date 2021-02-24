@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,34 +18,40 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping(path = "all")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE', 'ROLE_BACKOFFICE')")
     public Collection<Employee> getEmployees() {
         return employeeService.getEmployees();
     }
 
     @GetMapping(path = "{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE', 'ROLE_BACKOFFICE')")
     public Employee getEmployee(@PathVariable("id") Long id) {
         return employeeService.getEmployeeById(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_BACKOFFICE')")
     public ResponseEntity<Object> registerNewEmployee(@RequestBody @Valid Employee employee) {
         employeeService.createEmployee(employee);
         return ResponseEntity.ok().body("New Employee has been created: " + employee);
     }
 
     @PutMapping(path = "{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_BACKOFFICE')")
     public ResponseEntity<Object> updateEmployee(@PathVariable("id") Long id, @RequestBody @Valid Employee employee) {
         employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok().body("The employee details have been updated: " + employee);
     }
 
     @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> partiallyUpdateEmployee(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
         employeeService.partialUpdateEmployee(id, fields);
         return ResponseEntity.ok().body("The specified employee details have been updated: " + fields);
     }
 
     @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("id") Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok().body("The employee with id " + id + " has been deleted");

@@ -15,10 +15,11 @@ public interface WorkOrderService {
 
     ReturnObject createWorkOrder(WorkOrder workOrder);
 
-    //    long updateWorkOrder(Long id, WorkOrder workOrder);
+    String carCheckIn(Long woNumber);
+
     ReturnObject customerAgreed(WorkOrder workOrder);
 
-    void deleteWorkOrder(Long id);
+    ReturnObject customerDeclined(WorkOrder workOrder);
 
-    String carCheckIn(Long woNumber);
+    void deleteWorkOrder(Long id);
 }

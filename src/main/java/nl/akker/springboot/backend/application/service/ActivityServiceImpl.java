@@ -3,7 +3,6 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.repository.ActivityRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,7 +14,6 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityRepository activityRepository;
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_BACKOFFICE')")
     public Collection<Activity> getAllActivities() {
         return activityRepository.findAll();
     }
@@ -30,12 +28,10 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Activity findByDescription(String description) {
         Activity activity = activityRepository.findByDescription(description);
-
         return activity;
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
     public long addActivityToWorkOrder(Activity activity) {
         Activity createActivity = activityRepository.save(activity);
         createActivity.setCreated(java.time.LocalDateTime.now());

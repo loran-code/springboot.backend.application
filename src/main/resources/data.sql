@@ -6,17 +6,6 @@ INSERT INTO role(role_description) VALUES ('ROLE_FRONTOFFICE');
 INSERT INTO role(role_description) VALUES ('ROLE_BACKOFFICE');
 
 
--- Workorder status input
-DROP TABLE IF EXISTS status;
-CREATE TABLE status (status_description VARCHAR(50));
-INSERT INTO status (status_description) VALUES ('APPOINTMENT_FOR_INSPECTION');
-INSERT INTO status (status_description) VALUES ('INSPECTION');
-INSERT INTO status (status_description) VALUES ('CUSTOMER_DECLINED');
-INSERT INTO status (status_description) VALUES ('IN_REPAIR');
-INSERT INTO status (status_description) VALUES ('INVOICED');
-INSERT INTO status (status_description) VALUES ('PAID');
-
-
 -- Employee data input
 INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'j.p@garage.com','jan', '$2a$10$QM5zzOovrQ4LHZf0xFi3TONHkpmKOjhxketSkmnzyBTBSNMu4R0nq', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO employee(email, user_name, password, created, modified) VALUES ( 'f.v@garage.com','frederik', '$2a$10$QM5zzOovrQ4LHZf0xFi3TONHkpmKOjhxketSkmnzyBTBSNMu4R0nq', NOW()::timestamp, NOW()::timestamp);
@@ -40,6 +29,7 @@ INSERT INTO car(license_plate, created, modified) VALUES ('TL-784-L', NOW()::tim
 INSERT INTO car(license_plate, created, modified) VALUES ('NX-920-R', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO car(license_plate, created, modified) VALUES ('ZL-547-J', NOW()::timestamp, NOW()::timestamp);
 INSERT INTO car(license_plate, created, modified) VALUES ('SK-147-S', NOW()::timestamp, NOW()::timestamp);
+INSERT INTO car(license_plate, created, modified) VALUES ('AA-111-AA', NOW()::timestamp, NOW()::timestamp);
 
 
 -- Activity data input
@@ -76,8 +66,8 @@ INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoi
 
 
 -- work order incurred costs data input
-INSERT into work_order_incurred_costs(workorder_id, type, activity_id, quantity, created, modified) VALUES (1, 'ACTIVITY', 2, 1, NOW()::timestamp, NOW()::timestamp);
-INSERT into work_order_incurred_costs(workorder_id, type, component_id, quantity, created, modified) VALUES (1, 'COMPONENT', 1, 4, NOW()::timestamp, NOW()::timestamp);
+INSERT into work_order_incurred_costs(workorder_id, type, activity_id, quantity, created, modified) VALUES (1, 'ACTIVITY', 1, 1, NOW()::timestamp, NOW()::timestamp);
+INSERT into work_order_incurred_costs(workorder_id, type, component_id, quantity, created, modified) VALUES (2, 'COMPONENT', 1, 4, NOW()::timestamp, NOW()::timestamp);
 
 
 -- Inventory data input

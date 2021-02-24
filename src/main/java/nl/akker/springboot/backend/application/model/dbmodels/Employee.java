@@ -13,7 +13,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Employee")

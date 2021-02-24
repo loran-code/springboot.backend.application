@@ -4,7 +4,7 @@ import lombok.*;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderIncurredCosts;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "workorderincurredcosts")
@@ -40,7 +39,7 @@ public class WorkOrderIncurredCosts {
     @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
     private Component component;
 
-    @NotBlank(message = "quantity must not be empty")
+    @NotNull(message = "quantity must not be empty")
     @Column(name = "quantity", nullable = false)
     private int quantity;
 

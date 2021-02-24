@@ -5,7 +5,6 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -18,20 +17,17 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public Collection<Customer> getCustomers() {
         return customerRepository.findAll();
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer with id " + id + " not found"));
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public Collection<Customer> getCustomersByLastname(String lastname) {
         if (!customerRepository.existsByLastname(lastname)) {
             throw new NotFoundException("The specified last name " + lastname + " has not been found");
@@ -40,7 +36,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public long createCustomer(Customer customer) {
         Customer createCustomer = customerRepository.save(customer);
         createCustomer.setCreated(java.time.LocalDateTime.now());
@@ -51,7 +46,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public long updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with " + id + " has not been found thus can not be updated");
@@ -70,7 +64,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public long partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
@@ -96,7 +89,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found");
