@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface WorkOrderIncurredCostsRepository extends JpaRepository<WorkOrderIncurredCosts, Long> {
 
-    WorkOrderIncurredCosts findWorkOrderIncurredCostsByWorkorderAndDescription(WorkOrder workorder, String description);
+//    WorkOrderIncurredCosts findWorkOrderIncurredCostsByWorkorderAndDescription(WorkOrder workorder, String description);
 
     List<WorkOrderIncurredCosts> findWorkOrderIncurredCostsByWorkorder(WorkOrder workorder);
 

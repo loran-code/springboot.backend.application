@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CarRepository;
@@ -40,16 +41,26 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public long createCar(Car car) {
-        Car createCar = carRepository.save(car);
+    public ReturnObject createCar(Car car) {
+        if (carRepository.existsByLicensePlate(car.getLicensePlate())) {
+            throw new ApiRequestException("The specified license plate is already taken. Make sure the license plate details are unique");
+        }
+        ReturnObject returnObject = new ReturnObject();
+
+        Car createCar = car;
+
+        createCar.setLicensePlate(car.getLicensePlate());
         createCar.setCreated(java.time.LocalDateTime.now());
         createCar.setModified(java.time.LocalDateTime.now());
         carRepository.save(createCar);
 
-        return createCar.getId();
+        returnObject.setObject(createCar);
+        returnObject.setMessage("Car has been created");
+
+        return returnObject;
     }
 
-//    does this functionality belongs in the customer class?
+    //    does this functionality belongs in the customer class?
     public long saveCarToCustomer(String licensePlate, String lastname, Car car, Customer customer) {
         customer = customerRepository.findCustomerByLastname(lastname);
         car = carRepository.findCarByLicensePlate(licensePlate);
@@ -66,16 +77,21 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public long updateCar(Long id, Car car) {
+    public ReturnObject updateCar(Long id, Car car) {
         if (!carRepository.existsById(id)) {
             throw new ApiRequestException("Car with " + id + " has not been found thus can not be updated");
         }
+        ReturnObject returnObject = new ReturnObject();
+
         Car updateCar = carRepository.findById(id).orElse(null);
         updateCar.setLicensePlate(car.getLicensePlate());
         updateCar.setModified(java.time.LocalDateTime.now());
         carRepository.save(updateCar);
 
-        return updateCar.getId();
+        returnObject.setObject(updateCar);
+        returnObject.setMessage("car has been updated");
+
+        return returnObject;
     }
 
     @Override

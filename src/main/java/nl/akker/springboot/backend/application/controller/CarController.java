@@ -1,6 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
 import nl.akker.springboot.backend.application.service.CarService;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +40,15 @@ public class CarController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> registerNewCar(@RequestBody @Valid Car car) {
-        carService.createCar(car);
-        return ResponseEntity.ok().body("New car has been created: " + car);
+        ReturnObject returnObject = carService.createCar(car);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
     public ResponseEntity<Object> updateCar(@PathVariable("id") Long id, @RequestBody @Valid Car car) {
-        carService.updateCar(id, car);
-        return ResponseEntity.ok().body("The car details have been updated: " + car);
+        ReturnObject returnObject = carService.updateCar(id, car);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PatchMapping(value = "/{id}")

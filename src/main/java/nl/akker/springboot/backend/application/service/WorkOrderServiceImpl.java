@@ -43,28 +43,34 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public ReturnObject createWorkOrder(WorkOrder workOrder) {
-        ReturnObject returnObject = new ReturnObject();
-        Car car = carRepository.findCarByLicensePlate(workOrder.getCar().getLicensePlate());
-
-        if (car != null) {
-            WorkOrder createWorkOrder = workOrder;
-
-            WorkOrder latestWorkOrder = workOrderRepository.findTopByOrderByCreatedDesc();
-            createWorkOrder.setWorkOrderNumber(latestWorkOrder.getWorkOrderNumber()+1);
-
-            createWorkOrder.setCar(car);
-            createWorkOrder.setStatus(EWorkOrderStatus.APPOINTMENT_FOR_INSPECTION);
-            createWorkOrder.setAppointmentDate(workOrder.getAppointmentDate());
-            createWorkOrder.setCreated(LocalDateTime.now());
-            createWorkOrder.setModified(LocalDateTime.now());
-            workOrderRepository.save(createWorkOrder);
-
-            returnObject.setObject(createWorkOrder);
-            returnObject.setMessage("Work order has been created!");
-
-            return returnObject;
+        if (carRepository.existsByLicensePlate(workOrder.getCar().getLicensePlate())) {
+            throw new ApiRequestException("A work order for the specified license plate already exist.");
         }
-        returnObject.setMessage("Could not find a car with the specified license plate.");
+        ReturnObject returnObject = new ReturnObject();
+
+        WorkOrder createWorkOrder = workOrder;
+
+        Car car = new Car();
+        car.setLicensePlate(workOrder.getCar().getLicensePlate());
+        if(car.getCreated() == null) {
+            car.setCreated(LocalDateTime.now());
+            car.setModified(LocalDateTime.now());
+        }
+
+        // Get latest work order number from database
+        WorkOrder latestWorkOrder = workOrderRepository.findTopByOrderByCreatedDesc();
+        // increment work order number
+        createWorkOrder.setWorkOrderNumber(latestWorkOrder.getWorkOrderNumber()+1);
+
+        createWorkOrder.setCar(car);
+        createWorkOrder.setStatus(EWorkOrderStatus.APPOINTMENT_FOR_INSPECTION);
+        createWorkOrder.setAppointmentDate(workOrder.getAppointmentDate());
+        createWorkOrder.setCreated(LocalDateTime.now());
+        createWorkOrder.setModified(LocalDateTime.now());
+        workOrderRepository.save(createWorkOrder);
+
+        returnObject.setObject(createWorkOrder);
+        returnObject.setMessage("Work order has been created!");
 
         return returnObject;
     }

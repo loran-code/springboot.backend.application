@@ -1,6 +1,7 @@
 package nl.akker.springboot.backend.application.service;
 
 import lombok.AllArgsConstructor;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Component;
 import nl.akker.springboot.backend.application.repository.ComponentsRepository;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,22 @@ public class ComponentServiceImpl implements ComponentService {
 
     //todo needs to be saved to work order
     @Override
-    public long addComponentToWorkOrder(Component component) {
-        Component createComponent = componentsRepository.save(component);
-        createComponent.setCreated(java.time.LocalDateTime.now());
-        createComponent.setModified(java.time.LocalDateTime.now());
-        componentsRepository.save(createComponent);
+    public ReturnObject addComponentToWorkOrder(Component component) {
+        ReturnObject returnObject = new ReturnObject();
 
-        return createComponent.getId();
+        if (component != null) {
+            Component createComponent = componentsRepository.save(component);
+            createComponent.setCreated(java.time.LocalDateTime.now());
+            createComponent.setModified(java.time.LocalDateTime.now());
+            componentsRepository.save(createComponent);
+
+            returnObject.setObject(createComponent);
+            returnObject.setMessage("Component(s) added to work order");
+
+            return returnObject;
+        }
+        returnObject.setMessage("Could not add component with the specified details to the work order");
+
+        return returnObject;
     }
 }

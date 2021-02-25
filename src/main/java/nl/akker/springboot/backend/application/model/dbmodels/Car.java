@@ -24,7 +24,7 @@ public class Car {
     private Long id;
 
     @NotBlank(message = "license plate must not be empty")
-    @Column(name = "license_plate", nullable = false, columnDefinition = "TEXT", length = 11)
+    @Column(name = "license_plate", nullable = false, unique = true, columnDefinition = "TEXT", length = 11)
     private String licensePlate;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

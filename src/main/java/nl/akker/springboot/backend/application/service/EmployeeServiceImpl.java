@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,21 +33,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long createEmployee(Employee employee) {
-        Employee createEmployee = employeeRepository.save(employee);
+    public ReturnObject createEmployee(Employee employee) {
+        if (employeeRepository.existsByUsername(employee.getUsername()) &&
+        employeeRepository.existsByEmail(employee.getEmail())) {
+            throw new ApiRequestException("The specified details are already taken. Make sure your username and email are unique");
+        }
+        ReturnObject returnObject = new ReturnObject();
+
+        Employee createEmployee = employee;
         createEmployee.setPassword(encoder.encode(createEmployee.getPassword()));
         createEmployee.setCreated(java.time.LocalDateTime.now());
         createEmployee.setModified(java.time.LocalDateTime.now());
         employeeRepository.save(createEmployee);
 
-        return createEmployee.getId();
+        returnObject.setObject(createEmployee);
+        returnObject.setMessage("Employee has been created");
+
+        return returnObject;
     }
 
     @Override
-    public long updateEmployee(Long id, Employee employee) {
+    public ReturnObject updateEmployee(Long id, Employee employee) {
         if (!employeeRepository.existsById(id)) {
             throw new ApiRequestException("Employee with " + id + " has not been found thus can not be updated");
         }
+        ReturnObject returnObject = new ReturnObject();
+
         Employee updateEmployee = employeeRepository.findById(id).orElse(null);
         updateEmployee.setEmail(employee.getEmail());
         updateEmployee.setUsername(employee.getUsername());
@@ -54,7 +66,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         updateEmployee.setModified(java.time.LocalDateTime.now());
         employeeRepository.save(updateEmployee);
 
-        return updateEmployee.getId();
+
+        returnObject.setObject(updateEmployee);
+        returnObject.setMessage("Employee has been updated");
+
+        return returnObject;
     }
 
     @Override
@@ -78,10 +94,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteEmployee(Long id) {
-            if (!employeeRepository.existsById(id)) {
-                throw new ApiRequestException("Employee with id " + id + " has not been found");
-            }
-            employeeRepository.deleteById(id);
+        if (!employeeRepository.existsById(id)) {
+            throw new ApiRequestException("Employee with id " + id + " has not been found");
+        }
+        employeeRepository.deleteById(id);
     }
 }
 

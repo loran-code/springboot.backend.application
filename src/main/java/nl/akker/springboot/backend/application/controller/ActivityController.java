@@ -1,6 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.service.ActivityService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ActivityController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC')")
     public ResponseEntity<Object> addActivityToWorkOrder(@RequestBody @Valid Activity activity) {
-        activityService.addActivityToWorkOrder(activity);
-        return ResponseEntity.ok().body("New activity(s): " + activity  + " has been added to the work order");
+        ReturnObject returnObject = activityService.addActivityToWorkOrder(activity);
+        return ResponseEntity.ok().body(returnObject);
     }
 }

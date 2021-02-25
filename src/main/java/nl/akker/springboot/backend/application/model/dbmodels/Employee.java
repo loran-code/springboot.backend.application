@@ -26,11 +26,11 @@ public class Employee {
 
     @Email
     @NotBlank(message = "email must not be empty")
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
     private String email;
 
     @NotBlank(message = "username must not be empty")
-    @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "user_name", nullable = false, unique = true, columnDefinition = "TEXT")
     private String username;
 
     @NotBlank(message = "password must not be empty")

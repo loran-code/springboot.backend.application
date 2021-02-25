@@ -37,13 +37,13 @@ public class Customer {
 
     @NotBlank(message = "phone number must not be empty")
     @Size(min = 10, max = 20, message = "Size must between 10 and 20 characters long")
-    @Column(name = "phone", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "phone", nullable = false, unique=true, columnDefinition = "TEXT")
     private String phone;
 
     @Size(min = 6, max = 60, message = "Size must between 6 and 60 characters long")
     @NotBlank(message = "email must not be empty")
     @Email(message = "invalid email format")
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, unique=true, columnDefinition = "TEXT")
     private String email;
 
     @Size(max = 60)

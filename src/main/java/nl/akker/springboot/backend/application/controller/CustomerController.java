@@ -1,6 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.service.CustomerService;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +40,15 @@ public class CustomerController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> registerNewCustomer(@RequestBody @Valid Customer customer) {
-        customerService.createCustomer(customer);
-        return ResponseEntity.ok().body("New customer has been created: " + customer);
+        ReturnObject returnObject = customerService.createCustomer(customer);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Customer customer) {
-        customerService.updateCustomer(id, customer);
-        return ResponseEntity.ok().body("The customer details have been updated: " + customer);
+        ReturnObject returnObject = customerService.updateCustomer(id, customer);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PatchMapping(value = "/{id}")

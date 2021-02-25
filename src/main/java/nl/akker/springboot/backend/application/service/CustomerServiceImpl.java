@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -35,21 +36,33 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAllByLastname(lastname);
     }
 
+
     @Override
-    public long createCustomer(Customer customer) {
-        Customer createCustomer = customerRepository.save(customer);
+    //todo add car to customer
+    public ReturnObject createCustomer(Customer customer) {
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            throw new ApiRequestException("The specified details are already taken. Make sure your email is unique");
+        }
+        ReturnObject returnObject = new ReturnObject();
+
+        Customer createCustomer = customer;
         createCustomer.setCreated(java.time.LocalDateTime.now());
         createCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(createCustomer);
 
-        return createCustomer.getId();
+        returnObject.setObject(createCustomer);
+        returnObject.setMessage("Customer has been created");
+
+        return returnObject;
     }
 
     @Override
-    public long updateCustomer(Long id, Customer customer) {
+    public ReturnObject updateCustomer(Long id, Customer customer) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with " + id + " has not been found thus can not be updated");
         }
+        ReturnObject returnObject = new ReturnObject();
+
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
         updateCustomer.setFirstname(customer.getFirstname());
         updateCustomer.setLastname(customer.getLastname());
@@ -60,7 +73,10 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setModified(java.time.LocalDateTime.now());
         customerRepository.save(updateCustomer);
 
-        return updateCustomer.getId();
+        returnObject.setObject(updateCustomer);
+        returnObject.setMessage("Customer has been created");
+
+        return returnObject;
     }
 
     @Override

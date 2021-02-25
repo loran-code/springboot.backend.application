@@ -1,6 +1,7 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
+import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Component;
 import nl.akker.springboot.backend.application.service.ComponentService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ComponentController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
     public ResponseEntity<Object> addComponentsToWorkOrder(@RequestBody @Valid Component component) {
-        componentService.addComponentToWorkOrder(component);
-        return ResponseEntity.ok().body("New component(s): " + component  + " has been added to the work order");
+        ReturnObject returnObject = componentService.addComponentToWorkOrder(component);
+        return ResponseEntity.ok().body(returnObject);
     }
 }

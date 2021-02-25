@@ -10,4 +10,5 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
     WorkOrder getWorkOrderByWorkOrderNumber(Long workOrderNumber);
     Boolean existsByWorkOrderNumber(Long workOrderNumber);
     WorkOrder findTopByOrderByCreatedDesc();
+
 }
