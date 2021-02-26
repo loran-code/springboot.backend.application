@@ -44,25 +44,39 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(returnObject);
     }
 
-    @PostMapping("checkin/")
+    @PostMapping("checkin/{workOrderNumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_FRONTOFFICE')")
-    public ResponseEntity<MessageResponse> CheckInCar(@RequestBody @Valid Long workOrderNumber) {
+    public ResponseEntity<MessageResponse> CheckInCar(@PathVariable ("workOrderNumber") Long workOrderNumber) {
         String response = workOrderService.carCheckIn(workOrderNumber);
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
-    @PatchMapping(value = "agreed/{workordernumber}")
+    @PostMapping(value = "agreed/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> customerAgreedToCarRepair(@PathVariable("workordernumber") @RequestBody @Valid WorkOrder workOrder) {
-        ReturnObject returnObject = workOrderService.customerAgreed(workOrder);
-        return ResponseEntity.ok().body(returnObject);
+    public ResponseEntity<MessageResponse> customerAgreedToCarRepair(@PathVariable("workordernumber") Long workOrderNumber) {
+        String response = workOrderService.customerAgreed(workOrderNumber);
+        return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
     @PostMapping(value = "declined/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> customerDeclinedCarRepair(@PathVariable("workordernumber") @RequestBody @Valid WorkOrder workOrder) {
-        ReturnObject returnObject = workOrderService.customerDeclined(workOrder);
-        return ResponseEntity.ok().body(returnObject);
+    public ResponseEntity<MessageResponse> customerDeclinedCarRepair(@PathVariable("workordernumber") Long workOrderNumber) {
+        String response = workOrderService.customerDeclined(workOrderNumber);
+        return ResponseEntity.ok().body(new MessageResponse(response));
+    }
+
+    @PostMapping(value = "update/{workordernumber}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC')")
+    public ResponseEntity<MessageResponse> updateWorkOrder(@PathVariable("workordernumber") Long workorderNumber) {
+        String response = workOrderService.updateWorkOrder(workorderNumber);
+        return ResponseEntity.ok().body(new MessageResponse(response));
+    }
+
+    @PostMapping(value = "finished/{workordernumber}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
+    public ResponseEntity<MessageResponse> finishedRepair(@PathVariable("workordernumber") Long workorderNumber) {
+        String response = workOrderService.finishedRepair(workorderNumber);
+        return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
     @DeleteMapping(path = "{id}")

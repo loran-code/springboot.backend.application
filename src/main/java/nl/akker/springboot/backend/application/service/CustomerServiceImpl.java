@@ -74,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(updateCustomer);
 
         returnObject.setObject(updateCustomer);
-        returnObject.setMessage("Customer has been created");
+        returnObject.setMessage("Customer has been updated");
 
         return returnObject;
     }

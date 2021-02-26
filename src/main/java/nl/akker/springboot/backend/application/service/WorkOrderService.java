@@ -17,9 +17,13 @@ public interface WorkOrderService {
 
     String carCheckIn(Long woNumber);
 
-    ReturnObject customerAgreed(WorkOrder workOrder);
+    String customerAgreed(Long workOrderNumber);
 
-    ReturnObject customerDeclined(WorkOrder workOrder);
+    String customerDeclined(Long workOrderNumber);
+
+    String updateWorkOrder(Long workOrderNumber);
+
+    String finishedRepair(Long workOrderNumber);
 
     void deleteWorkOrder(Long id);
 }

@@ -33,12 +33,13 @@ INSERT INTO car(license_plate, created, modified) VALUES ('AA-111-AA', NOW(), NO
 
 
 -- Joined table car customer
-INSERT INTO car_customer(customer_id,car_id) VALUES (1,1);
-INSERT INTO car_customer(customer_id,car_id) VALUES (1,2);
-INSERT INTO car_customer(customer_id,car_id) VALUES (2,3);
-INSERT INTO car_customer(customer_id,car_id) VALUES (3,4);
-INSERT INTO car_customer(customer_id,car_id) VALUES (4,5);
-INSERT INTO car_customer(customer_id,car_id) VALUES (5,6);
+INSERT INTO car_customer(car_id, customer_id) VALUES (1,1);
+INSERT INTO car_customer(car_id, customer_id) VALUES (2,1);
+INSERT INTO car_customer(car_id, customer_id) VALUES (3,2);
+INSERT INTO car_customer(car_id, customer_id) VALUES (4,3);
+INSERT INTO car_customer(car_id, customer_id) VALUES (5,4);
+INSERT INTO car_customer(car_id, customer_id) VALUES (6,5);
+INSERT INTO car_customer(car_id, customer_id) VALUES (7,5);
 
 
 -- Activity data input
@@ -74,8 +75,10 @@ INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoi
 
 
 -- work order incurred costs data input
-INSERT into work_order_incurred_costs(workorder_id, type, activity_id, quantity, created, modified) VALUES (1, 'ACTIVITY', 1, 1, NOW(), NOW());
-INSERT into work_order_incurred_costs(workorder_id, type, component_id, quantity, created, modified) VALUES (2, 'COMPONENT', 1, 4, NOW(), NOW());
+-- INSERT into work_order_incurred_costs(workorder_id, type, activity_id, quantity, created, modified) VALUES (1, 'ACTIVITY', 1, 1, NOW(), NOW());
+-- INSERT into work_order_incurred_costs(workorder_id, type, component_id, quantity, created, modified) VALUES (2, 'COMPONENT', 1, 4, NOW(), NOW());
+INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (1, 'ACTIVITY',5, NOW(), NOW());
+INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (2, 'COMPONENT', 5, NOW(), NOW());
 
 
 -- Invoice data input

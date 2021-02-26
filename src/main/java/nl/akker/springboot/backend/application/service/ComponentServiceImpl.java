@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Component;
 import nl.akker.springboot.backend.application.repository.ComponentsRepository;
+import nl.akker.springboot.backend.application.repository.WorkOrderIncurredCostsRepository;
+import nl.akker.springboot.backend.application.repository.WorkOrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -13,6 +15,7 @@ import java.util.Collection;
 public class ComponentServiceImpl implements ComponentService {
 
     private final ComponentsRepository componentsRepository;
+    private final WorkOrderIncurredCostsRepository workOrderIncurredCostsRepository;
 
     @Override
     public Collection<Component> getAllComponents() {
@@ -33,13 +36,13 @@ public class ComponentServiceImpl implements ComponentService {
         return component;
     }
 
-    //todo needs to be saved to work order
+    //todo needs to be saved to work order incurred costs
     @Override
     public ReturnObject addComponentToWorkOrder(Component component) {
         ReturnObject returnObject = new ReturnObject();
 
         if (component != null) {
-            Component createComponent = componentsRepository.save(component);
+            Component createComponent = component;
             createComponent.setCreated(java.time.LocalDateTime.now());
             createComponent.setModified(java.time.LocalDateTime.now());
             componentsRepository.save(createComponent);

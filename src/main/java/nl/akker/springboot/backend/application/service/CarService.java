@@ -13,7 +13,7 @@ public interface CarService {
     Car getCarById(Long id);
     Car findCarByLicensePlate(String licensePlate);
     ReturnObject createCar(Car car);
-    long saveCarToCustomer(String licensePlate, String lastname, Car car, Customer customer);
+    ReturnObject saveCarToCustomer(Customer customer);
     ReturnObject updateCar(Long id, Car car);
     long partialUpdateCar(Long id, Map<String, String> fields);
     void deleteCar(Long id);

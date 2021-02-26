@@ -37,7 +37,7 @@ public class ActivityServiceImpl implements ActivityService {
         ReturnObject returnObject = new ReturnObject();
 
         if (activity != null) {
-            Activity createActivity = activityRepository.save(activity);
+            Activity createActivity = activity;
             createActivity.setCreated(java.time.LocalDateTime.now());
             createActivity.setModified(java.time.LocalDateTime.now());
             activityRepository.save(createActivity);

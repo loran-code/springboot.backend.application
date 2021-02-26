@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.controller;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.service.CarService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,11 +52,18 @@ public class CarController {
         return ResponseEntity.ok().body(returnObject);
     }
 
-    @PatchMapping(value = "/{id}")
+    @PatchMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
     public ResponseEntity<Object> partiallyUpdateCar(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
         carService.partialUpdateCar(id, fields);
         return ResponseEntity.ok().body("The specified Car details have been updated: " + fields);
+    }
+
+    @PostMapping(path = "customer")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object> saveCarToCustomer(@RequestBody Customer customer) {
+        ReturnObject returnObject = carService.saveCarToCustomer(customer);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @DeleteMapping(path = "{id}")

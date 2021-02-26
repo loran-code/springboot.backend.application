@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -31,13 +32,13 @@ public class WorkOrderIncurredCosts {
     @Column(name = "type", nullable = false)
     private EWorkOrderIncurredCosts type;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "activity_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "activity_id_FK"))
-    private Activity activity;
+    private List<Activity> activities;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
-    private Component component;
+    private List<Component> components;
 
     @NotNull(message = "quantity must not be empty")
     @Column(name = "quantity", nullable = false)

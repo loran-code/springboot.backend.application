@@ -5,12 +5,15 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Component;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -60,21 +63,35 @@ public class CarServiceImpl implements CarService {
         return returnObject;
     }
 
-    //    does this functionality belongs in the customer class?
-    public long saveCarToCustomer(String licensePlate, String lastname, Car car, Customer customer) {
-        customer = customerRepository.findCustomerByLastname(lastname);
-        car = carRepository.findCarByLicensePlate(licensePlate);
-
-        if (customer != null && car != null) {
-//            todo save car to a customer
-//            customer.setCar((List<Car>) getCarById(car.getId()));
-            customer.setModified(java.time.LocalDateTime.now());
-            customerRepository.save(customer);
-
-            return car.getId();
+    @Override
+    public ReturnObject saveCarToCustomer(Customer customer) {
+        if (!customerRepository.existsByLastname(customer.getLastname())) {
+            throw new ApiRequestException("The specified details are wrong. Make sure the customer with the given lastname exists.");
         }
-        throw new NotFoundException("The combination of lastname" + lastname + " license plate " + licensePlate + " has not been found");
+        ReturnObject returnObject = new ReturnObject();
+        List<Car> cars = new ArrayList<>();
+        Customer updateCustomer = customerRepository.findCustomerByLastname(customer.getLastname());
+
+        for (Car car : customer.getCars()) {
+
+            Car carToAdd = carRepository.findCarByLicensePlate(car.getLicensePlate());
+
+            if (carToAdd != null) {
+                cars.add(carToAdd);
+            }
+        }
+
+        updateCustomer.setCars(cars);
+        updateCustomer.setModified(java.time.LocalDateTime.now());
+        customerRepository.save(updateCustomer);
+
+        returnObject.setObject(updateCustomer);
+        returnObject.setMessage("car(s) have been saved to customer: " + updateCustomer.getLastname());
+
+        return returnObject;
+
     }
+
 
     @Override
     public ReturnObject updateCar(Long id, Car car) {
@@ -115,6 +132,10 @@ public class CarServiceImpl implements CarService {
         if (!carRepository.existsById(id)) {
             throw new ApiRequestException("Car with id " + id + " has not been found");
         }
-        carRepository.deleteById(id);
+        try {
+            carRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ApiRequestException("Can not delete car because it is attached to another entity. (customer / work order)");
+        }
     }
 }

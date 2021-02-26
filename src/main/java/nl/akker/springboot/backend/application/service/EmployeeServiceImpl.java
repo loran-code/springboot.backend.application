@@ -34,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public ReturnObject createEmployee(Employee employee) {
-        if (employeeRepository.existsByUsername(employee.getUsername()) &&
+        if (employeeRepository.existsByUsername(employee.getUsername()) ||
         employeeRepository.existsByEmail(employee.getEmail())) {
             throw new ApiRequestException("The specified details are already taken. Make sure your username and email are unique");
         }
@@ -64,8 +64,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         updateEmployee.setUsername(employee.getUsername());
         updateEmployee.setPassword(encoder.encode(updateEmployee.getPassword()));
         updateEmployee.setModified(java.time.LocalDateTime.now());
-        employeeRepository.save(updateEmployee);
 
+        if (employeeRepository.existsByUsername(employee.getUsername()) ||
+                employeeRepository.existsByEmail(employee.getEmail())) {
+            throw new ApiRequestException("The specified details are already taken. Make sure your username and email are unique");
+        } else {
+            employeeRepository.save(updateEmployee);
+        }
 
         returnObject.setObject(updateEmployee);
         returnObject.setMessage("Employee has been updated");

@@ -5,7 +5,9 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
+import nl.akker.springboot.backend.application.model.dbmodels.WorkOrderIncurredCosts;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 import nl.akker.springboot.backend.application.repository.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     private final WorkOrderRepository workOrderRepository;
     private final CarRepository carRepository;
+    private final CustomerRepository customerRepository;
     private final WorkOrderIncurredCostsRepository workOrderIncurredCostsRepository;
 
 
@@ -43,102 +46,124 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public ReturnObject createWorkOrder(WorkOrder workOrder) {
-        if (carRepository.existsByLicensePlate(workOrder.getCar().getLicensePlate())) {
+        if (workOrderRepository.existsByCarLicensePlate(workOrder.getCar().getLicensePlate())) {
             throw new ApiRequestException("A work order for the specified license plate already exist.");
+//            todo opslaan van customer bij auto checken
+        } else if (!customerRepository.existsByCarsLicensePlate(workOrder.getCar().getLicensePlate())) {
+            throw new ApiRequestException("Not possible to make a work order for a car without an owner. Make sure the specified license plate has a customer attached to it.");
+        } else {
+
+            ReturnObject returnObject = new ReturnObject();
+            Car car = carRepository.findCarByLicensePlate(workOrder.getCar().getLicensePlate());
+            WorkOrder createWorkOrder = workOrder;
+
+            if (car.getCreated() == null) {
+                car.setCreated(LocalDateTime.now());
+                car.setModified(LocalDateTime.now());
+            }
+
+            // Get latest work order number from database
+            WorkOrder latestWorkOrder = workOrderRepository.findTopByOrderByCreatedDesc();
+            // increment work order number
+            createWorkOrder.setWorkOrderNumber(latestWorkOrder.getWorkOrderNumber() + 1);
+
+            createWorkOrder.setCar(car);
+            createWorkOrder.setStatus(EWorkOrderStatus.APPOINTMENT_FOR_INSPECTION);
+            createWorkOrder.setAppointmentDate(workOrder.getAppointmentDate());
+            createWorkOrder.setCreated(LocalDateTime.now());
+            createWorkOrder.setModified(LocalDateTime.now());
+            workOrderRepository.save(createWorkOrder);
+
+            returnObject.setObject(createWorkOrder);
+            returnObject.setMessage("Work order has been created!");
+
+            return returnObject;
         }
-        ReturnObject returnObject = new ReturnObject();
-
-        WorkOrder createWorkOrder = workOrder;
-
-        Car car = new Car();
-        car.setLicensePlate(workOrder.getCar().getLicensePlate());
-        if(car.getCreated() == null) {
-            car.setCreated(LocalDateTime.now());
-            car.setModified(LocalDateTime.now());
-        }
-
-        // Get latest work order number from database
-        WorkOrder latestWorkOrder = workOrderRepository.findTopByOrderByCreatedDesc();
-        // increment work order number
-        createWorkOrder.setWorkOrderNumber(latestWorkOrder.getWorkOrderNumber()+1);
-
-        createWorkOrder.setCar(car);
-        createWorkOrder.setStatus(EWorkOrderStatus.APPOINTMENT_FOR_INSPECTION);
-        createWorkOrder.setAppointmentDate(workOrder.getAppointmentDate());
-        createWorkOrder.setCreated(LocalDateTime.now());
-        createWorkOrder.setModified(LocalDateTime.now());
-        workOrderRepository.save(createWorkOrder);
-
-        returnObject.setObject(createWorkOrder);
-        returnObject.setMessage("Work order has been created!");
-
-        return returnObject;
     }
 
     @Override
     public String carCheckIn(Long workOrderNumber) {
-        WorkOrder workOrder = workOrderRepository.getWorkOrderByWorkOrderNumber(workOrderNumber);
-
-        if (workOrder != null) {
-            workOrder.setStatus(EWorkOrderStatus.INSPECTION);
-            workOrder.setModified(LocalDateTime.now());
-
-            workOrderRepository.save(workOrder);
-
-            return "The work order status has been updated to: INSPECTION";
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
         }
 
-        return "Could not find any work orders with the specified number: " + workOrderNumber;
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
+
+        updateWorkOrder.setStatus(EWorkOrderStatus.INSPECTION);
+        updateWorkOrder.setModified(LocalDateTime.now());
+        workOrderRepository.save(updateWorkOrder);
+
+        return "The work order status has been updated to: INSPECTION";
+    }
+
+
+    @Override
+    public String customerAgreed(Long workOrderNumber) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
+        }
+
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
+
+        updateWorkOrder.setStatus(EWorkOrderStatus.IN_REPAIR); // Customer agreed to repair costs
+        updateWorkOrder.setAppointmentDate(updateWorkOrder.getAppointmentDate()); // The date the repair takes place
+        updateWorkOrder.setModified(java.time.LocalDateTime.now());
+        workOrderRepository.save(updateWorkOrder);
+
+        return "Work order status has been updated to: IN_REPAIR";
     }
 
     @Override
-    public ReturnObject customerAgreed(WorkOrder workOrder) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
-            throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
+    public String customerDeclined(Long workOrderNumber) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
         }
-        ReturnObject returnObject = new ReturnObject();
 
-        if (workOrder.getWorkOrderNumber() != null) {
-            WorkOrder updateWorkOrder = workOrderRepository.findById(workOrder.getId()).orElse(null);
-            updateWorkOrder.setStatus(EWorkOrderStatus.IN_REPAIR); // Customer agreed to repair costs
-            updateWorkOrder.setAppointmentDate(workOrder.getAppointmentDate()); // The date the repair takes place
-            updateWorkOrder.setModified(java.time.LocalDateTime.now());
-            workOrderRepository.save(updateWorkOrder);
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
 
-            returnObject.setObject(updateWorkOrder);
-            returnObject.setMessage("Work order status has been updated to: REPAIR");
+        // Customer declined to repair costs and will be invoiced for inspection activity
+        updateWorkOrder.setStatus(EWorkOrderStatus.CUSTOMER_DECLINED);
+        updateWorkOrder.setModified(java.time.LocalDateTime.now());
+        workOrderRepository.save(updateWorkOrder);
 
-            return returnObject;
-        }
-        returnObject.setMessage("Could not find a car with the specified license plate.");
+        //todo trigger invoice method
 
-        return returnObject;
+        return "Work order status has been updated to: CUSTOMER_DECLINED";
     }
 
     @Override
-    public ReturnObject customerDeclined(WorkOrder workOrder) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
-            throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
+    public String updateWorkOrder(Long workOrderNumber) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
         }
-        ReturnObject returnObject = new ReturnObject();
 
-        if (workOrder.getWorkOrderNumber() != null) {
-            WorkOrder updateWorkOrder = workOrderRepository.findById(workOrder.getId()).orElse(null);
-            updateWorkOrder.setStatus(EWorkOrderStatus.CUSTOMER_DECLINED); // Customer declined to repair costs and will be invoiced for inspection activity
-            updateWorkOrder.setModified(java.time.LocalDateTime.now());
-            workOrderRepository.save(updateWorkOrder);
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
 
-            //todo trigger invoice method
+        // todo        add incurred costs
+//        mostlikely an object must be given.
 
-            returnObject.setObject(updateWorkOrder);
-            returnObject.setMessage("Work order status has been updated to: DECLINED");
+        updateWorkOrder.setModified(java.time.LocalDateTime.now());
+        workOrderRepository.save(updateWorkOrder);
 
-            return returnObject;
-        }
-        returnObject.setMessage("Could not find a car with the specified license plate.");
-
-        return returnObject;
+        return "Succesfully updated work order with ...row(s).";
     }
+
+    @Override
+    public String finishedRepair(Long workOrderNumber) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
+        }
+
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
+
+        updateWorkOrder.setStatus(EWorkOrderStatus.INVOICED);
+        updateWorkOrder.setModified(LocalDateTime.now());
+        workOrderRepository.save(updateWorkOrder);
+//            todo generate invoice based on the details in the saved work order
+
+        return "Car repair finished. Work order status has been updated to: INVOICED";
+    }
+
 
     @Override
     public void deleteWorkOrder(Long id) {

@@ -64,9 +64,8 @@ public class Customer {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @OneToMany(mappedBy = "customer",  orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Car> car = new ArrayList<>();
+    @OneToMany(mappedBy = "customer")
+    private List<Car> cars = new ArrayList<>();
 }
 
 
