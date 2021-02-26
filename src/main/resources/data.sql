@@ -59,7 +59,7 @@ INSERT INTO component(component_number, description, price, created, modified) V
 
 
 -- Inventory data input
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 1, 'tire', 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 1, 'Tire', 10, NOW(), NOW());
 INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 2, 'Battery', 10, NOW(), NOW());
 INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 3, 'Oil Filter', 10, NOW(), NOW());
 INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 4, 'Fuel Pump', 10, NOW(), NOW());

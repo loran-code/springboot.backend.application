@@ -32,13 +32,13 @@ public class WorkOrderIncurredCosts {
     @Column(name = "type", nullable = false)
     private EWorkOrderIncurredCosts type;
 
-    @OneToMany
-    @JoinColumn(name = "activity_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "activity_id_FK"))
-    private List<Activity> activities;
-
-    @OneToMany
-    @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
-    private List<Component> components;
+//    @OneToMany
+//    @JoinColumn(name = "activity_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "activity_id_FK"))
+//    private List<Activity> activities;
+//
+//    @OneToMany
+//    @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
+//    private List<Component> components;
 
     @NotNull(message = "quantity must not be empty")
     @Column(name = "quantity", nullable = false)

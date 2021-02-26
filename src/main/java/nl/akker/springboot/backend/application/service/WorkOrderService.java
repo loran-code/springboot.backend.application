@@ -21,7 +21,7 @@ public interface WorkOrderService {
 
     String customerDeclined(Long workOrderNumber);
 
-    String updateWorkOrder(Long workOrderNumber);
+    ReturnObject updateWorkOrder(WorkOrder workOrder);
 
     String finishedRepair(Long workOrderNumber);
 

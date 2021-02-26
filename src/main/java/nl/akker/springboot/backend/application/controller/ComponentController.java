@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.controller;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Component;
+import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.service.ComponentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,14 +21,29 @@ public class ComponentController {
 
     @GetMapping(path = "all")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_BACKOFFICE')")
-    public Collection<Component> getComponentsCars() {
+    public Collection<Component> getComponents() {
         return componentService.getAllComponents();
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> addComponentsToWorkOrder(@RequestBody @Valid Component component) {
-        ReturnObject returnObject = componentService.addComponentToWorkOrder(component);
+    @PostMapping(path = "create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
+    public ResponseEntity<Object> createComponent(@RequestBody @Valid Component component) {
+        ReturnObject returnObject = componentService.createComponent(component);
         return ResponseEntity.ok().body(returnObject);
     }
+
+    @PostMapping(path = "add/{workOrderNumber}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
+    public ResponseEntity<Object> addComponentsToWorkOrder(@PathVariable("workOrderNumber") Long workOrderNumber, @RequestBody WorkOrder workorder) {
+        ReturnObject returnObject = componentService.addComponentToWorkOrder(workOrderNumber, workorder);
+        return ResponseEntity.ok().body(returnObject);
+    }
+
+    @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
+    public ResponseEntity<Object> deleteComponent(@PathVariable("id") Long id) {
+        componentService.deleteComponent(id);
+        return ResponseEntity.ok().body("The component with id " + id + " has been deleted");
+    }
+
 }

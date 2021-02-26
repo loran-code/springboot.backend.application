@@ -44,7 +44,7 @@ public class WorkOrderIncurredCostsServiceImpl implements WorkOrderIncurredCosts
     @Override
     public void AddComponent(Component component, WorkOrder workorder) {
 
-//        WorkOrderIncurredCosts part = new WorkOrderIncurredCosts();
+//        WorkOrderIncurredCosts component = new WorkOrderIncurredCosts();
 //
 //        part.setWorkorder(workorder);
 //        part.setAmount(part.getAmount());

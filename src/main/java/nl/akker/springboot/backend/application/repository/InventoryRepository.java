@@ -8,4 +8,12 @@ import org.springframework.stereotype.Repository;
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     Inventory findTopByOrderByCreatedDesc();
+
+    boolean existsByDescription(String description);
+
+    Inventory findByDescription(String description);
+
+    Inventory findByStockAmount(int amount);
+
+    boolean findByDescriptionAndStockAmount(String description, int amount);
 }

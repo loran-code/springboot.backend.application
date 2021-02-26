@@ -31,6 +31,9 @@ public class Component {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
 
+    @Transient
+    private int amount;
+
     @NotNull(message = "price must not be empty")
     @Column(name = "price", nullable = false)
     private double price;

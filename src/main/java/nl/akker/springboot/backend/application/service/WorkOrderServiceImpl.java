@@ -75,7 +75,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             workOrderRepository.save(createWorkOrder);
 
             returnObject.setObject(createWorkOrder);
-            returnObject.setMessage("Work order has been created!");
+            returnObject.setMessage("Work order has been created");
 
             return returnObject;
         }
@@ -131,21 +131,37 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return "Work order status has been updated to: CUSTOMER_DECLINED";
     }
 
+//    todo delete?
     @Override
-    public String updateWorkOrder(Long workOrderNumber) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
-            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
+    public ReturnObject updateWorkOrder(WorkOrder workOrder) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
+            throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
         }
+        ReturnObject returnObject = new ReturnObject();
 
-        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrder.getWorkOrderNumber());
+        WorkOrderIncurredCosts workOrderIncurredCosts = new WorkOrderIncurredCosts();
 
-        // todo        add incurred costs
-//        mostlikely an object must be given.
+
+//        if (workOrderIncurredCosts.getComponents() != null) {
+//            for (AddComponent component : updateWorkOrder.rts) {
+//                workorderRowService.AddPart(part, workorder);
+//            }
+//        }
+//
+//        if (workOrderIncurredCosts.getActivities() != null) {
+//            for (AddActivity activity : updateWorkOrder.addLabors) {
+//                workorderRowService.AddLabor(labor, workorder);
+//            }
+//        }
 
         updateWorkOrder.setModified(java.time.LocalDateTime.now());
         workOrderRepository.save(updateWorkOrder);
 
-        return "Succesfully updated work order with ...row(s).";
+        returnObject.setObject(updateWorkOrder);
+        returnObject.setMessage("Work order has been updated!");
+
+        return returnObject;
     }
 
     @Override

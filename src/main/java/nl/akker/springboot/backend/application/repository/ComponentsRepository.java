@@ -9,5 +9,7 @@ public interface ComponentsRepository extends JpaRepository<Component, Long> {
 
     Component findByComponentNumber(int componentNumber);
     Component findByDescription(String description);
+    Component findTopByOrderByComponentNumberDesc();
+    boolean existsByDescription(String description);
 
 }

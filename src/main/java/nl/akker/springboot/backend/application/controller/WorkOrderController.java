@@ -40,8 +40,8 @@ public class WorkOrderController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> registerNewWorkOrder(@RequestBody @Valid WorkOrder workOrder) {
-        ReturnObject returnObject = workOrderService.createWorkOrder(workOrder);
-        return ResponseEntity.ok().body(returnObject);
+        ReturnObject response = workOrderService.createWorkOrder(workOrder);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("checkin/{workOrderNumber}")
@@ -67,9 +67,9 @@ public class WorkOrderController {
 
     @PostMapping(value = "update/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC')")
-    public ResponseEntity<MessageResponse> updateWorkOrder(@PathVariable("workordernumber") Long workorderNumber) {
-        String response = workOrderService.updateWorkOrder(workorderNumber);
-        return ResponseEntity.ok().body(new MessageResponse(response));
+    public ResponseEntity<Object> updateWorkOrder(@PathVariable("workordernumber") WorkOrder workOrder) {
+        ReturnObject response = workOrderService.updateWorkOrder(workOrder);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping(value = "finished/{workordernumber}")
