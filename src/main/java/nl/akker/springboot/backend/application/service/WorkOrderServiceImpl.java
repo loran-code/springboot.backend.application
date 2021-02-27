@@ -5,11 +5,11 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
-import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
-import nl.akker.springboot.backend.application.model.dbmodels.WorkOrderIncurredCosts;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
-import nl.akker.springboot.backend.application.repository.*;
+import nl.akker.springboot.backend.application.repository.CarRepository;
+import nl.akker.springboot.backend.application.repository.CustomerRepository;
+import nl.akker.springboot.backend.application.repository.WorkOrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,8 +22,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private final WorkOrderRepository workOrderRepository;
     private final CarRepository carRepository;
     private final CustomerRepository customerRepository;
-    private final WorkOrderIncurredCostsRepository workOrderIncurredCostsRepository;
-
 
     @Override
     public Collection<WorkOrder> getWorkOrders() {
@@ -96,7 +94,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return "The work order status has been updated to: INSPECTION";
     }
 
-
     @Override
     public String customerAgreed(Long workOrderNumber) {
         if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
@@ -132,19 +129,26 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
     @Override
-    public String finishedRepair(Long workOrderNumber) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
-            throw new NotFoundException("The specified work order number " + workOrderNumber + " has not been found");
+    public ReturnObject finishedRepair(WorkOrder workOrder) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
+            throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
         }
+        ReturnObject returnObject = new ReturnObject();
 
-        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
 
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrder.getWorkOrderNumber());
+
+        // Repair is finished and will be invoiced for the inspection + components + labor
         updateWorkOrder.setStatus(EWorkOrderStatus.INVOICED);
         updateWorkOrder.setModified(LocalDateTime.now());
         workOrderRepository.save(updateWorkOrder);
-//            todo generate invoice based on the details in the saved work order
 
-        return "Car repair finished. Work order status has been updated to: INVOICED";
+        //todo trigger invoice method
+
+        returnObject.setObject(updateWorkOrder);
+        returnObject.setMessage("Car repair finished. Work order status has been updated to: INVOICED");
+
+        return returnObject;
     }
 
     @Override
@@ -155,3 +159,4 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         workOrderRepository.deleteById(id);
     }
 }
+

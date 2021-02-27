@@ -1,10 +1,12 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.payload.response.MessageResponse;
 import nl.akker.springboot.backend.application.service.WorkOrderService;
+import org.hibernate.jdbc.Work;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -65,11 +67,11 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
-    @PostMapping(value = "finished/{workordernumber}")
+    @PostMapping(value = "finished")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<MessageResponse> finishedRepair(@PathVariable("workordernumber") Long workorderNumber) {
-        String response = workOrderService.finishedRepair(workorderNumber);
-        return ResponseEntity.ok().body(new MessageResponse(response));
+    public ResponseEntity<Object> finishedRepair(@RequestBody WorkOrder workOrder) {
+        ReturnObject response = workOrderService.finishedRepair(workOrder);
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping(path = "{id}")

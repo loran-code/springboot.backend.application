@@ -9,11 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     Inventory findTopByOrderByCreatedDesc();
-
-
     Inventory findByComponent(Component component);
 
     Inventory findByStockAmount(int amount);
-
-
 }

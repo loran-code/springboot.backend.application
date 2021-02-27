@@ -44,7 +44,6 @@ public class WorkOrder {
     @Enumerated(EnumType.STRING)
     private EWorkOrderStatus status;
 
-    @NotNull(message = "appointment date must not be empty")
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 

@@ -9,7 +9,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     Activity findByActivityNumber(int activityNumber);
 
-    Activity findByDescription(String description);
+    Activity findTopByOrderByActivityNumberDesc();
+//    findTopByActivityNumberDesc();
 
-
+    boolean existsByActivityNumber(int activityNumber);
 }

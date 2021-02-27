@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.controller;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Activity;
+import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.service.ActivityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,10 +25,24 @@ public class ActivityController {
         return activityService.getAllActivities();
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC')")
-    public ResponseEntity<Object> addActivityToWorkOrder(@RequestBody @Valid Activity activity) {
-        ReturnObject returnObject = activityService.addActivityToWorkOrder(activity);
+    @PostMapping(path = "create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
+    public ResponseEntity<Object> createActivity(@RequestBody @Valid Activity activity) {
+        ReturnObject returnObject = activityService.createActivity(activity);
         return ResponseEntity.ok().body(returnObject);
+    }
+
+    @PostMapping(path = "add")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
+    public ResponseEntity<Object> addActivityToWorkOrder(@RequestBody WorkOrder workOrder) {
+        ReturnObject returnObject = activityService.addActivityToWorkOrder(workOrder);
+        return ResponseEntity.ok().body(returnObject);
+    }
+
+    @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
+    public ResponseEntity<Object> deleteActivity(@PathVariable("id") Long id) {
+        activityService.deleteActivity(id);
+        return ResponseEntity.ok().body("The activity with id " + id + " has been deleted");
     }
 }

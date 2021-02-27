@@ -30,16 +30,34 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public Component getRowNumber(int componentNumber) {
-        Component component = componentsRepository.findByComponentNumber(componentNumber);
-
-        return component;
+        return componentsRepository.findByComponentNumber(componentNumber);
     }
 
     @Override
     public Component findByDescription(String description) {
-        Component component = componentsRepository.findByDescription(description);
+        return componentsRepository.findByDescription(description);
+    }
 
-        return component;
+    public ReturnObject createComponent(Component component) {
+        if (componentsRepository.existsByDescription(component.getDescription())) {
+            throw new ApiRequestException("The component with the specified description already exists");
+        }
+        ReturnObject returnObject = new ReturnObject();
+
+        Component latestComponent = componentsRepository.findTopByOrderByComponentNumberDesc();
+        component.setComponentNumber(latestComponent.getComponentNumber() + 1);
+
+        component.setComponentNumber(component.getComponentNumber());
+        component.setDescription(component.getDescription());
+        component.setPrice(component.getPrice());
+        component.setCreated(LocalDateTime.now());
+        component.setModified(LocalDateTime.now());
+        componentsRepository.save(component);
+
+        returnObject.setObject(component);
+        returnObject.setMessage("New component has been created");
+
+        return returnObject;
     }
 
     @Override
@@ -80,29 +98,6 @@ public class ComponentServiceImpl implements ComponentService {
 
         return returnObject;
     }
-
-    public ReturnObject createComponent(Component component) {
-        if (componentsRepository.existsByDescription(component.getDescription())) {
-            throw new ApiRequestException("The component with the specified description already exists");
-        }
-        ReturnObject returnObject = new ReturnObject();
-
-        Component latestComponent = componentsRepository.findTopByOrderByComponentNumberDesc();
-        component.setComponentNumber(latestComponent.getComponentNumber() + 1);
-
-        component.setComponentNumber(component.getComponentNumber());
-        component.setDescription(component.getDescription());
-        component.setPrice(component.getPrice());
-        component.setCreated(LocalDateTime.now());
-        component.setModified(LocalDateTime.now());
-        componentsRepository.save(component);
-
-        returnObject.setObject(component);
-        returnObject.setMessage("New component has been created");
-
-        return returnObject;
-    }
-
 
     @Override
     public void deleteComponent(Long id) {

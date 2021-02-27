@@ -44,18 +44,18 @@ INSERT INTO car_customer(car_id, customer_id) VALUES (7,5);
 
 -- Activity data input
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (1,'Car Inspection', 50.00, NOW(), NOW());
-INSERT INTO activity(activity_number, description, price, created, modified) VALUES (2,'Tire(s) change', 40.00, NOW(), NOW());
+INSERT INTO activity(activity_number, description, price, created, modified) VALUES (2,'Tire change', 40.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (3,'Battery change', 20.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (4,'Oil Filter change', 25.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (5,'Fuel Pump change', 50.00, NOW(), NOW());
 
 
 -- Car Components data input
-INSERT INTO component(component_number, description, price, created, modified) VALUES (1, 'Tire', 50.00, NOW(), NOW());
-INSERT INTO component(component_number, description, price, created, modified) VALUES (2, 'Battery', 100.00, NOW(), NOW());
-INSERT INTO component(component_number, description, price, created, modified) VALUES (3, 'Oil Filter', 25.00, NOW(), NOW());
-INSERT INTO component(component_number, description, price, created, modified) VALUES (4, 'Fuel Pump', 75.00, NOW(), NOW());
-INSERT INTO component(component_number, description, price, created, modified) VALUES (5, 'Break Pads', 40.00, NOW(), NOW());
+INSERT INTO component(component_number, description, amount, price, created, modified) VALUES (1, 'Tire', 0, 50.00, NOW(), NOW());
+INSERT INTO component(component_number, description, amount, price, created, modified) VALUES (2, 'Battery', 0, 100.00, NOW(), NOW());
+INSERT INTO component(component_number, description, amount, price, created, modified) VALUES (3, 'Oil Filter', 0, 25.00, NOW(), NOW());
+INSERT INTO component(component_number, description, amount, price, created, modified) VALUES (4, 'Fuel Pump', 0, 75.00, NOW(), NOW());
+INSERT INTO component(component_number, description, amount, price, created, modified) VALUES (5, 'Break Pads', 0, 40.00, NOW(), NOW());
 
 
 -- Inventory data input

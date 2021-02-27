@@ -31,7 +31,7 @@ public class Component {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     String description;
 
-    @Transient
+    @Column(name = "amount", columnDefinition = "INT")
     private int amount;
 
     @NotNull(message = "price must not be empty")
@@ -43,7 +43,4 @@ public class Component {
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
-
-
-
 }
