@@ -59,11 +59,11 @@ INSERT INTO component(component_number, description, price, created, modified) V
 
 
 -- Inventory data input
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 1, 'Tire', 10, NOW(), NOW());
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 2, 'Battery', 10, NOW(), NOW());
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 3, 'Oil Filter', 10, NOW(), NOW());
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 4, 'Fuel Pump', 10, NOW(), NOW());
-INSERT INTO inventory(inventory_number, description, stock_amount, created, modified) VALUES ( 5, 'Break Pads', 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, component_id, stock_amount, created, modified) VALUES ( 1, 1, 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, component_id, stock_amount, created, modified) VALUES ( 2, 2, 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, component_id, stock_amount, created, modified) VALUES ( 3, 3, 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, component_id, stock_amount, created, modified) VALUES ( 4, 4, 10, NOW(), NOW());
+INSERT INTO inventory(inventory_number, component_id, stock_amount, created, modified) VALUES ( 5, 5, 10, NOW(), NOW());
 
 
 -- Work order data input
@@ -75,8 +75,6 @@ INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoi
 
 
 -- work order incurred costs data input
--- INSERT into work_order_incurred_costs(workorder_id, type, activity_id, quantity, created, modified) VALUES (1, 'ACTIVITY', 1, 1, NOW(), NOW());
--- INSERT into work_order_incurred_costs(workorder_id, type, component_id, quantity, created, modified) VALUES (2, 'COMPONENT', 1, 4, NOW(), NOW());
 INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (1, 'ACTIVITY',5, NOW(), NOW());
 INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (2, 'COMPONENT', 5, NOW(), NOW());
 

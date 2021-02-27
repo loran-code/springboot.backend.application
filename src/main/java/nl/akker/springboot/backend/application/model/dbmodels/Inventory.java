@@ -22,17 +22,13 @@ public class Inventory {
     @Column(name = "id", updatable = false)
     private Long id;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
-//    private Component component;
+    @OneToOne
+    @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
+    private Component component;
 
     @NotNull(message = "component number must not be empty")
     @Column(name = "inventory_number", nullable = false, columnDefinition = "INT")
     private int inventoryNumber;
-
-    @NotBlank(message = "description must not be empty")
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    private String description;
 
     @NotNull(message = "stock amount must not be empty")
     @Column(name = "stock_amount", nullable = false, columnDefinition = "INT")

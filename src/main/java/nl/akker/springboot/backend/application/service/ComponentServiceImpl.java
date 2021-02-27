@@ -7,16 +7,13 @@ import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.*;
 import nl.akker.springboot.backend.application.repository.ComponentsRepository;
 import nl.akker.springboot.backend.application.repository.InventoryRepository;
-import nl.akker.springboot.backend.application.repository.WorkOrderIncurredCostsRepository;
 import nl.akker.springboot.backend.application.repository.WorkOrderRepository;
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +21,6 @@ public class ComponentServiceImpl implements ComponentService {
 
     private final ComponentsRepository componentsRepository;
     private final WorkOrderRepository workOrderRepository;
-    private final WorkOrderIncurredCostsRepository workOrderIncurredCostsRepository;
     private final InventoryRepository inventoryRepository;
 
     @Override
@@ -47,24 +43,24 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     @Override
-    public ReturnObject addComponentToWorkOrder(Long workOrderNumber, WorkOrder workorder) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
+    public ReturnObject addComponentToWorkOrder(WorkOrder workorder) {
+        if (!workOrderRepository.existsByWorkOrderNumber(workorder.getWorkOrderNumber())) {
             throw new NotFoundException("The specified work order number does not exist");
         }
-
         ReturnObject returnObject = new ReturnObject();
-        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrderNumber);
+        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workorder.getWorkOrderNumber());
         List<Component> components = new ArrayList<>();
 
         for (Component component : workorder.getComponents()) {
-            if (!componentsRepository.existsByDescription(component.getDescription())) {
-                throw new NotFoundException("One of the specified components does not exist, make sure the correct description(s) have been given");
+            if (!componentsRepository.existsByComponentNumber(component.getComponentNumber())) {
+                throw new NotFoundException("One of the specified components does not exist, make sure the correct component number(s) have been given");
             }
 
-            Component componentToAdd = componentsRepository.findByDescription(component.getDescription());
-            components.add(componentToAdd);
+            Component updateComponent = componentsRepository.findByComponentNumber(component.getComponentNumber());
+            updateComponent.setAmount(component.getAmount());
+            components.add(updateComponent);
 
-            Inventory updateInventory = inventoryRepository.findByDescription(component.getDescription());
+            Inventory updateInventory = inventoryRepository.findByComponent(updateComponent);
 
             if ((updateInventory.getStockAmount() - component.getAmount()) <= 0) {
                 throw new ApiRequestException("Can not add the component(s) to the work order as there is not enough stock left in the inventory");

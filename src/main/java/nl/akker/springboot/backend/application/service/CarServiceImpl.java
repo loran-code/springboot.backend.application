@@ -5,12 +5,12 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
-import nl.akker.springboot.backend.application.model.dbmodels.Component;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -72,24 +72,27 @@ public class CarServiceImpl implements CarService {
         List<Car> cars = new ArrayList<>();
         Customer updateCustomer = customerRepository.findCustomerByLastname(customer.getLastname());
 
+
         for (Car car : customer.getCars()) {
 
             Car carToAdd = carRepository.findCarByLicensePlate(car.getLicensePlate());
 
             if (carToAdd != null) {
+                carToAdd.setCustomer(updateCustomer);
+                carRepository.save(carToAdd);
                 cars.add(carToAdd);
             }
         }
 
         updateCustomer.setCars(cars);
-        updateCustomer.setModified(java.time.LocalDateTime.now());
+        updateCustomer.setModified(LocalDateTime.now());
         customerRepository.save(updateCustomer);
+
 
         returnObject.setObject(updateCustomer);
         returnObject.setMessage("car(s) have been saved to customer: " + updateCustomer.getLastname());
 
         return returnObject;
-
     }
 
 
@@ -103,6 +106,7 @@ public class CarServiceImpl implements CarService {
         Car updateCar = carRepository.findById(id).orElse(null);
         updateCar.setLicensePlate(car.getLicensePlate());
         updateCar.setModified(java.time.LocalDateTime.now());
+
         carRepository.save(updateCar);
 
         returnObject.setObject(updateCar);
@@ -117,10 +121,12 @@ public class CarServiceImpl implements CarService {
             throw new ApiRequestException("Car with id " + id + " has not been found thus can not be updated");
         }
         Car updateCar = carRepository.findById(id).orElse(null);
+
         for (String field : fields.keySet()) {
             switch (field) {
                 case "license plate" -> updateCar.setLicensePlate(fields.get(field));
             }
+
             updateCar.setModified(java.time.LocalDateTime.now());
             carRepository.save(updateCar);
         }

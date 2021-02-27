@@ -65,13 +65,6 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
-    @PostMapping(value = "update/{workordernumber}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC')")
-    public ResponseEntity<Object> updateWorkOrder(@PathVariable("workordernumber") WorkOrder workOrder) {
-        ReturnObject response = workOrderService.updateWorkOrder(workOrder);
-        return ResponseEntity.ok().body(response);
-    }
-
     @PostMapping(value = "finished/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
     public ResponseEntity<MessageResponse> finishedRepair(@PathVariable("workordernumber") Long workorderNumber) {

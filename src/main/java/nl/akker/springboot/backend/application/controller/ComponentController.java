@@ -32,10 +32,10 @@ public class ComponentController {
         return ResponseEntity.ok().body(returnObject);
     }
 
-    @PostMapping(path = "add/{workOrderNumber}")
+    @PostMapping(path = "add")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> addComponentsToWorkOrder(@PathVariable("workOrderNumber") Long workOrderNumber, @RequestBody WorkOrder workorder) {
-        ReturnObject returnObject = componentService.addComponentToWorkOrder(workOrderNumber, workorder);
+    public ResponseEntity<Object> addComponentsToWorkOrder(@RequestBody WorkOrder workorder) {
+        ReturnObject returnObject = componentService.addComponentToWorkOrder(workorder);
         return ResponseEntity.ok().body(returnObject);
     }
 

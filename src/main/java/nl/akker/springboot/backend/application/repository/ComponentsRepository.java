@@ -8,8 +8,13 @@ import org.springframework.stereotype.Repository;
 public interface ComponentsRepository extends JpaRepository<Component, Long> {
 
     Component findByComponentNumber(int componentNumber);
+
+    boolean existsByComponentNumber(int componentNumber);
+
     Component findByDescription(String description);
-    Component findTopByOrderByComponentNumberDesc();
+
     boolean existsByDescription(String description);
+
+    Component findTopByOrderByComponentNumberDesc();
 
 }

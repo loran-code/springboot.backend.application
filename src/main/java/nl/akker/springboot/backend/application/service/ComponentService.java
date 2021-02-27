@@ -11,7 +11,7 @@ public interface ComponentService {
     Collection<Component> getAllComponents();
     Component getRowNumber(int componentNumber);
     Component findByDescription(String description);
-    ReturnObject addComponentToWorkOrder(Long workOrderNumber, WorkOrder workorder);
+    ReturnObject addComponentToWorkOrder(WorkOrder workorder);
     ReturnObject createComponent(Component component);
     void deleteComponent(Long id);
 }

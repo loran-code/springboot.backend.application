@@ -44,4 +44,6 @@ public class Component {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
+
+
 }

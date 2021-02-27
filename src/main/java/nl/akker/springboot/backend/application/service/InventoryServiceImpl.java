@@ -31,7 +31,7 @@ public class InventoryServiceImpl implements InventoryService {
             Inventory latestInventoryItem = inventoryRepository.findTopByOrderByCreatedDesc();
             createInventoryComponent.setInventoryNumber(latestInventoryItem.getInventoryNumber() + 1);
 
-            createInventoryComponent.setDescription(inventory.getDescription());
+            createInventoryComponent.setComponent(inventory.getComponent());
             createInventoryComponent.setStockAmount(inventory.getStockAmount());
             createInventoryComponent.setCreated(LocalDateTime.now());
             createInventoryComponent.setModified(LocalDateTime.now());

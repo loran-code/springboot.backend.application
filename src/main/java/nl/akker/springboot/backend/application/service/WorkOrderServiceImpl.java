@@ -131,39 +131,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return "Work order status has been updated to: CUSTOMER_DECLINED";
     }
 
-//    todo delete?
-    @Override
-    public ReturnObject updateWorkOrder(WorkOrder workOrder) {
-        if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
-            throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
-        }
-        ReturnObject returnObject = new ReturnObject();
-
-        WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrder.getWorkOrderNumber());
-        WorkOrderIncurredCosts workOrderIncurredCosts = new WorkOrderIncurredCosts();
-
-
-//        if (workOrderIncurredCosts.getComponents() != null) {
-//            for (AddComponent component : updateWorkOrder.rts) {
-//                workorderRowService.AddPart(part, workorder);
-//            }
-//        }
-//
-//        if (workOrderIncurredCosts.getActivities() != null) {
-//            for (AddActivity activity : updateWorkOrder.addLabors) {
-//                workorderRowService.AddLabor(labor, workorder);
-//            }
-//        }
-
-        updateWorkOrder.setModified(java.time.LocalDateTime.now());
-        workOrderRepository.save(updateWorkOrder);
-
-        returnObject.setObject(updateWorkOrder);
-        returnObject.setMessage("Work order has been updated!");
-
-        return returnObject;
-    }
-
     @Override
     public String finishedRepair(Long workOrderNumber) {
         if (!workOrderRepository.existsByWorkOrderNumber(workOrderNumber)) {
@@ -179,7 +146,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         return "Car repair finished. Work order status has been updated to: INVOICED";
     }
-
 
     @Override
     public void deleteWorkOrder(Long id) {
