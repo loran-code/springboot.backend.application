@@ -5,9 +5,18 @@ import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
+import nl.akker.springboot.backend.application.payload.response.MessageResponse;
+import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
 
@@ -16,6 +25,7 @@ import java.util.Map;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CarRepository carRepository;
 
     @Override
     public Collection<Customer> getCustomers() {
@@ -102,6 +112,38 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(updateCustomer);
 
         return updateCustomer.getId();
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate) {
+        if (null == file.getOriginalFilename()) {
+            return ResponseEntity.ok(new MessageResponse("Failed to add car papers."));
+        }
+
+        if (!carRepository.existsByLicensePlate(licensePlate)) {
+            throw new ApiRequestException("The specified license plate does not exist");
+        }
+
+        if (!customerRepository.existsByCarsLicensePlate(licensePlate)) {
+            throw new ApiRequestException("The car does not belong to a customer. Make sure the car has been added to a customer");
+        }
+
+        String folder = "src/main/resources/static/carpapers/";
+
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(folder + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Customer customer = customerRepository.findCustomerByCarsLicensePlate(licensePlate);
+        customer.setCarPapers(true);
+        customerRepository.save(customer);
+
+        return ResponseEntity.ok(new MessageResponse("Car papers for customer " + customer.getFirstname() + " " + customer.getLastname() + " have been added to location: " + folder));
     }
 
     @Override

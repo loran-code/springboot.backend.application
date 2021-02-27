@@ -133,9 +133,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         if (!workOrderRepository.existsByWorkOrderNumber(workOrder.getWorkOrderNumber())) {
             throw new NotFoundException("The specified work order number " + workOrder.getWorkOrderNumber() + " has not been found");
         }
+
         ReturnObject returnObject = new ReturnObject();
-
-
         WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workOrder.getWorkOrderNumber());
 
         // Repair is finished and will be invoiced for the inspection + components + labor

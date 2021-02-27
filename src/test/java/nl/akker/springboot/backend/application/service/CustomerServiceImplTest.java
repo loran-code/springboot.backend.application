@@ -25,7 +25,7 @@ class CustomerServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerServiceImpl(customerRepository);
+//        underTest = new CustomerServiceImpl(customerRepository);
     }
 
     @AfterEach
@@ -39,10 +39,10 @@ class CustomerServiceImplTest {
         // Given
         Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ", LocalDateTime.now(), LocalDateTime.now(), List);
+                "Dokkum", "3029CJ", false, LocalDateTime.now(), LocalDateTime.now(), List);
         Customer customer2 = new Customer(2L, "Karien", "Staal", "06-23586720",
                 "staal@mail.com", "staalstraat",
-                "Duiven", "9853KR", LocalDateTime.now(), LocalDateTime.now(), List);
+                "Duiven", "9853KR", false, LocalDateTime.now(), LocalDateTime.now(), List);
 
         customerRepository.saveAll(Arrays.asList(customer1, customer2));
 
@@ -58,7 +58,7 @@ class CustomerServiceImplTest {
         //given
         Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ", LocalDateTime.now(), LocalDateTime.now(), List);
+                "Dokkum", "3029CJ", false, LocalDateTime.now(), LocalDateTime.now(), List);
 
         customerRepository.save(customer1);
 

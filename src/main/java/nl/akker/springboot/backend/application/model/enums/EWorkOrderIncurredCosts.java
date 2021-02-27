@@ -1,6 +1,6 @@
-package nl.akker.springboot.backend.application.model.enums;
-
-public enum EWorkOrderIncurredCosts {
-    ACTIVITY,
-    COMPONENT
-}
+//package nl.akker.springboot.backend.application.model.enums;
+//
+//public enum EWorkOrderIncurredCosts {
+//    ACTIVITY,
+//    COMPONENT
+//}

@@ -3,11 +3,15 @@ package nl.akker.springboot.backend.application.controller;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
+import nl.akker.springboot.backend.application.payload.response.MessageResponse;
 import nl.akker.springboot.backend.application.service.CustomerService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
@@ -51,12 +55,21 @@ public class CustomerController {
         return ResponseEntity.ok().body(returnObject);
     }
 
-    @PatchMapping(value = "/{id}")
+    @PatchMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> partiallyUpdateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
         customerService.partialUpdateCustomer(id, fields);
         return ResponseEntity.ok().body("The specified customer details have been updated: " + fields);
     }
+
+    @PostMapping(path = "upload")
+//    consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+//    produces = {MediaType.IMAGE_JPEG_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
+    public ResponseEntity<MessageResponse> uploadFile(@RequestPart("file") MultipartFile file, @RequestPart("licensePlate") String licensePlate) {
+        return customerService.addCarPapers(file, licensePlate);
+    }
+
 
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

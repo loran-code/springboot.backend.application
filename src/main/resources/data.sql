@@ -15,11 +15,11 @@ INSERT INTO employee(email, user_name, password, created, modified) VALUES ('c.m
 
 
 -- Customer data input
-INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('John', 'Deere', '06-12345678', 'j.deere@mail.com', 'Akkerstraat', 'Pijnacker', '1234AB', NOW(), NOW());
-INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Bruce', 'Wayne', '06-15335679', 'b.wayne@mail.com', 'Vleermuisstraat', 'Steenbergen', '2312BC', NOW(), NOW());
-INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Peter', 'Parker', '06-52335671', 'p.parker@mail.com', 'Spinnenstraat', 'Spinolaberg', '4021KQ', NOW(), NOW());
-INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Bruce', 'Banner', '06-75231675', 'b.banner@mail.com', 'Groenstraat', 'Groenendaal', '2231CQ', NOW(),NOW());
-INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, created, modified) VALUES ('Tony', 'Stark', '06-23335634', 't.stark@mail.com', 'Ijzerstraat', 'Ijzeren', '3532LR', NOW(), NOW());
+INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, add_car_papers, created, modified) VALUES ('John', 'Deere', '06-12345678', 'j.deere@mail.com', 'Akkerstraat', 'Pijnacker', '1234AB', false, NOW(), NOW());
+INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, add_car_papers, created, modified) VALUES ('Bruce', 'Wayne', '06-15335679', 'b.wayne@mail.com', 'Vleermuisstraat', 'Steenbergen', '2312BC', false, NOW(), NOW());
+INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, add_car_papers, created, modified) VALUES ('Peter', 'Parker', '06-52335671', 'p.parker@mail.com', 'Spinnenstraat', 'Spinolaberg', '4021KQ', false, NOW(), NOW());
+INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, add_car_papers, created, modified) VALUES ('Bruce', 'Banner', '06-75231675', 'b.banner@mail.com', 'Groenstraat', 'Groenendaal', '2231CQ', false, NOW(),NOW());
+INSERT INTO customer(first_name, last_name, phone, email, street, city, zip, add_car_papers, created, modified) VALUES ('Tony', 'Stark', '06-23335634', 't.stark@mail.com', 'Ijzerstraat', 'Ijzeren', '3532LR', false, NOW(), NOW());
 
 
 -- Car data input
@@ -75,8 +75,8 @@ INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoi
 
 
 -- work order incurred costs data input
-INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (1, 'ACTIVITY',5, NOW(), NOW());
-INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (2, 'COMPONENT', 5, NOW(), NOW());
+-- INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (1, 'ACTIVITY',5, NOW(), NOW());
+-- INSERT INTO work_order_incurred_costs(workorder_id, type, quantity, created, modified) VALUES (2, 'COMPONENT', 5, NOW(), NOW());
 
 
 -- Invoice data input

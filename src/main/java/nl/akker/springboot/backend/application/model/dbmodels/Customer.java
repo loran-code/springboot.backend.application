@@ -58,6 +58,9 @@ public class Customer {
     @Column(name = "zip", columnDefinition = "TEXT")
     private String zip;
 
+    @Column(name = "add_car_papers")
+    private boolean carPapers;
+
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
 
@@ -66,6 +69,8 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Car> cars = new ArrayList<>();
+
+
 }
 
 
