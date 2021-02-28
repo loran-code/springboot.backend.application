@@ -63,11 +63,11 @@ public class CustomerController {
     }
 
     @PostMapping(path = "upload")
-//    consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-//    produces = {MediaType.IMAGE_JPEG_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
-    public ResponseEntity<MessageResponse> uploadFile(@RequestPart("file") MultipartFile file, @RequestPart("licensePlate") String licensePlate) {
-        return customerService.addCarPapers(file, licensePlate);
+    public ResponseEntity<MessageResponse> uploadFile(@RequestPart("file") MultipartFile file,
+                                                      @RequestPart("licensePlate") String licensePlate,
+                                                      @RequestParam("fileFormat") String fileFormat) {
+        return customerService.addCarPapers(file, licensePlate, fileFormat);
     }
 
 

@@ -115,7 +115,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate) {
+    public ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate, String fileFormat) {
         if (null == file.getOriginalFilename()) {
             return ResponseEntity.ok(new MessageResponse("Failed to add car papers."));
         }
@@ -128,12 +128,14 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ApiRequestException("The car does not belong to a customer. Make sure the car has been added to a customer");
         }
 
-        String folder = "src/main/resources/static/carpapers/";
+        String folder ="src/main/resources/static/carpapers/";
 
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(folder + file.getOriginalFilename());
-            Files.write(path, bytes);
+            Path source = Paths.get(file.getOriginalFilename());
+            Files.write(source, bytes); // write the uploaded file to the root location
+            Path target = Paths.get(folder + licensePlate + fileFormat); // Specify new location
+            Files.move(source, target); // move the file to the new location
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

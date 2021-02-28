@@ -23,7 +23,7 @@ public interface CustomerService {
 
     long partialUpdateCustomer(Long id, Map<String, String> fields);
 
-    ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate);
+    ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate,String fileFormat);
 
     void deleteCustomer(Long id);
 }
