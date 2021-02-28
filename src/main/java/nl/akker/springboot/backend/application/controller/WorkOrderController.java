@@ -74,6 +74,13 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PostMapping(value = "pay")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object> payInvoice(@RequestBody WorkOrder workOrder) {
+        ReturnObject response = workOrderService.payInvoice(workOrder);
+        return ResponseEntity.ok().body(response);
+    }
+
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteWorkOrder(@PathVariable("id") Long id) {

@@ -23,5 +23,7 @@ public interface WorkOrderService {
 
     ReturnObject finishedRepair(WorkOrder workOrder);
 
+    ReturnObject payInvoice(WorkOrder workOrder);
+
     void deleteWorkOrder(Long id);
 }

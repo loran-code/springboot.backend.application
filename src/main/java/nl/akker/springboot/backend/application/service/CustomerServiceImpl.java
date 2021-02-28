@@ -118,34 +118,34 @@ public class CustomerServiceImpl implements CustomerService {
     public ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate, String fileFormat) {
         if (null == file.getOriginalFilename()) {
             return ResponseEntity.ok(new MessageResponse("Failed to add car papers."));
-        }
 
-        if (!carRepository.existsByLicensePlate(licensePlate)) {
+        } else if (!carRepository.existsByLicensePlate(licensePlate)) {
             throw new ApiRequestException("The specified license plate does not exist");
-        }
 
-        if (!customerRepository.existsByCarsLicensePlate(licensePlate)) {
+        } else if (!customerRepository.existsByCarsLicensePlate(licensePlate)) {
             throw new ApiRequestException("The car does not belong to a customer. Make sure the car has been added to a customer");
+
+        } else {
+
+            String folder = "src/main/resources/static/carpapers/";
+
+            try {
+                byte[] bytes = file.getBytes();
+                // Specify location for the file to be saved at
+                Path path = Paths.get(folder + licensePlate + fileFormat);
+                // write the uploaded file to the root location
+                Files.write(path, bytes);
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
+            Customer customer = customerRepository.findCustomerByCarsLicensePlate(licensePlate);
+            customer.setCarPapers(true);
+            customerRepository.save(customer);
+
+            return ResponseEntity.ok(new MessageResponse("Car papers for customer " + customer.getFirstname() + " " + customer.getLastname() + " have been added to location: " + folder));
         }
-
-        String folder ="src/main/resources/static/carpapers/";
-
-        try {
-            byte[] bytes = file.getBytes();
-            Path source = Paths.get(file.getOriginalFilename());
-            Files.write(source, bytes); // write the uploaded file to the root location
-            Path target = Paths.get(folder + licensePlate + fileFormat); // Specify new location
-            Files.move(source, target); // move the file to the new location
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Customer customer = customerRepository.findCustomerByCarsLicensePlate(licensePlate);
-        customer.setCarPapers(true);
-        customerRepository.save(customer);
-
-        return ResponseEntity.ok(new MessageResponse("Car papers for customer " + customer.getFirstname() + " " + customer.getLastname() + " have been added to location: " + folder));
     }
 
     @Override

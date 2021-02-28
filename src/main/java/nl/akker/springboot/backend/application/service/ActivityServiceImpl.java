@@ -56,7 +56,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         if (workorder != null) {
             WorkOrder updateWorkOrder = workOrderRepository.findByWorkOrderNumber(workorder.getWorkOrderNumber());
-            List<Activity> activities = new ArrayList<>();
+            List<Activity> activities = updateWorkOrder.getActivities();
 
             for (Activity activity : workorder.getActivities()) {
                 if (!activityRepository.existsByActivityNumber(activity.getActivityNumber())) {

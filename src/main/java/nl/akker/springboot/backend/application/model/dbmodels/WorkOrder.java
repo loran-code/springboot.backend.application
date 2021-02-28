@@ -25,7 +25,7 @@ public class WorkOrder {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "work_order_number", nullable = false, updatable = false)
+    @Column(name = "work_order_number", nullable = false, updatable = false, unique = true)
     private Long workOrderNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -47,7 +47,7 @@ public class WorkOrder {
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 
-    @Column(name = "invoice_number", updatable = false)
+    @Column(name = "invoice_number", updatable = false, unique = true)
     private Long invoiceNumber;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
