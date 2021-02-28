@@ -2,6 +2,7 @@ package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.payload.response.MessageResponse;
@@ -53,6 +54,13 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
+    @PostMapping(value = "additional/{workOrderNumber}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object>addAdditionalLabor(@PathVariable("workOrderNumber") Long workOrderNumber, @RequestBody Additional additional) {
+        ReturnObject response = workOrderService.addAdditionalLabor(workOrderNumber, additional);
+        return ResponseEntity.ok().body(response);
+    }
+
     @PostMapping(value = "agreed/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
     public ResponseEntity<MessageResponse> customerAgreedToCarRepair(@PathVariable("workordernumber") Long workOrderNumber) {
@@ -80,6 +88,8 @@ public class WorkOrderController {
         ReturnObject response = workOrderService.payInvoice(workOrder);
         return ResponseEntity.ok().body(response);
     }
+
+
 
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

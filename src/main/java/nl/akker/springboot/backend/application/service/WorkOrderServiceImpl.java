@@ -3,6 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
+import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
@@ -81,7 +82,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             // Get latest work order number from database
             WorkOrder latestInvoiceNumber = workOrderRepository.findTopByOrderByCreatedDesc();
             // increment invoice order number
-            createWorkOrder.setInvoiceNumber(latestInvoiceNumber.getInvoiceNumber()+ 1);
+            createWorkOrder.setInvoiceNumber(latestInvoiceNumber.getInvoiceNumber() + 1);
 
             createWorkOrder.setCar(car);
             createWorkOrder.setStatus(EWorkOrderStatus.APPOINTMENT_FOR_INSPECTION);
@@ -170,8 +171,36 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         workOrderRepository.save(updateWorkOrder);
 
         returnObject.setObject(updateWorkOrder);
-        returnObject.setMessage("Car repair finished. Work order status has been updated to: INVOICED " +
-                "\r\n invoice is saved at location: src/main/resources/static/carpapers/");
+        returnObject.setMessage("Car repair finished. Work order status has been updated to: INVOICED. Invoice is saved at location: src/main/resources/static/carpapers/");
+
+        return returnObject;
+    }
+
+    public ReturnObject addAdditionalLabor(Long workOrderNumber, Additional additional) {
+        ReturnObject returnObject = new ReturnObject();
+
+        if (additional != null) {
+
+            WorkOrder workOrder = workOrderRepository.getWorkOrderByWorkOrderNumber(workOrderNumber);
+
+//            List<Additional> additionals = new ArrayList<>();
+
+//            for (Additional updateAdditional : workOrder.getAdditional()) {
+//                if (updateAdditional != null) {
+//                    additionals.add(updateAdditional);
+//                }
+//            }
+
+            workOrder.setAdditional(additional);
+            workOrder.setModified(LocalDateTime.now());
+            workOrderRepository.save(workOrder);
+
+            returnObject.setObject(workOrder);
+            returnObject.setMessage("Additional labor has been added to the work order");
+
+            return returnObject;
+        }
+        returnObject.setMessage("Additional labor can not be empty. Fill the description, price and amount");
 
         return returnObject;
     }
@@ -233,6 +262,25 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                     contentStream.showText(components);
                     contentStream.newLine();
                 }
+
+//                if (updateWorkOrder.getAdditionals() != null) {
+//                    contentStream.newLine();
+//                    contentStream.newLine();
+                contentStream.showText("ADDITIONALS");
+                contentStream.showText("description: " + updateWorkOrder.getAdditional().getDescription());
+                contentStream.newLine();
+                contentStream.showText("price: " + updateWorkOrder.getAdditional().getPrice());
+                contentStream.newLine();
+                contentStream.showText("amount: " + updateWorkOrder.getAdditional().getAmount());
+                costs = (costs + (updateWorkOrder.getAdditional().getPrice() * updateWorkOrder.getAdditional().getAmount()));
+
+//                    for (Additional additional : updateWorkOrder.getAdditionals()) {
+//                        String additionals = additional.getAmount() + " x " + additional.getDescription() + " ----- price: " + additional.getPrice();
+//                        costs = (costs + (additional.getPrice() * additional.getAmount()));
+//                        contentStream.showText(additionals);
+//                        contentStream.newLine();
+//                    }
+//                }
 
                 contentStream.newLine();
                 contentStream.newLine();

@@ -2,6 +2,7 @@ package nl.akker.springboot.backend.application.model.dbmodels;
 
 
 import lombok.*;
+import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 
 import javax.persistence.*;
@@ -55,4 +56,7 @@ public class WorkOrder {
 
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
+
+    @Transient
+    private Additional additional;
 }

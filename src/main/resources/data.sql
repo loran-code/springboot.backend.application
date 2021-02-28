@@ -43,7 +43,7 @@ INSERT INTO car_customer(car_id, customer_id) VALUES (7,5);
 
 
 -- Activity data input
-INSERT INTO activity(activity_number, description, price, created, modified) VALUES (1,'Car Inspection', 50.00, NOW(), NOW());
+INSERT INTO activity(activity_number, description, price, created, modified) VALUES (1,'Car Inspection', 45.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (2,'Tire change', 40.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (3,'Battery change', 20.00, NOW(), NOW());
 INSERT INTO activity(activity_number, description, price, created, modified) VALUES (4,'Oil Filter change', 25.00, NOW(), NOW());
