@@ -2,11 +2,9 @@ package nl.akker.springboot.backend.application.model.dbmodels;
 
 
 import lombok.*;
-import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +27,16 @@ public class WorkOrder {
     @Column(name = "work_order_number", nullable = false, updatable = false, unique = true)
     private Long workOrderNumber;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EWorkOrderStatus status;
+
+    @Column(name = "appointment_date")
+    private LocalDateTime appointmentDate;
+
+    @Column(name = "invoice_number", updatable = false, unique = true)
+    private Long invoiceNumber;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "car_id_FK"))
     private Car car;
@@ -41,15 +49,9 @@ public class WorkOrder {
     @JoinColumn(name = "component_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "component_id_FK"))
     private List<Component> components;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private EWorkOrderStatus status;
-
-    @Column(name = "appointment_date")
-    private LocalDateTime appointmentDate;
-
-    @Column(name = "invoice_number", updatable = false, unique = true)
-    private Long invoiceNumber;
+    @OneToMany
+    @JoinColumn(name = "additional_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "additional_id_FK"))
+    private List<Additional> additionals;
 
     @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime created;
@@ -57,6 +59,5 @@ public class WorkOrder {
     @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime modified;
 
-    @Transient
-    private Additional additional;
+
 }

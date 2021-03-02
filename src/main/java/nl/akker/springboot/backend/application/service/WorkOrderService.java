@@ -1,6 +1,5 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 
@@ -18,7 +17,7 @@ public interface WorkOrderService {
 
     String carCheckIn(Long woNumber);
 
-    ReturnObject addAdditionalLabor(Long workOrderNumber, Additional additional);
+//    ReturnObject addAdditionalLabor(Additional additional);
 
     String customerAgreed(Long workOrderNumber);
 

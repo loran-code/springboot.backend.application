@@ -1,13 +1,11 @@
 package nl.akker.springboot.backend.application.controller;
 
 import lombok.AllArgsConstructor;
-import net.bytebuddy.asm.Advice;
-import nl.akker.springboot.backend.application.model.Additional;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.payload.response.MessageResponse;
+import nl.akker.springboot.backend.application.service.AdditionalService;
 import nl.akker.springboot.backend.application.service.WorkOrderService;
-import org.hibernate.jdbc.Work;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +17,9 @@ import java.util.Collection;
 @AllArgsConstructor
 @RequestMapping(path = "/api/workorder/")
 public class WorkOrderController {
-    
+
     private final WorkOrderService workOrderService;
+    private final AdditionalService additionalService;
 
     @GetMapping(path = "all")
     @PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE, ROLE_BACKOFFICE')")
@@ -36,7 +35,7 @@ public class WorkOrderController {
 
     @GetMapping(path = "workordernumber/{workordernumber}")
     @PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE, ROLE_BACKOFFICE')")
-    public WorkOrder findWorkOrderByWorkOrderNumber(@PathVariable("workordernumber") Long workOrderNumber){
+    public WorkOrder findWorkOrderByWorkOrderNumber(@PathVariable("workordernumber") Long workOrderNumber) {
         return workOrderService.getWorkOrderByWorkOrderNumber(workOrderNumber);
     }
 
@@ -49,15 +48,15 @@ public class WorkOrderController {
 
     @PostMapping("checkin/{workOrderNumber}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_FRONTOFFICE')")
-    public ResponseEntity<MessageResponse> CheckInCar(@PathVariable ("workOrderNumber") Long workOrderNumber) {
+    public ResponseEntity<MessageResponse> CheckInCar(@PathVariable("workOrderNumber") Long workOrderNumber) {
         String response = workOrderService.carCheckIn(workOrderNumber);
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
-    @PostMapping(value = "additional/{workOrderNumber}")
+    @PostMapping(value = "additional")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object>addAdditionalLabor(@PathVariable("workOrderNumber") Long workOrderNumber, @RequestBody Additional additional) {
-        ReturnObject response = workOrderService.addAdditionalLabor(workOrderNumber, additional);
+    public ResponseEntity<Object>addAdditionalLabor(@RequestBody WorkOrder workOrder) {
+        ReturnObject response = additionalService.addAdditionalLabor(workOrder);
         return ResponseEntity.ok().body(response);
     }
 
@@ -88,7 +87,6 @@ public class WorkOrderController {
         ReturnObject response = workOrderService.payInvoice(workOrder);
         return ResponseEntity.ok().body(response);
     }
-
 
 
     @DeleteMapping(path = "{id}")

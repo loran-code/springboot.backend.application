@@ -50,6 +50,46 @@
           ]
         }
       ]
+    },
+    {
+      "Customer": [
+        {
+          "method": "GET",
+          "endpoint": "api/customer/all",
+          "description": "Get all customers"
+        },
+        {
+          "method": "GET",
+          "endpoint": "api/customer/id",
+          "description": "Get customer by id"
+        },
+        {
+          "method": "GET",
+          "endpoint": "api/customer",
+          "description": "Get customer by lastname"
+        },
+        {
+          "payload example": [
+            {
+              "URI": "?lastname={lastname}"
+            }
+          ]
+        },
+        {
+          "method": "POST",
+          "endpoint": "api/customer",
+          "description": "register a customer"
+        },
+        {
+          "payload example": [
+            {
+              "URI": "?lastname={lastname}"
+            },
+            {
+            }
+          ]
+        }
+      ]
     }
   ]
 }

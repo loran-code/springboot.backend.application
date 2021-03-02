@@ -1,13 +1,10 @@
 package nl.akker.springboot.backend.application.repository;
 
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
-import org.hibernate.jdbc.Work;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import static org.hibernate.loader.Loader.SELECT;
-
-
+@Repository
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
     WorkOrder getWorkOrderByWorkOrderNumber(Long workOrderNumber);

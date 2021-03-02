@@ -9,6 +9,4 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     Car findCarByLicensePlate(String licensePlate);
     boolean existsByLicensePlate(String licensePlate);
-
-//    long saveCarToCustomer(String licensePlate, String lastname, Car car, Customer customer);
 }

@@ -3,7 +3,7 @@ package nl.akker.springboot.backend.application.service;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
-import nl.akker.springboot.backend.application.model.Additional;
+import nl.akker.springboot.backend.application.model.dbmodels.Additional;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Activity;
 import nl.akker.springboot.backend.application.model.dbmodels.Car;
@@ -18,7 +18,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -176,34 +175,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return returnObject;
     }
 
-    public ReturnObject addAdditionalLabor(Long workOrderNumber, Additional additional) {
-        ReturnObject returnObject = new ReturnObject();
-
-        if (additional != null) {
-
-            WorkOrder workOrder = workOrderRepository.getWorkOrderByWorkOrderNumber(workOrderNumber);
-
-//            List<Additional> additionals = new ArrayList<>();
-
-//            for (Additional updateAdditional : workOrder.getAdditional()) {
-//                if (updateAdditional != null) {
-//                    additionals.add(updateAdditional);
-//                }
-//            }
-
-            workOrder.setAdditional(additional);
-            workOrder.setModified(LocalDateTime.now());
-            workOrderRepository.save(workOrder);
-
-            returnObject.setObject(workOrder);
-            returnObject.setMessage("Additional labor has been added to the work order");
-
-            return returnObject;
-        }
-        returnObject.setMessage("Additional labor can not be empty. Fill the description, price and amount");
-
-        return returnObject;
-    }
 
     public void generateInvoice(WorkOrder workOrder) {
 
@@ -263,24 +234,18 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                     contentStream.newLine();
                 }
 
-//                if (updateWorkOrder.getAdditionals() != null) {
-//                    contentStream.newLine();
-//                    contentStream.newLine();
-                contentStream.showText("ADDITIONALS");
-                contentStream.showText("description: " + updateWorkOrder.getAdditional().getDescription());
-                contentStream.newLine();
-                contentStream.showText("price: " + updateWorkOrder.getAdditional().getPrice());
-                contentStream.newLine();
-                contentStream.showText("amount: " + updateWorkOrder.getAdditional().getAmount());
-                costs = (costs + (updateWorkOrder.getAdditional().getPrice() * updateWorkOrder.getAdditional().getAmount()));
+                if (updateWorkOrder.getAdditionals() != null) {
+                    contentStream.newLine();
+                    contentStream.newLine();
 
-//                    for (Additional additional : updateWorkOrder.getAdditionals()) {
-//                        String additionals = additional.getAmount() + " x " + additional.getDescription() + " ----- price: " + additional.getPrice();
-//                        costs = (costs + (additional.getPrice() * additional.getAmount()));
-//                        contentStream.showText(additionals);
-//                        contentStream.newLine();
-//                    }
-//                }
+                    contentStream.showText("ADDITIONALS");
+                    for (Additional additional : updateWorkOrder.getAdditionals()) {
+                        String additionals = additional.getAmount() + " x " + additional.getDescription() + " ----- price: " + additional.getPrice();
+                        costs = (costs + (additional.getPrice() * additional.getAmount()));
+                        contentStream.showText(additionals);
+                        contentStream.newLine();
+                    }
+                }
 
                 contentStream.newLine();
                 contentStream.newLine();
