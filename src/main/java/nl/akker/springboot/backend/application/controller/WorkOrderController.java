@@ -40,8 +40,8 @@ public class WorkOrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> registerNewWorkOrder(@RequestBody @Valid WorkOrder workOrder) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object> registerNewWorkOrder(@Valid @RequestBody WorkOrder workOrder) {
         ReturnObject response = workOrderService.createWorkOrder(workOrder);
         return ResponseEntity.ok().body(response);
     }
@@ -51,13 +51,6 @@ public class WorkOrderController {
     public ResponseEntity<MessageResponse> CheckInCar(@PathVariable("workOrderNumber") Long workOrderNumber) {
         String response = workOrderService.carCheckIn(workOrderNumber);
         return ResponseEntity.ok().body(new MessageResponse(response));
-    }
-
-    @PostMapping(value = "additional")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object>addAdditionalLabor(@RequestBody WorkOrder workOrder) {
-        ReturnObject response = additionalService.addAdditionalLabor(workOrder);
-        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping(value = "agreed/{workordernumber}")
@@ -74,7 +67,14 @@ public class WorkOrderController {
         return ResponseEntity.ok().body(new MessageResponse(response));
     }
 
-    @PostMapping(value = "finished")
+    @PostMapping(value = "additional")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object> addAdditionalLabor(@RequestBody WorkOrder workOrder) {
+        ReturnObject response = additionalService.addAdditionalLabor(workOrder);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping(value = "invoice")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MECHANIC, ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> finishedRepair(@RequestBody WorkOrder workOrder) {
         ReturnObject response = workOrderService.finishedRepair(workOrder);
@@ -87,7 +87,6 @@ public class WorkOrderController {
         ReturnObject response = workOrderService.payInvoice(workOrder);
         return ResponseEntity.ok().body(response);
     }
-
 
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

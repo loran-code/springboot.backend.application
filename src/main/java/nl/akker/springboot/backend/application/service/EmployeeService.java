@@ -9,9 +9,14 @@ import java.util.Map;
 public interface EmployeeService {
 
     Collection<Employee> getEmployees();
+
     Employee getEmployeeById(Long id);
+
     ReturnObject createEmployee(Employee employee);
+
     ReturnObject updateEmployee(Long id, Employee employee);
-    long partialUpdateEmployee(Long id, Map<String, String> fields);
+
+    ReturnObject partialUpdateEmployee(Long id, Map<String, String> fields);
+
     void deleteEmployee(Long id);
 }

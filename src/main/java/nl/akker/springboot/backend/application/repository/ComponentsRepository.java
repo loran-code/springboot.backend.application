@@ -16,5 +16,4 @@ public interface ComponentsRepository extends JpaRepository<Component, Long> {
     boolean existsByDescription(String description);
 
     Component findTopByOrderByComponentNumberDesc();
-
 }

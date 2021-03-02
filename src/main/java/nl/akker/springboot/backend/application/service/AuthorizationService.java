@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Validated
 public class AuthorizationService {
 
-    private static final String ROLE_NOT_FOUND_ERROR = "Error: Role is not found.";
+    private static final String ROLE_NOT_FOUND_ERROR = "Error: Role has not been found.";
 
     private EmployeeRepository employeeRepository;
     private PasswordEncoder encoder;
@@ -71,13 +71,13 @@ public class AuthorizationService {
         if (Boolean.TRUE.equals(employeeRepository.existsByUsername(signUpRequest.getUsername()))) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Username has already been taken"));
         }
 
         if (Boolean.TRUE.equals(employeeRepository.existsByEmail(signUpRequest.getEmail()))) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error: Email is already in use"));
         }
 
         // Create new employee account
@@ -129,9 +129,8 @@ public class AuthorizationService {
         employee.setModified(LocalDateTime.now());
         employeeRepository.save(employee);
 
-        return ResponseEntity.ok(new MessageResponse("New employee registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("New employee has registered successfully"));
     }
-
 
     public ResponseEntity<JwtResponse> authenticateEmployee(@Valid LoginRequest loginRequest) {
 

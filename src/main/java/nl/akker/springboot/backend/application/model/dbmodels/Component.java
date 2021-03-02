@@ -38,9 +38,9 @@ public class Component {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "created")
     private LocalDateTime created;
 
-    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "modified")
     private LocalDateTime modified;
 }

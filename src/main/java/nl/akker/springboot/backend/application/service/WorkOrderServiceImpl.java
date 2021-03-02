@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,8 +44,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public WorkOrder getWorkOrderById(Long id) {
-        return workOrderRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Work order with id " + id + " not found"));
+        return workOrderRepository.findById(id).orElseThrow(() -> new NotFoundException("Work order with id " + id + " not found"));
     }
 
     @Override
@@ -59,7 +59,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public ReturnObject createWorkOrder(WorkOrder workOrder) {
         if (workOrderRepository.existsByCarLicensePlate(workOrder.getCar().getLicensePlate())) {
             throw new ApiRequestException("A work order for the specified license plate already exist.");
-//            todo opslaan van customer bij auto checken
         } else if (!customerRepository.existsByCarsLicensePlate(workOrder.getCar().getLicensePlate())) {
             throw new ApiRequestException("Not possible to make a work order for a car without an owner. Make sure the specified license plate has a customer attached to it.");
         } else {
@@ -78,9 +77,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             // increment work order number
             createWorkOrder.setWorkOrderNumber(latestWorkOrder.getWorkOrderNumber() + 1);
 
-            // Get latest work order number from database
+            // Get latest invoice number from database
             WorkOrder latestInvoiceNumber = workOrderRepository.findTopByOrderByCreatedDesc();
-            // increment invoice order number
+            // increment invoice number
             createWorkOrder.setInvoiceNumber(latestInvoiceNumber.getInvoiceNumber() + 1);
 
             createWorkOrder.setCar(car);
@@ -127,7 +126,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         updateWorkOrder.setStatus(EWorkOrderStatus.IN_REPAIR); // Customer agreed to repair costs
         updateWorkOrder.setAppointmentDate(updateWorkOrder.getAppointmentDate()); // The date the repair takes place
-        updateWorkOrder.setModified(java.time.LocalDateTime.now());
+        updateWorkOrder.setModified(LocalDateTime.now());
         workOrderRepository.save(updateWorkOrder);
 
         return "Work order status has been updated to: IN_REPAIR";
@@ -146,7 +145,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         // Customer declined to repair costs and will be invoiced for inspection activity
         updateWorkOrder.setStatus(EWorkOrderStatus.CUSTOMER_DECLINED);
-        updateWorkOrder.setModified(java.time.LocalDateTime.now());
+        updateWorkOrder.setAppointmentDate(null);
+        updateWorkOrder.setModified(LocalDateTime.now());
         workOrderRepository.save(updateWorkOrder);
 
         return "Work order status has been updated to: CUSTOMER_DECLINED";
@@ -166,6 +166,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         // Repair is finished and will be invoiced for the inspection + components + labor
         updateWorkOrder.setStatus(EWorkOrderStatus.INVOICED);
+        updateWorkOrder.setAppointmentDate(null);
         updateWorkOrder.setModified(LocalDateTime.now());
         workOrderRepository.save(updateWorkOrder);
 
@@ -215,9 +216,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
                 contentStream.showText("ACTIVITIES");
                 contentStream.newLine();
-                for (Activity activty : updateWorkOrder.getActivities()) {
-                    String activities = activty.getDescription() + " ----- price: " + activty.getPrice();
-                    costs = costs + activty.getPrice();
+                for (Activity activity : updateWorkOrder.getActivities()) {
+                    String activities = activity.getDescription() + " ----- price: " + activity.getPrice();
+                    costs = costs + activity.getPrice();
                     contentStream.showText(activities);
                     contentStream.newLine();
                 }
@@ -239,6 +240,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                     contentStream.newLine();
 
                     contentStream.showText("ADDITIONALS");
+                    contentStream.newLine();
                     for (Additional additional : updateWorkOrder.getAdditionals()) {
                         String additionals = additional.getAmount() + " x " + additional.getDescription() + " ----- price: " + additional.getPrice();
                         costs = (costs + (additional.getPrice() * additional.getAmount()));

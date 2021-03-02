@@ -17,8 +17,6 @@ public interface WorkOrderService {
 
     String carCheckIn(Long woNumber);
 
-//    ReturnObject addAdditionalLabor(Additional additional);
-
     String customerAgreed(Long workOrderNumber);
 
     String customerDeclined(Long workOrderNumber);

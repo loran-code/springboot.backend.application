@@ -14,7 +14,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "Employee")
 @Table(name = "employee")
 public class Employee {
@@ -26,22 +25,22 @@ public class Employee {
 
     @Email
     @NotBlank(message = "email must not be empty")
-    @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "username must not be empty")
-    @Column(name = "user_name", nullable = false, unique = true, columnDefinition = "TEXT")
+    @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
     @NotBlank(message = "password must not be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "created")
     private LocalDateTime created;
 
-    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "modified")
     private LocalDateTime modified;
 
     @ManyToMany

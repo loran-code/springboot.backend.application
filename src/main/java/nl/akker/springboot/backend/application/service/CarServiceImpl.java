@@ -31,8 +31,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car getCarById(Long id) {
-        return carRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Car with id " + id + " not found"));
+        return carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id " + id + " not found"));
     }
 
     @Override
@@ -48,13 +47,13 @@ public class CarServiceImpl implements CarService {
         if (carRepository.existsByLicensePlate(car.getLicensePlate())) {
             throw new ApiRequestException("The specified license plate is already taken. Make sure the license plate details are unique");
         }
-        ReturnObject returnObject = new ReturnObject();
 
+        ReturnObject returnObject = new ReturnObject();
         Car createCar = car;
 
         createCar.setLicensePlate(car.getLicensePlate());
-        createCar.setCreated(java.time.LocalDateTime.now());
-        createCar.setModified(java.time.LocalDateTime.now());
+        createCar.setCreated(LocalDateTime.now());
+        createCar.setModified(LocalDateTime.now());
         carRepository.save(createCar);
 
         returnObject.setObject(createCar);
@@ -68,10 +67,10 @@ public class CarServiceImpl implements CarService {
         if (!customerRepository.existsByLastname(customer.getLastname())) {
             throw new ApiRequestException("The specified details are wrong. Make sure the customer with the given lastname exists.");
         }
+
         ReturnObject returnObject = new ReturnObject();
         List<Car> cars = new ArrayList<>();
         Customer updateCustomer = customerRepository.findCustomerByLastname(customer.getLastname());
-
 
         for (Car car : customer.getCars()) {
 
@@ -88,13 +87,11 @@ public class CarServiceImpl implements CarService {
         updateCustomer.setModified(LocalDateTime.now());
         customerRepository.save(updateCustomer);
 
-
         returnObject.setObject(updateCustomer);
         returnObject.setMessage("car(s) have been saved to customer: " + updateCustomer.getLastname());
 
         return returnObject;
     }
-
 
     @Override
     public ReturnObject updateCar(Long id, Car car) {
@@ -105,7 +102,7 @@ public class CarServiceImpl implements CarService {
 
         Car updateCar = carRepository.findById(id).orElse(null);
         updateCar.setLicensePlate(car.getLicensePlate());
-        updateCar.setModified(java.time.LocalDateTime.now());
+        updateCar.setModified(LocalDateTime.now());
 
         carRepository.save(updateCar);
 
@@ -116,21 +113,29 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public long partialUpdateCar(Long id, Map<String, String> fields) {
+    public ReturnObject partialUpdateCar(Long id, Map<String, String> fields) {
         if (!carRepository.existsById(id)) {
             throw new ApiRequestException("Car with id " + id + " has not been found thus can not be updated");
         }
+        ReturnObject returnObject = new ReturnObject();
         Car updateCar = carRepository.findById(id).orElse(null);
 
         for (String field : fields.keySet()) {
-            switch (field) {
-                case "license plate" -> updateCar.setLicensePlate(fields.get(field));
+            if ("license plate".equals(field)) {
+                updateCar.setLicensePlate(fields.get(field));
             }
 
-            updateCar.setModified(java.time.LocalDateTime.now());
+            updateCar.setModified(LocalDateTime.now());
             carRepository.save(updateCar);
+
+            returnObject.setMessage("Updated successfully");
+            returnObject.setObject(updateCar);
+
+            return returnObject;
         }
-        return updateCar.getId();
+        returnObject.setMessage("Car has not been updated. Something went wrong");
+
+        return returnObject;
     }
 
     @Override

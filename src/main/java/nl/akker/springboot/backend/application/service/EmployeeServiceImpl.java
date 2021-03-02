@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Override
     public Collection<Employee> getEmployees() {
@@ -28,8 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Employee with id " + id + " not found"));
+        return employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id " + id + " not found"));
     }
 
     @Override
@@ -42,8 +42,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee createEmployee = employee;
         createEmployee.setPassword(encoder.encode(createEmployee.getPassword()));
-        createEmployee.setCreated(java.time.LocalDateTime.now());
-        createEmployee.setModified(java.time.LocalDateTime.now());
+        createEmployee.setCreated(LocalDateTime.now());
+        createEmployee.setModified(LocalDateTime.now());
         employeeRepository.save(createEmployee);
 
         returnObject.setObject(createEmployee);
@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         updateEmployee.setEmail(employee.getEmail());
         updateEmployee.setUsername(employee.getUsername());
         updateEmployee.setPassword(encoder.encode(updateEmployee.getPassword()));
-        updateEmployee.setModified(java.time.LocalDateTime.now());
+        updateEmployee.setModified(LocalDateTime.now());
 
         if (employeeRepository.existsByUsername(employee.getUsername()) ||
                 employeeRepository.existsByEmail(employee.getEmail())) {
@@ -79,10 +79,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long partialUpdateEmployee(Long id, Map<String, String> fields) {
+    public ReturnObject partialUpdateEmployee(Long id, Map<String, String> fields) {
         if (!employeeRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
         }
+        ReturnObject returnObject = new ReturnObject();
         Employee updateEmployee = employeeRepository.findById(id).orElse(null);
         for (String field : fields.keySet()) {
             switch (field) {
@@ -91,10 +92,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                 case "password" -> updateEmployee.setPassword(encoder.encode(fields.get(field)));
             }
         }
-        updateEmployee.setModified(java.time.LocalDateTime.now());
+        updateEmployee.setModified(LocalDateTime.now());
         employeeRepository.save(updateEmployee);
 
-        return updateEmployee.getId();
+        returnObject.setMessage("The employee's details have been updated");
+        returnObject.setObject(updateEmployee);
+
+        return returnObject;
     }
 
     @Override

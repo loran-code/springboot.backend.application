@@ -72,6 +72,3 @@ INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoi
 INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (103, 3, 'IN_REPAIR','3-2-2021 12:00', 1003 ,NOW(), NOW());
 INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (104, 4, 'INVOICED','2-2-2021 15:00', 1004 ,NOW(), NOW());
 INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (105, 5, 'PAID','1-2-2021 09:00', 1005 ,NOW(), NOW());
-
--- Invoice data input
-

@@ -26,7 +26,7 @@ public class ExceptionController {
 
     @ExceptionHandler(value = UserNotFoundException.class)
     public ResponseEntity<Object> exception(UserNotFoundException exception) {
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(value = ForbiddenException.class)

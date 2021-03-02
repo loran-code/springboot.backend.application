@@ -3,7 +3,6 @@ package nl.akker.springboot.backend.application.controller;
 import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.model.ReturnObject;
 import nl.akker.springboot.backend.application.model.dbmodels.Inventory;
-import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.service.InventoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,17 +26,15 @@ public class InventoryController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> registerNewWorkOrder(@RequestBody @Valid Inventory inventory) {
+    public ResponseEntity<Object> registerNewWorkOrder(@Valid @RequestBody Inventory inventory) {
         ReturnObject returnObject = inventoryService.addComponentToInventory(inventory);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @DeleteMapping(path = "{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteWorkOrder(@PathVariable("id") Long id) {
         inventoryService.deleteComponentFromInventory(id);
         return ResponseEntity.ok().body("The inventory item with id " + id + " has been deleted");
     }
-
-
 }

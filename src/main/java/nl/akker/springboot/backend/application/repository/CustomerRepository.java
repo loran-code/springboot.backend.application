@@ -20,5 +20,4 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     boolean existsByCarsLicensePlate(String licensePlate);
 
     Customer findCustomerByCarsLicensePlate(String licensePlate);
-
 }

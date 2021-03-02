@@ -48,16 +48,16 @@ public class CustomerController {
 
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Customer customer) {
+    public ResponseEntity<Object> updateCustomer(@Valid @PathVariable("id") Long id, @RequestBody Customer customer) {
         ReturnObject returnObject = customerService.updateCustomer(id, customer);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PatchMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> partiallyUpdateCustomer(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
-        customerService.partialUpdateCustomer(id, fields);
-        return ResponseEntity.ok().body("The specified customer details have been updated: " + fields);
+    public ResponseEntity<Object> partiallyUpdateCustomer(@Valid @PathVariable("id") Long id, @RequestBody Map<String, String> fields) {
+        ReturnObject returnObject = customerService.partialUpdateCustomer(id, fields);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PostMapping(path = "upload")
@@ -67,7 +67,6 @@ public class CustomerController {
                                                       @RequestParam("fileFormat") String fileFormat) {
         return customerService.addCarPapers(file, licensePlate, fileFormat);
     }
-
 
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

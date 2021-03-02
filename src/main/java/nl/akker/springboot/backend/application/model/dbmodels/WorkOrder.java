@@ -1,6 +1,5 @@
 package nl.akker.springboot.backend.application.model.dbmodels;
 
-
 import lombok.*;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
 
@@ -37,6 +36,12 @@ public class WorkOrder {
     @Column(name = "invoice_number", updatable = false, unique = true)
     private Long invoiceNumber;
 
+    @Column(name = "created")
+    private LocalDateTime created;
+
+    @Column(name = "modified")
+    private LocalDateTime modified;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "car_id_FK"))
     private Car car;
@@ -52,12 +57,4 @@ public class WorkOrder {
     @OneToMany
     @JoinColumn(name = "additional_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "additional_id_FK"))
     private List<Additional> additionals;
-
-    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime created;
-
-    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime modified;
-
-
 }

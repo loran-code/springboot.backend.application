@@ -21,7 +21,7 @@ public interface CustomerService {
 
     ReturnObject updateCustomer(Long id, Customer customer);
 
-    long partialUpdateCustomer(Long id, Map<String, String> fields);
+    ReturnObject partialUpdateCustomer(Long id, Map<String, String> fields);
 
     ResponseEntity<MessageResponse> addCarPapers(MultipartFile file, String licensePlate,String fileFormat);
 

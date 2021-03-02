@@ -8,7 +8,6 @@ import nl.akker.springboot.backend.application.model.enums.ERole;
 
 import javax.persistence.*;
 
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter

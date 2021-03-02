@@ -9,22 +9,23 @@ import nl.akker.springboot.backend.application.service.AuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth/")
 public class AuthController {
 
     private final AuthorizationService authorizationService;
 
-    @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> authenticateEmployee(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("signin")
+    public ResponseEntity<JwtResponse> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
         return authorizationService.authenticateEmployee(loginRequest);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<MessageResponse> registerEmployee(@RequestBody SignupRequest signUpRequest) {
+    @PostMapping("register")
+    public ResponseEntity<MessageResponse> registerEmployee(@Valid @RequestBody SignupRequest signUpRequest) {
         return authorizationService.registerEmployee(signUpRequest);
     }
-
 }

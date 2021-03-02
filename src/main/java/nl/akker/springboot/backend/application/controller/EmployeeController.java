@@ -32,23 +32,23 @@ public class EmployeeController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_BACKOFFICE')")
-    public ResponseEntity<Object> registerNewEmployee(@RequestBody @Valid Employee employee) {
+    public ResponseEntity<Object> registerNewEmployee(@Valid @RequestBody Employee employee) {
         ReturnObject returnObject = employeeService.createEmployee(employee);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_BACKOFFICE')")
-    public ResponseEntity<Object> updateEmployee(@PathVariable("id") Long id, @RequestBody @Valid Employee employee) {
+    public ResponseEntity<Object> updateEmployee(@Valid @PathVariable("id") Long id, @RequestBody Employee employee) {
         ReturnObject returnObject = employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PatchMapping(value = "/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Object> partiallyUpdateEmployee(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
-        employeeService.partialUpdateEmployee(id, fields);
-        return ResponseEntity.ok().body("The specified employee details have been updated: " + fields);
+    public ResponseEntity<Object> partiallyUpdateEmployee(@Valid @PathVariable("id") Long id, @RequestBody Map<String, String> fields) {
+        ReturnObject returnObject = employeeService.partialUpdateEmployee(id, fields);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @DeleteMapping(path = "{id}")

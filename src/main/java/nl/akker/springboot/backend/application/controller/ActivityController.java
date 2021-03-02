@@ -27,14 +27,14 @@ public class ActivityController {
 
     @PostMapping(path = "create")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_BACKOFFICE')")
-    public ResponseEntity<Object> createActivity(@RequestBody @Valid Activity activity) {
+    public ResponseEntity<Object> createActivity(@Valid @RequestBody Activity activity) {
         ReturnObject returnObject = activityService.createActivity(activity);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PostMapping(path = "add")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> addActivityToWorkOrder(@RequestBody WorkOrder workOrder) {
+    public ResponseEntity<Object> addActivityToWorkOrder(@Valid @RequestBody WorkOrder workOrder) {
         ReturnObject returnObject = activityService.addActivityToWorkOrder(workOrder);
         return ResponseEntity.ok().body(returnObject);
     }

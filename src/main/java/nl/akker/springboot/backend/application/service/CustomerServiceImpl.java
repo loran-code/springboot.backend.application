@@ -12,11 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 
@@ -46,9 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAllByLastname(lastname);
     }
 
-
     @Override
-    //todo add car to customer
     public ReturnObject createCustomer(Customer customer) {
         if (customerRepository.existsByEmail(customer.getEmail())) {
             throw new ApiRequestException("The specified details are already taken. Make sure your email is unique");
@@ -56,8 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
         ReturnObject returnObject = new ReturnObject();
 
         Customer createCustomer = customer;
-        createCustomer.setCreated(java.time.LocalDateTime.now());
-        createCustomer.setModified(java.time.LocalDateTime.now());
+        createCustomer.setCreated(LocalDateTime.now());
+        createCustomer.setModified(LocalDateTime.now());
         customerRepository.save(createCustomer);
 
         returnObject.setObject(createCustomer);
@@ -80,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setEmail(customer.getEmail());
         updateCustomer.setCity(customer.getCity());
         updateCustomer.setZip(customer.getZip());
-        updateCustomer.setModified(java.time.LocalDateTime.now());
+        updateCustomer.setModified(LocalDateTime.now());
         customerRepository.save(updateCustomer);
 
         returnObject.setObject(updateCustomer);
@@ -90,11 +88,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public long partialUpdateCustomer(Long id, Map<String, String> fields) {
+    public ReturnObject partialUpdateCustomer(Long id, Map<String, String> fields) {
         if (!customerRepository.existsById(id)) {
             throw new ApiRequestException("Customer with id " + id + " has not been found thus can not be updated");
         }
-
+        ReturnObject returnObject = new ReturnObject();
         Customer updateCustomer = customerRepository.findById(id).orElse(null);
 
         for (String field : fields.keySet()) {
@@ -108,10 +106,12 @@ public class CustomerServiceImpl implements CustomerService {
                 case "zip" -> updateCustomer.setZip(fields.get(field));
             }
         }
-        updateCustomer.setModified(java.time.LocalDateTime.now());
+        updateCustomer.setModified(LocalDateTime.now());
         customerRepository.save(updateCustomer);
 
-        return updateCustomer.getId();
+        returnObject.setMessage("The customers information has been updated");
+        returnObject.setObject(updateCustomer);
+        return returnObject;
     }
 
     @Override

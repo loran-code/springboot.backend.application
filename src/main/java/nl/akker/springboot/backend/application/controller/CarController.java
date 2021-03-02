@@ -34,33 +34,33 @@ public class CarController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
-    public Car findCarByLicensePlate(@RequestParam(name = "licenseplate") @Valid String licensePlate){
+    public Car findCarByLicensePlate(@Valid @RequestParam(name = "licenseplate") String licensePlate){
         return carService.findCarByLicensePlate(licensePlate);
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> registerNewCar(@RequestBody @Valid Car car) {
+    public ResponseEntity<Object> registerNewCar(@Valid @RequestBody Car car) {
         ReturnObject returnObject = carService.createCar(car);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> updateCar(@PathVariable("id") Long id, @RequestBody @Valid Car car) {
+    public ResponseEntity<Object> updateCar(@Valid @PathVariable("id") Long id, @RequestBody Car car) {
         ReturnObject returnObject = carService.updateCar(id, car);
         return ResponseEntity.ok().body(returnObject);
     }
 
     @PatchMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> partiallyUpdateCar(@PathVariable("id") Long id, @RequestBody @Valid Map<String, String> fields) {
-        carService.partialUpdateCar(id, fields);
-        return ResponseEntity.ok().body("The specified Car details have been updated: " + fields);
+    public ResponseEntity<Object> partiallyUpdateCar(@Valid @PathVariable("id") Long id, @RequestBody Map<String, String> fields) {
+        ReturnObject returnObject = carService.partialUpdateCar(id, fields);
+        return ResponseEntity.ok().body(returnObject);
     }
 
     @PostMapping(path = "customer")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
     public ResponseEntity<Object> saveCarToCustomer(@RequestBody Customer customer) {
         ReturnObject returnObject = carService.saveCarToCustomer(customer);
         return ResponseEntity.ok().body(returnObject);

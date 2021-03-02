@@ -28,15 +28,6 @@ public class ComponentServiceImpl implements ComponentService {
         return componentsRepository.findAll();
     }
 
-    @Override
-    public Component getRowNumber(int componentNumber) {
-        return componentsRepository.findByComponentNumber(componentNumber);
-    }
-
-    @Override
-    public Component findByDescription(String description) {
-        return componentsRepository.findByDescription(description);
-    }
 
     public ReturnObject createComponent(Component component) {
         if (componentsRepository.existsByDescription(component.getDescription())) {
@@ -46,8 +37,8 @@ public class ComponentServiceImpl implements ComponentService {
 
         Component latestComponent = componentsRepository.findTopByOrderByComponentNumberDesc();
         component.setComponentNumber(latestComponent.getComponentNumber() + 1);
-
         component.setComponentNumber(component.getComponentNumber());
+
         component.setDescription(component.getDescription());
         component.setPrice(component.getPrice());
         component.setCreated(LocalDateTime.now());
@@ -94,7 +85,7 @@ public class ComponentServiceImpl implements ComponentService {
         workOrderRepository.save(updateWorkOrder);
 
         returnObject.setObject(updateWorkOrder);
-        returnObject.setMessage(components.size() + " component(s) added to work order and have been deducted from the inventory");
+        returnObject.setMessage(components.size() + " component(s) have been added to the work order and have been deducted from the inventory");
 
         return returnObject;
     }

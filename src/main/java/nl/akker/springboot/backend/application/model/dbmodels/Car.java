@@ -12,8 +12,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "Car")
 @Table(name = "car")
 public class Car {
@@ -24,13 +22,13 @@ public class Car {
     private Long id;
 
     @NotBlank(message = "license plate must not be empty")
-    @Column(name = "license_plate", nullable = false, unique = true, columnDefinition = "TEXT", length = 11)
+    @Column(name = "license_plate", nullable = false, unique = true)
     private String licensePlate;
 
-    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "created")
     private LocalDateTime created;
 
-    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "modified")
     private LocalDateTime modified;
 
     @JsonBackReference(value = "customer-car") // To avoid Infinite recursion (StackOverflowError) when the API GET method is being requested
@@ -41,5 +39,4 @@ public class Car {
             inverseJoinColumns = @JoinColumn(name = "customer_id"),
             inverseForeignKey = @ForeignKey(name = "customer_id_FK"))
     private Customer customer;
-
 }

@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,10 +17,6 @@ public class Additional {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
-
-//    @NotNull(message = "component number must not be empty")
-//    @Column(name = "additional_number")
-//    int additionalNumber;
 
     @Column(name = "description")
     String description;

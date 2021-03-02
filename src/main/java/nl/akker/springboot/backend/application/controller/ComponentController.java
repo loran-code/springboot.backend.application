@@ -20,7 +20,7 @@ public class ComponentController {
     private final ComponentService componentService;
 
     @GetMapping(path = "all")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_BACKOFFICE')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE', 'ROLE_BACKOFFICE')")
     public Collection<Component> getComponents() {
         return componentService.getAllComponents();
     }
@@ -34,7 +34,7 @@ public class ComponentController {
 
     @PostMapping(path = "add")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MECHANIC')")
-    public ResponseEntity<Object> addComponentsToWorkOrder(@RequestBody WorkOrder workorder) {
+    public ResponseEntity<Object> addComponentsToWorkOrder(@RequestBody @Valid WorkOrder workorder) {
         ReturnObject returnObject = componentService.addComponentToWorkOrder(workorder);
         return ResponseEntity.ok().body(returnObject);
     }
@@ -45,5 +45,4 @@ public class ComponentController {
         componentService.deleteComponent(id);
         return ResponseEntity.ok().body("The component with id " + id + " has been deleted");
     }
-
 }

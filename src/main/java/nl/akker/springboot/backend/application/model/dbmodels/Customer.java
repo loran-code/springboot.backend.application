@@ -27,50 +27,48 @@ public class Customer {
 
     @NotBlank(message = "firstname must not be empty")
     @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "first_name", nullable = false)
     String firstname;
 
     @NotBlank(message = "lastname must not be empty")
     @Size(min = 2, max = 60, message = "Size must between 1 and 60 characters long")
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "last_name", nullable = false)
     private String lastname;
 
     @NotBlank(message = "phone number must not be empty")
     @Size(min = 10, max = 20, message = "Size must between 10 and 20 characters long")
-    @Column(name = "phone", nullable = false, unique=true, columnDefinition = "TEXT")
+    @Column(name = "phone", nullable = false, unique=true)
     private String phone;
 
     @Size(min = 6, max = 60, message = "Size must between 6 and 60 characters long")
     @NotBlank(message = "email must not be empty")
     @Email(message = "invalid email format")
-    @Column(name = "email", nullable = false, unique=true, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, unique=true)
     private String email;
 
     @Size(max = 60)
-    @Column(name = "street", columnDefinition = "TEXT")
+    @Column(name = "street")
     private String street;
 
     @Size(max = 60)
-    @Column(name = "city", columnDefinition = "TEXT")
+    @Column(name = "city")
     private String city;
 
     @Size(max = 7)
-    @Column(name = "zip", columnDefinition = "TEXT")
+    @Column(name = "zip")
     private String zip;
 
     @Column(name = "add_car_papers")
     private boolean carPapers;
 
-    @Column(name = "created", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "created")
     private LocalDateTime created;
 
-    @Column(name = "modified", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(name = "modified")
     private LocalDateTime modified;
 
     @OneToMany(mappedBy = "customer")
     private List<Car> cars = new ArrayList<>();
-
-
 }
 
 
