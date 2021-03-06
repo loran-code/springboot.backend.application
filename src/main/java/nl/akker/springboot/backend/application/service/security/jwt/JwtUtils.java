@@ -2,6 +2,7 @@ package nl.akker.springboot.backend.application.service.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import nl.akker.springboot.backend.application.service.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Date;
+
+import static io.jsonwebtoken.Jwts.parser;
 
 @Component
 public class JwtUtils {
@@ -19,7 +23,7 @@ public class JwtUtils {
     @Value("${application.jwt.secretKey}")
     private String jwtSecret;
 
-    @Value("${application.jwt.jwtExpirationMs}")
+    @Value("${application.jwt.tokenExpirationAfterDays}")
     private int jwtExpirationDays;
 
     public String generateJwtToken(Authentication authentication) {
@@ -29,14 +33,13 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationDays))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtExpirationDays)))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
