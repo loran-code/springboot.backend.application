@@ -1,6 +1,7 @@
 {
   "title": "Novi backend API assignment",
   "description": "RESTful API that demonstrate different relations within a relational database",
+  "API documentation": "Can be found within the installation documents provided to Hogeschool Novi",
   "contact": {
     "name": "Loran van den Akker"
   },
@@ -17,77 +18,6 @@
           "method": "GET",
           "endpoint": "/info",
           "description": "Returns this description of the API."
-        }
-      ]
-    },
-    {
-      "Authentication": [
-        {
-          "method": "POST",
-          "endpoint": "api/auth/register",
-          "description": "Registers a new user."
-        },
-        {
-          "payload example": [
-            {
-              "email": "user@email.com",
-              "username": "user",
-              "password": "password"
-            }
-          ]
-        },
-        {
-          "method": "POST",
-          "endpoint": "api/auth/signin",
-          "description": "Returns the authentication page."
-        },
-        {
-          "payload example": [
-            {
-              "username": "user",
-              "password": "password"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Customer": [
-        {
-          "method": "GET",
-          "endpoint": "api/customer/all",
-          "description": "Get all customers"
-        },
-        {
-          "method": "GET",
-          "endpoint": "api/customer/id",
-          "description": "Get customer by id"
-        },
-        {
-          "method": "GET",
-          "endpoint": "api/customer",
-          "description": "Get customer by lastname"
-        },
-        {
-          "payload example": [
-            {
-              "URI": "?lastname={lastname}"
-            }
-          ]
-        },
-        {
-          "method": "POST",
-          "endpoint": "api/customer",
-          "description": "register a customer"
-        },
-        {
-          "payload example": [
-            {
-              "URI": "?lastname={lastname}"
-            },
-            {
-            }
-          ]
         }
       ]
     }
