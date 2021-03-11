@@ -9,9 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.swing.text.StyledEditorKit;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerServiceImplTest {
 
     @Autowired
-    private CustomerRepository customerRepository;
-    private CustomerServiceImpl underTest;
+    private CustomerRepository underTestRepository;
+    private CustomerServiceImpl underTestService;
     private java.util.List<Car> List;
 
     @BeforeEach
@@ -28,13 +31,14 @@ class CustomerServiceImplTest {
 //        underTest = new CustomerServiceImpl(customerRepository);
     }
 
+
     @AfterEach
     void tearDown() {
-        customerRepository.deleteAll();
+        underTestRepository.deleteAll();
     }
 
     @Test
-    void getCustomers() {
+    void itShouldGetCustomers() {
 
         // Given
         Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
@@ -44,26 +48,26 @@ class CustomerServiceImplTest {
                 "staal@mail.com", "staalstraat",
                 "Duiven", "9853KR", false, LocalDateTime.now(), LocalDateTime.now(), List);
 
-        customerRepository.saveAll(Arrays.asList(customer1, customer2));
+        underTestRepository.saveAll(Arrays.asList(customer1, customer2));
 
         // When
-        Collection<Customer> customers = underTest.getCustomers();
+        Collection<Customer> customers = underTestRepository.findAll();
 
         // Then
         assertEquals(2, customers.size());
     }
 
     @Test
-    void getCustomerById() {
+    void itShouldGetCustomerById() {
         //given
-        Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
+        Customer customer = new Customer(1L,"Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
                 "Dokkum", "3029CJ", false, LocalDateTime.now(), LocalDateTime.now(), List);
 
-        customerRepository.save(customer1);
+        underTestRepository.save(customer);
 
         // When
-        Customer actual = underTest.getCustomerById(1L);
+        Customer actual = underTestService.getCustomerById(1L);
 
         // Then
         assertEquals(1L, actual.getId());
@@ -76,7 +80,30 @@ class CustomerServiceImplTest {
         assertEquals("3029CJ", actual.getZip());
     }
 
-//    @Test
+
+    @Test
+    void itShouldGetCustomerByLastName() {
+
+    }
+
+    @Test
+    void itShouldSaveCustomer() {
+        //Given
+        Customer customer = new Customer(1L,"Eric",
+                "Goossens", "06-23584829",
+                "goossens@mail.com", "loopstraat",
+                "Dokkum", "3029CJ", false,
+                LocalDateTime.now(), LocalDateTime.now(), List);
+
+        //When
+        underTestRepository.save(customer);
+
+        //Then
+        Optional<Customer> optionalCustomer = underTestRepository.findById(1L);
+//        asserThat()
+    }
+
+    //    @Test
 //    void deleteCustomer() {
 //        @Test
 //        public void whenOrderRequestIsDeleted_thenDeleteShipmentInfo() {

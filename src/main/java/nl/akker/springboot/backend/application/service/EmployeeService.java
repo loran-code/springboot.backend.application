@@ -18,5 +18,7 @@ public interface EmployeeService {
 
     ReturnObject partialUpdateEmployee(Long id, Map<String, String> fields);
 
+    ReturnObject callCustomers();
+
     void deleteEmployee(Long id);
 }

@@ -4,14 +4,24 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
+import nl.akker.springboot.backend.application.model.dbmodels.Car;
+import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.model.dbmodels.Employee;
+import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
+import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
+import nl.akker.springboot.backend.application.repository.CarRepository;
+import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
+import nl.akker.springboot.backend.application.repository.WorkOrderRepository;
+import org.hibernate.jdbc.Work;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,6 +29,9 @@ import java.util.Map;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final WorkOrderRepository workOrderRepository;
+    private final CustomerRepository customerRepository;
+    private final CarRepository carRepository;
 
     private final PasswordEncoder encoder;
 
@@ -35,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ReturnObject createEmployee(Employee employee) {
         if (employeeRepository.existsByUsername(employee.getUsername()) ||
-        employeeRepository.existsByEmail(employee.getEmail())) {
+                employeeRepository.existsByEmail(employee.getEmail())) {
             throw new ApiRequestException("The specified details are already taken. Make sure your username and email are unique");
         }
         ReturnObject returnObject = new ReturnObject();
@@ -98,6 +111,40 @@ public class EmployeeServiceImpl implements EmployeeService {
         returnObject.setMessage("The employee's details have been updated");
         returnObject.setObject(updateEmployee);
 
+        return returnObject;
+    }
+
+    public List<WorkOrder> getWorkOrdersByStatus(EWorkOrderStatus eWorkOrderStatus) {
+        return workOrderRepository.findByStatus(eWorkOrderStatus);
+    }
+
+    @Override
+    public ReturnObject callCustomers() {
+        ReturnObject returnObject = new ReturnObject();
+        List<WorkOrder> workorders = new ArrayList<>();
+        List<Customer> customers = new ArrayList<>();
+
+        workorders.addAll(getWorkOrdersByStatus(EWorkOrderStatus.CUSTOMER_DECLINED));
+        workorders.addAll(getWorkOrdersByStatus(EWorkOrderStatus.INVOICED));
+
+        for (WorkOrder workOrder : workorders) {
+            Customer customer = customerRepository.findById(workOrder.getCar().getCustomer().getId()).orElse(null);
+
+            if(customer == null){
+                returnObject.setMessage("No customer found for work order: " + workOrder.getWorkOrderNumber());
+                return returnObject;
+            }
+            else{
+                customers.add(customer);
+            }
+        }
+
+        if ((long) workorders.size() != 0) {
+            returnObject.setMessage("The following customers need to be called to inform about their invoice.");
+            returnObject.setObject(customers);
+            return returnObject;
+        }
+        returnObject.setMessage("Could not find any work orders with status \"declined\" or \"invoiced\".");
         return returnObject;
     }
 

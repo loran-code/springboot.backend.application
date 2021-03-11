@@ -51,6 +51,13 @@ public class EmployeeController {
         return ResponseEntity.ok().body(returnObject);
     }
 
+    @GetMapping(value = "call")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FRONTOFFICE')")
+    public ResponseEntity<Object> callCustomers() {
+        ReturnObject returnObject = employeeService.callCustomers();
+        return ResponseEntity.ok().body(returnObject);
+    }
+
     @DeleteMapping(path = "{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("id") Long id) {

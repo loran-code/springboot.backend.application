@@ -26,7 +26,7 @@ public class InventoryController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_FRONTOFFICE')")
-    public ResponseEntity<Object> registerNewWorkOrder(@Valid @RequestBody Inventory inventory) {
+    public ResponseEntity<Object> addComponentToInventory(@Valid @RequestBody Inventory inventory) {
         ReturnObject returnObject = inventoryService.addComponentToInventory(inventory);
         return ResponseEntity.ok().body(returnObject);
     }
