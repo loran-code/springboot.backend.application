@@ -19,7 +19,7 @@ public class AuthController {
 
     private final AuthorizationService authorizationService;
 
-    @PostMapping("signin")
+    @PostMapping("login")
     public ResponseEntity<JwtResponse> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
         return authorizationService.authenticateEmployee(loginRequest);
     }

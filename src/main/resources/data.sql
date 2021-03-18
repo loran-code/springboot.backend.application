@@ -67,8 +67,8 @@ INSERT INTO inventory(inventory_number, component_id, stock_amount, created, mod
 
 
 -- Work order data input
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (101, 1, 'CUSTOMER_DECLINED','26-2-2021 12:00', 1001 ,NOW(), NOW());
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (102, 2, 'INSPECTION','10-4-2021 12:00', 1002 ,NOW(), NOW());
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (103, 3, 'IN_REPAIR','3-2-2021 12:00', 1003 ,NOW(), NOW());
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (104, 4, 'INVOICED','2-2-2021 15:00', 1004 ,NOW(), NOW());
-INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (105, 5, 'PAID','1-2-2021 09:00', 1005 ,NOW(), NOW());
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (101, 1, 'CUSTOMER_DECLINED','2021-2-26T12:00:00', 1001 ,NOW(), NOW());
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (102, 2, 'INSPECTION','2021-4-10T12:00:00', 1002 ,NOW(), NOW());
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (103, 3, 'IN_REPAIR','2021-2-3T12:00:00', 1003 ,NOW(), NOW());
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (104, 4, 'INVOICED','2021-2-2T15:00:00', 1004 ,NOW(), NOW());
+INSERT INTO workorder(work_order_number, car_id, status, appointment_date, invoice_number, created, modified) VALUES (105, 5, 'PAID','2021-2-1T09:00:00', 1005 ,NOW(), NOW());
