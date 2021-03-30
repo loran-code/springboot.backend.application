@@ -1,89 +1,88 @@
 package nl.akker.springboot.backend.application.service;
 
-import nl.akker.springboot.backend.application.model.dbmodels.Car;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import javax.swing.text.StyledEditorKit;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+// Needed in order to test against the H2 database.
 @DataJpaTest
 class CustomerServiceImplTest {
 
+
     @Autowired
     private CustomerRepository underTestRepository;
-    private CustomerServiceImpl underTestService;
-    private java.util.List<Car> List;
 
-    @BeforeEach
-    void setUp() {
-//        underTest = new CustomerServiceImpl(customerRepository);
-    }
-
-
-    @AfterEach
-    void tearDown() {
-        underTestRepository.deleteAll();
-    }
 
     @Test
-    void itShouldGetCustomers() {
+    void itShouldGetAllCustomers() {
 
         // Given
-        Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
+        Customer customer1 = new Customer("Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ", false, LocalDateTime.now(), LocalDateTime.now(), List);
-        Customer customer2 = new Customer(2L, "Karien", "Staal", "06-23586720",
+                "Dokkum", "3029CJ", false
+        );
+        Customer customer2 = new Customer("Karien", "Staal", "06-23586720",
                 "staal@mail.com", "staalstraat",
-                "Duiven", "9853KR", false, LocalDateTime.now(), LocalDateTime.now(), List);
+                "Duiven", "9853KR", false
+        );
 
-        underTestRepository.saveAll(Arrays.asList(customer1, customer2));
+        underTestRepository.save(customer1);
+        underTestRepository.save(customer2);
 
         // When
-        Collection<Customer> customers = underTestRepository.findAll();
+        Collection<Customer> allCustomers = underTestRepository.findAll();
 
         // Then
-        assertEquals(2, customers.size());
+        assertEquals(2, allCustomers.size());
     }
 
     @Test
-    void itShouldGetCustomerById() {
-        //given
-        Customer customer = new Customer(1L,"Eric", "Goossens", "06-23584829",
-                "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ", false, LocalDateTime.now(), LocalDateTime.now(), List);
+    void itShouldGetCustomerByEmail() {
+        //Given
+        Customer customer = new Customer("Eric",
+                "Goossens", "06-23584829",
+                "goossens@mail.com", "Loopstraat",
+                "Dokkum", "3029CJ", false
+        );
 
         underTestRepository.save(customer);
 
         // When
-        Customer actual = underTestService.getCustomerById(1L);
+        Customer customerFoundById = underTestRepository.findByEmail("goossens@mail.com");
 
         // Then
-        assertEquals(1L, actual.getId());
-        assertEquals("Eric", actual.getFirstname());
-        assertEquals("Goossens", actual.getLastname());
-        assertEquals("06-23584829", actual.getPhone());
-        assertEquals("gossens@mail.com", actual.getEmail());
-        assertEquals("Loopstraat", actual.getStreet());
-        assertEquals("Dokkum", actual.getCity());
-        assertEquals("3029CJ", actual.getZip());
+        assertEquals("Eric", customerFoundById.getFirstname());
+        assertEquals("Goossens", customerFoundById.getLastname());
+        assertEquals("06-23584829", customerFoundById.getPhone());
+        assertEquals("goossens@mail.com", customerFoundById.getEmail());
+        assertEquals("Loopstraat", customerFoundById.getStreet());
+        assertEquals("Dokkum", customerFoundById.getCity());
+        assertEquals("3029CJ", customerFoundById.getZip());
     }
-
 
     @Test
     void itShouldGetCustomerByLastName() {
+        //Given
+        Customer customer = new Customer("Eric",
+                "Goossens", "06-23584829",
+                "goossens@mail.com", "loopstraat",
+                "Dokkum", "3029CJ", false
+        );
 
+        underTestRepository.save(customer);
+
+        //When
+        Optional<Customer> customerFoundByLastname = underTestRepository.findOptionalCustomerByLastname("Goossens");
+
+        //Then
+        assertEquals("Goossens", customerFoundByLastname.get().getLastname());
     }
 
     @Test
@@ -92,43 +91,38 @@ class CustomerServiceImplTest {
         Customer customer = new Customer(1L,"Eric",
                 "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
-                "Dokkum", "3029CJ", false,
-                LocalDateTime.now(), LocalDateTime.now(), List);
+                "Dokkum", "3029CJ", false
+        );
 
-        //When
         underTestRepository.save(customer);
 
+        //When
+        Optional<Customer> optionalCustomer = underTestRepository.existsById(1L);
+
         //Then
-        Optional<Customer> optionalCustomer = underTestRepository.findById(1L);
-//        asserThat()
+        assertThat(optionalCustomer).isPresent();
     }
 
-    //    @Test
-//    void deleteCustomer() {
-//        @Test
-//        public void whenOrderRequestIsDeleted_thenDeleteShipmentInfo() {
-//            createOrderRequestWithShipmentInfo();
-//
-//            OrderRequest orderRequest = entityManager.find(OrderRequest.class, 1L);
-//
-//            entityManager.getTransaction().begin();
-//            entityManager.remove(orderRequest);
-//            entityManager.getTransaction().commit();
-//
-//            Assert.assertEquals(0, findAllOrderRequest().size());
-//            Assert.assertEquals(0, findAllShipmentInfo().size());
-//        }
-//
-//        private void createOrderRequestWithShipmentInfo() {
-//            ShipmentInfo shipmentInfo = new ShipmentInfo("name");
-//            OrderRequest orderRequest = new OrderRequest(shipmentInfo);
-//
-//            entityManager.getTransaction().begin();
-//            entityManager.persist(orderRequest);
-//            entityManager.getTransaction().commit();
-//
-//            Assert.assertEquals(1, findAllOrderRequest().size());
-//            Assert.assertEquals(1, findAllShipmentInfo().size());
-//        }
-//    }
+    @Test
+    void deleteCustomerByEmail() {
+        // Given
+        Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
+                "goossens@mail.com", "loopstraat",
+                "Dokkum", "3029CJ", false
+        );
+        Customer customer2 = new Customer(2L,"Karien", "Staal", "06-23586720",
+                "staal@mail.com", "staalstraat",
+                "Duiven", "9853KR", false
+        );
+
+        underTestRepository.save(customer1);
+        underTestRepository.save(customer2);
+
+        //When
+        underTestRepository.deleteAll();
+
+        // Then
+        Collection<Customer> customers = underTestRepository.findAll();
+        assertEquals(0, customers.size());
+    }
 }

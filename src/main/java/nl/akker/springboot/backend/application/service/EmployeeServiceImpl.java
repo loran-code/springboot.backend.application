@@ -4,16 +4,13 @@ import lombok.AllArgsConstructor;
 import nl.akker.springboot.backend.application.exceptions.ApiRequestException;
 import nl.akker.springboot.backend.application.exceptions.NotFoundException;
 import nl.akker.springboot.backend.application.model.ReturnObject;
-import nl.akker.springboot.backend.application.model.dbmodels.Car;
 import nl.akker.springboot.backend.application.model.dbmodels.Customer;
 import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.model.dbmodels.WorkOrder;
 import nl.akker.springboot.backend.application.model.enums.EWorkOrderStatus;
-import nl.akker.springboot.backend.application.repository.CarRepository;
 import nl.akker.springboot.backend.application.repository.CustomerRepository;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
 import nl.akker.springboot.backend.application.repository.WorkOrderRepository;
-import org.hibernate.jdbc.Work;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final WorkOrderRepository workOrderRepository;
     private final CustomerRepository customerRepository;
-    private final CarRepository carRepository;
 
     private final PasswordEncoder encoder;
 

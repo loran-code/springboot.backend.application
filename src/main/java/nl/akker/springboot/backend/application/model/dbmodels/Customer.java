@@ -37,13 +37,13 @@ public class Customer {
 
     @NotBlank(message = "phone number must not be empty")
     @Size(min = 10, max = 20, message = "Size must between 10 and 20 characters long")
-    @Column(name = "phone", nullable = false, unique=true)
+    @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
     @Size(min = 6, max = 60, message = "Size must between 6 and 60 characters long")
     @NotBlank(message = "email must not be empty")
     @Email(message = "invalid email format")
-    @Column(name = "email", nullable = false, unique=true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Size(max = 60)
@@ -69,6 +69,46 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Car> cars = new ArrayList<>();
+
+    public Customer(String firstname, String lastname, String phone, String email, String street, String city,
+                    String zip, boolean carPapers, LocalDateTime created, LocalDateTime modified, List<Car> cars) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.zip = zip;
+        this.carPapers = carPapers;
+        this.created = created;
+        this.modified = modified;
+        this.cars = cars;
+    }
+
+    public Customer(String firstname, String lastname, String phone, String email, String street, String city,
+                    String zip, boolean carPapers) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.zip = zip;
+        this.carPapers = carPapers;
+    }
+
+    public Customer(long id, String firstname, String lastname, String phone, String email, String street, String city,
+                    String zip, boolean carPapers) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.zip = zip;
+        this.carPapers = carPapers;
+    }
 }
 
 

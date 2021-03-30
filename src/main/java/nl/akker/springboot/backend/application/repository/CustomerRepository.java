@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
@@ -14,6 +15,16 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Boolean existsByLastname(String lastname);
 
     Customer findCustomerByLastname(String lastname);
+
+    Optional<Customer> existsById(long id);
+
+    void deleteByIdEquals(long id);
+
+    Customer findByEmail(String email);
+
+    Customer deleteByEmail(String email);
+
+    Optional<Customer> findOptionalCustomerByLastname(String lastname);
 
     Boolean existsByEmail(String email);
 
