@@ -57,4 +57,12 @@ public class WorkOrder {
     @OneToMany
     @JoinColumn(name = "additional_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "additional_id_FK"))
     private List<Additional> additionals;
+
+    public WorkOrder(Long workOrderNumber, EWorkOrderStatus status, LocalDateTime appointmentDate, Long invoiceNumber, Car car) {
+        this.workOrderNumber = workOrderNumber;
+        this.status = status;
+        this.appointmentDate = appointmentDate;
+        this.invoiceNumber = invoiceNumber;
+        this.car = car;
+    }
 }

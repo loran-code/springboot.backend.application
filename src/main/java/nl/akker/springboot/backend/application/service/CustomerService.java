@@ -15,7 +15,7 @@ public interface CustomerService {
 
     Customer getCustomerById(Long id);
 
-    Collection<Customer> getCustomersByLastname(String lastName);
+    Customer getCustomerByLastname(String lastname);
 
     ReturnObject createCustomer(Customer customer);
 

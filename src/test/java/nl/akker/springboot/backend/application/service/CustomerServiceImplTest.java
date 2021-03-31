@@ -88,7 +88,7 @@ class CustomerServiceImplTest {
     @Test
     void itShouldSaveCustomer() {
         //Given
-        Customer customer = new Customer(1L,"Eric",
+        Customer customer = new Customer("Eric",
                 "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
                 "Dokkum", "3029CJ", false
@@ -106,11 +106,11 @@ class CustomerServiceImplTest {
     @Test
     void deleteCustomerByEmail() {
         // Given
-        Customer customer1 = new Customer(1L,"Eric", "Goossens", "06-23584829",
+        Customer customer1 = new Customer("Eric", "Goossens", "06-23584829",
                 "goossens@mail.com", "loopstraat",
                 "Dokkum", "3029CJ", false
         );
-        Customer customer2 = new Customer(2L,"Karien", "Staal", "06-23586720",
+        Customer customer2 = new Customer("Karien", "Staal", "06-23586720",
                 "staal@mail.com", "staalstraat",
                 "Duiven", "9853KR", false
         );

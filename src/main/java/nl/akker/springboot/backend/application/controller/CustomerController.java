@@ -35,8 +35,8 @@ public class CustomerController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MECHANIC', 'ROLE_FRONTOFFICE')")
-    public Collection<Customer> getCustomersByLastname(@RequestParam(name = "lastname") String lastname) {
-        return customerService.getCustomersByLastname(lastname);
+    public Customer getCustomerByLastname(@RequestParam(name = "lastname") String lastname) {
+        return customerService.getCustomerByLastname(lastname);
     }
 
     @PostMapping

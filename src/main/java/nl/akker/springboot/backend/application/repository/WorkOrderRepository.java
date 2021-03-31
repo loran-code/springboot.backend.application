@@ -18,6 +18,10 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
     WorkOrder findByWorkOrderNumber(Long workOrderNumber);
 
+    WorkOrder findByInvoiceNumber(Long invoiceNumber);
+
+    WorkOrder findWorkOrderByStatus(EWorkOrderStatus status);
+
     Boolean existsByCarLicensePlate(String licensePlate);
 
     List<WorkOrder> findByStatus(EWorkOrderStatus status);

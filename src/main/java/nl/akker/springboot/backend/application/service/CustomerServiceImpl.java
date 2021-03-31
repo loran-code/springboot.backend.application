@@ -39,11 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Collection<Customer> getCustomersByLastname(String lastname) {
+    public Customer getCustomerByLastname(String lastname) {
         if (!customerRepository.existsByLastname(lastname)) {
             throw new NotFoundException("The specified last name " + lastname + " has not been found");
         }
-        return customerRepository.findAllByLastname(lastname);
+        return customerRepository.findCustomerByLastname(lastname);
     }
 
     @Override

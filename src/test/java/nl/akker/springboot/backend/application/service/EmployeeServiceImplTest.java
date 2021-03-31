@@ -2,52 +2,42 @@ package nl.akker.springboot.backend.application.service;
 
 import nl.akker.springboot.backend.application.model.dbmodels.Employee;
 import nl.akker.springboot.backend.application.repository.EmployeeRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-//@SpringBootTest()
-@AutoConfigureMockMvc
-public class EmployeeServiceImplTest {
+@SpringBootTest()
+@ContextConfiguration(classes = {Employee.class})
+class EmployeeServiceImplTest {
+
+    @MockBean
+    private EmployeeService employeeService;
+
+    @MockBean
+    private EmployeeRepository underTestRepository;
 
     @Mock
-    private EmployeeRepository employeeRepository;
-
-    private EmployeeService underTest;
-
-    @Autowired
-    private MockMvc mockMvc;
+    Employee employee;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-//        underTest = new EmployeeService(employeeRepository);
+        employee = new Employee("test_user", "test@mail", "test_password");
+        underTestRepository.save(employee);
 
-        Employee employee = new Employee("test_user", "test@mail", "test_password");
+        Employee employee2 = new Employee("test_user2", "test@mail2", "test_password2");
+        underTestRepository.save(employee2);
 
-        Mockito.when(employeeRepository.findEmployeeByUsername(employee.getUsername())).thenReturn(employee);
-        Mockito.when(employeeRepository.findEmployeeByEmail(employee.getEmail())).thenReturn(employee);
-
+        Mockito.when(underTestRepository.findEmployeeByUsername(employee.getUsername())).thenReturn(employee);
+        Mockito.when(underTestRepository.findEmployeeByEmail(employee.getEmail())).thenReturn(employee);
     }
-//    @AfterEach
-//    public void tearDown() {
-//
-//    }
 
     @Test
     void itShouldGetEmployeeByUserName() {
@@ -55,61 +45,41 @@ public class EmployeeServiceImplTest {
         String expected = "test_user";
 
         //When
-        Employee found = employeeRepository.findEmployeeByUsername("test_user");
+        Employee found = underTestRepository.findEmployeeByUsername("test_user");
 
         //Then
         assertEquals(expected, found.getUsername());
     }
 
-//    @Test
-//    void itShouldGetEmployeeById() {
-//        //Given
-//        //When
-//        //Then
-//    }
-//
     @Test
-    void itShouldCreateEmployee() {
+    void itShouldGetEmployeeByEmail() {
         //Given
+        String expected = "test@mail";
 
         //When
+        Employee found = underTestRepository.findEmployeeByEmail("test@mail");
 
         //Then
+        assertEquals(expected, found.getEmail());
     }
-//
-//    @Test
-//    void itShouldUpdateEmployee() {
-//        //Given
-//        //When
-//        //Then
-//    }
-//
-//    @Test
-//    void itShouldPartialUpdateEmployee() {
-//        //Given
-//        //When
-//        //Then
-//    }
-//
-//    @Test
-//    void itShouldGetWorkOrdersByStatus() {
-//        //Given
-//        //When
-//        //Then
-//    }
-//
-//    @Test
-//    void itShouldCallCustomersBasedOnWorkOrderStatus() {
-//        //Given
-//        //When
-//        //Then
-//    }
-//
-//    @Test
-//    void itShouldDeleteEmployee() {
-//        //Given
-//        //When
-//        //Then
-//    }
+
+    @Test
+    void itShouldGetEmployees() {
+        //Given
+        employee = new Employee("test_user", "test@mail", "test_password");
+        underTestRepository.save(employee);
+
+        Employee employee2 = new Employee("test_user2", "test@mail2", "test_password2");
+        underTestRepository.save(employee2);
+        int expected = 2;
+
+        //When
+        Collection<Employee> found = employeeService.getEmployees();
+        found.add(employee);
+        found.add(employee2);
+
+        //Then
+        assertEquals(expected, found.size());
+    }
 }
 

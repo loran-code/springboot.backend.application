@@ -71,35 +71,7 @@ public class Customer {
     private List<Car> cars = new ArrayList<>();
 
     public Customer(String firstname, String lastname, String phone, String email, String street, String city,
-                    String zip, boolean carPapers, LocalDateTime created, LocalDateTime modified, List<Car> cars) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.phone = phone;
-        this.email = email;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-        this.carPapers = carPapers;
-        this.created = created;
-        this.modified = modified;
-        this.cars = cars;
-    }
-
-    public Customer(String firstname, String lastname, String phone, String email, String street, String city,
                     String zip, boolean carPapers) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.phone = phone;
-        this.email = email;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-        this.carPapers = carPapers;
-    }
-
-    public Customer(long id, String firstname, String lastname, String phone, String email, String street, String city,
-                    String zip, boolean carPapers) {
-        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
